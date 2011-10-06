@@ -14,6 +14,7 @@ import org.jboss.seam.solder.logging.Category;
 
 import de.fh.ekss.model.Member;
 
+
 // The @Stateful annotation eliminates the need for manual transaction demarcation
 @Stateful
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
