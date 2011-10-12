@@ -21,7 +21,7 @@ import org.jboss.seam.solder.logging.Category;
 public class VisitorDAOBean {
 
 	@Inject
-	@Category("ekss_web")
+	@Category("hello")
 	private Logger log;
 
 	@Inject
