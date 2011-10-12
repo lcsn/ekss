@@ -1,0 +1,1 @@
+insert into visitorbean (id, name) values (0, 'Kaiser Test') 
