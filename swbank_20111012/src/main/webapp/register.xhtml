@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   template="/WEB-INF/templates/default.xhtml">
+   <ui:define name="content">
+      <h1>Welcome to S and W Bank on JBoss AS 7!</h1>
+
+      <p>This a Java EE 6 web application on JBoss AS 7.</p>
+
+      <h:form id="login">
+         <table>
+            <tr>
+               <th style="text-align: right;"><h:outputLabel
+                     for="id" value="Id: " /></th>
+               <td><h:inputText id="id" value="#{loginHandler.credentials.identity}" required="true" />
+                  <h:message for="id" errorClass="invalid" /></td>
+            </tr>
+            <tr>
+               <th style="text-align: right;"><h:outputLabel
+                     for="pass" value="Pass: " /></th>
+               <td><h:inputSecret id="pass" value="#{loginHandler.credentials.pass}" required="true" />
+                  <h:message for="pass" errorClass="invalid" /></td>
+            </tr>
+         </table>
+         <p>
+            <h:commandButton id="register"
+               action="#{loginHandler.doLogin}" value="Login" />
+            <h:outputText value=" Done!"
+               style="color: green;" />
+         </p>
+      </h:form>
+   </ui:define>
+</ui:composition>
