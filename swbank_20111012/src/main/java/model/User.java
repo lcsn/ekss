@@ -40,9 +40,9 @@ public class User implements Serializable {
 	@Pattern(regexp = "[A-Za-z ]*", message = "Nur Buchstaben und Leerzeichen erlaubt!")
 	private String lastname;
 
-   @NotNull
-   @NotEmpty
-   @Email
+	@NotNull
+	@NotEmpty
+	@Email
 	private String email;
 	
 	@Enumerated(EnumType.STRING)

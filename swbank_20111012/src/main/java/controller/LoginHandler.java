@@ -3,10 +3,12 @@ package controller;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Query;
@@ -17,19 +19,21 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-
 @Named("loginHandler")
 @SessionScoped
 @Stateful
 public class LoginHandler extends GenericDAO {
 
 	@Inject
-	@Category("hello")
+	@Category("swbank")
 	private Logger log;
 
 	private User currentUser;
-	
+
 	private Credential credentials;
+	
+	@EJB
+	private CredentialDAOBean credentialDAO;
 
 	@Produces
 	@SessionScoped
@@ -37,21 +41,23 @@ public class LoginHandler extends GenericDAO {
 	public Credential getCredentials() {
 		return credentials;
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		credentials = new Credential();
 	}
-	
+
 	public String doLogin() {
 		log.trace("login..");
-		Query query4credentials = em.createQuery("select c from Credential c where c.identity=:identity and c.pass=:pass");
-		query4credentials.setParameter("identity", credentials.getIdentity());
-		query4credentials.setParameter("pass", credentials.getPass());
-		List res = query4credentials.getResultList();
-		Credential c = (Credential) res.get(0);
+//		Query query4credentials = em.createQuery("select c from Credential c where c.identity=:identity and c.pass=:pass");
+//		query4credentials.setParameter("identity", credentials.getIdentity());
+//		query4credentials.setParameter("pass", credentials.getPass());
+//		List res = query4credentials.getResultList();
+//		Credential c = (Credential) res.get(0);
+
+		Credential c = credentialDAO.findCredentialByIdentityAndPass(credentials.getIdentity(), credentials.getPass());
 		
-		if(c != null) {
+		if (c != null) {
 			Query query = em.createQuery("select u from User u where u.credentials=:credentials");
 			query.setParameter("credentials", c);
 			List<User> results = query.getResultList();
@@ -61,15 +67,23 @@ public class LoginHandler extends GenericDAO {
 				throw new IllegalStateException("Illegal state: More than one user found!");
 			} else {
 				this.currentUser = results.get(0);
+				log.trace(currentUser + " logged in!");
+//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Herzlich Willkommen, " + currentUser));
 				return "success";
 			}
 		}
+//		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Username und Passwort stimmen nicht überein!"));
 		return "failure";
 	}
-	
+
+	public void doLogout() {
+//		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Auf Wiedersehen, " + currentUser));
+		currentUser = null;
+	}
+
 	@Produces
 	public User getCurrentUser() {
 		return currentUser;
 	}
-	
+
 }

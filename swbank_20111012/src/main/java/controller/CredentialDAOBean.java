@@ -4,6 +4,7 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.Query;
 
 import model.Credential;
 
@@ -17,7 +18,7 @@ import org.jboss.seam.solder.logging.Category;
 public class CredentialDAOBean extends GenericDAO {
 	
 	@Inject
-	@Category("hello")
+	@Category("swbank")
 	private Logger log;
 	
 	@Inject
@@ -29,8 +30,11 @@ public class CredentialDAOBean extends GenericDAO {
 		em.persist(c);
 	}
 	
-	public void findCredentialByIdentityAndPass(String identity, String pass) {
-		
+	public Credential findCredentialByIdentityAndPass(String identity, String pass) {
+		Query q = em.createNamedQuery(Credential.FIND_BY_IDENTITY_AND_PASS);
+		q.setParameter("identity", identity);
+		q.setParameter("pass", pass);
+		return (Credential) q.getSingleResult();
 	}
 	
 }
