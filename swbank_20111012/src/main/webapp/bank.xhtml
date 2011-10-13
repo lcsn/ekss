@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h1>Welcome to S and W Bank on JBoss AS 7!</h1>
+
+		<p>This a Java EE 6 web application on JBoss AS 7.</p>
+		<h:form id="bank">
+			<h:commandButton id="login" action="login" value="Login"
+				style=" width : 75px;" />
+			<h:outputText value=" Done!" style="color: green;" />
+			<h:commandButton id="register" action="register" value="Register"
+				style=" width : 75px;" />
+			<h:outputText value=" Done!" style="color: green;" />
+		</h:form>
+	</ui:define>
+</ui:composition>

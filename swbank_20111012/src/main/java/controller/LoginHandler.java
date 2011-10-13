@@ -5,12 +5,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import model.Credential;
@@ -25,7 +27,7 @@ import org.jboss.seam.solder.logging.Category;
 public class LoginHandler extends GenericDAO {
 
 	@Inject
-	@Category("swbank")
+	@Category("swbank_20111012")
 	private Logger log;
 
 	private User currentUser;
@@ -34,6 +36,9 @@ public class LoginHandler extends GenericDAO {
 	
 	@EJB
 	private CredentialDAOBean credentialDAO;
+	
+	@EJB
+	private UserDAOBean userDAO;
 
 	@Produces
 	@SessionScoped
@@ -55,23 +60,31 @@ public class LoginHandler extends GenericDAO {
 //		List res = query4credentials.getResultList();
 //		Credential c = (Credential) res.get(0);
 
-		Credential c = credentialDAO.findCredentialByIdentityAndPass(credentials.getIdentity(), credentials.getPass());
+		Credential c = null;
+		try {
+			c = credentialDAO.findCredentialByIdentityAndPass(credentials.getIdentity(), credentials.getPass());
+		} catch (NoResultException e) {
+			log.error(e);
+		}
 		
 		if (c != null) {
-			Query query = em.createQuery("select u from User u where u.credentials=:credentials");
-			query.setParameter("credentials", c);
-			List<User> results = query.getResultList();
-			if (results.isEmpty()) {
-				return "failure";
-			} else if (results.size() > 1) {
-				throw new IllegalStateException("Illegal state: More than one user found!");
-			} else {
-				this.currentUser = results.get(0);
+//			Query query = em.createQuery("select u from User u where u.credentials=:credentials");
+//			query.setParameter("credentials", c);
+//			List<User> results = query.getResultList();
+			User user = userDAO.findUserByCredentials(c);
+//			if (results.isEmpty()) {
+//				return "failure";
+//			} else if (results.size() > 1) {
+//				throw new IllegalStateException("Illegal state: More than one user found!");
+//			} else {
+			if(user != null) {
+				this.currentUser = user; //results.get(0);
 				log.trace(currentUser + " logged in!");
 //				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Herzlich Willkommen, " + currentUser));
 				return "success";
 			}
 		}
+		init();
 //		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Username und Passwort stimmen nicht überein!"));
 		return "failure";
 	}

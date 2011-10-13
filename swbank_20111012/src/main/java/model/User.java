@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -20,12 +22,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import util.LoginRole;
 
+@NamedQueries(
+		@NamedQuery(name=User.FIND_BY_CREDENTIALS, query="select u from User u where u.credentials=:credentials")
+		)
 @Entity
 @Table(name="UserBean", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = -8885764866253995330L;
 
+	public static final String FIND_BY_CREDENTIALS = "User.FIND_BY_CREDENTIALS";
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -46,7 +53,7 @@ public class User implements Serializable {
 	private String email;
 	
 	@Enumerated(EnumType.STRING)
-	private LoginRole role;
+	private LoginRole role = LoginRole.CUSTOMER;
 	
 	@OneToOne
 	@JoinColumn(name="credentialId")

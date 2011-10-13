@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -38,6 +39,9 @@ public class Credential implements Serializable {
 	@Size(min = 1, max = 25)
 	private String pass;
 	
+	@Transient
+	private String pass2;
+	
 	public String getIdentity() {
 		return identity;
 	}
@@ -52,6 +56,14 @@ public class Credential implements Serializable {
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+	
+	public String getPass2() {
+		return pass2;
+	}
+
+	public void setPass2(String pass2) {
+		this.pass2 = pass2;
 	}
 
 	public Long getId() {
@@ -71,4 +83,5 @@ public class Credential implements Serializable {
 		}
 		return sEquals;
 	}
+	
 }
