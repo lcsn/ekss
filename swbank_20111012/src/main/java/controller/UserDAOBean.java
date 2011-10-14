@@ -25,7 +25,7 @@ public class UserDAOBean extends GenericDAO {
 		log.trace("persist user..");
 		em.persist(user);
 		em.flush();
-		return em.find(User.class, user);
+		return em.find(User.class, user.getId());
 	}
 	
 	public User findUserByCredentials(Credential credentials) {

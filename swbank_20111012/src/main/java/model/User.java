@@ -2,10 +2,12 @@ package model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
@@ -34,7 +36,7 @@ public class User implements Serializable {
 	public static final String FIND_BY_CREDENTIALS = "User.FIND_BY_CREDENTIALS";
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotNull
@@ -55,7 +57,7 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private LoginRole role = LoginRole.CUSTOMER;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="credentialId")
 	private Credential credentials;
 	

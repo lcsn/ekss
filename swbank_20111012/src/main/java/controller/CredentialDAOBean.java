@@ -31,7 +31,7 @@ public class CredentialDAOBean extends GenericDAO {
 		c.setPass(pwService.encrypt(pass));
 		em.persist(c);
 		em.flush();
-		return em.find(Credential.class, c);
+		return em.find(Credential.class, c.getId());
 	}
 	
 	public Credential findCredentialByIdentityAndPass(String identity, String pass) throws NoResultException {

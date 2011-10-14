@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:#bank.xhtml" PATH="/bank.xhtml"
-  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  SHAPE="48,56,50,57" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#bank.xhtml:0" NAME="item" PATH="/bank.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT ID="login::#login.xhtml" NAME="output"
     PATH="/login.xhtml" TARGET="rules:#login.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
@@ -25,9 +25,8 @@
   SHAPE="256,177,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#register.xhtml:0" NAME="item"
    PATH="/register.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="success::#userHome.xhtml" NAME="output"
-    PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml"
-    TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="success::#login.xhtml" NAME="output"
+    PATH="/login.xhtml" TARGET="rules:#login.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output1"
     PATH="/failure.xhtml" TARGET="rules:#failure.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>

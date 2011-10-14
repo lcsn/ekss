@@ -34,18 +34,14 @@ public class LoginHandler extends GenericDAO {
 
 	private Credential credentials;
 	
-	@EJB
+	@Inject
 	private CredentialDAOBean credentialDAO;
 	
-	@EJB
+	@Inject
 	private UserDAOBean userDAO;
-
-	@Produces
-	@SessionScoped
-	@Named
-	public Credential getCredentials() {
-		return credentials;
-	}
+	
+	@Inject
+	private PasswordService service;
 
 	@PostConstruct
 	public void init() {
@@ -62,7 +58,7 @@ public class LoginHandler extends GenericDAO {
 
 		Credential c = null;
 		try {
-			c = credentialDAO.findCredentialByIdentityAndPass(credentials.getIdentity(), credentials.getPass());
+			c = credentialDAO.findCredentialByIdentityAndPass(credentials.getIdentity(), service.encrypt(credentials.getPass()));
 		} catch (NoResultException e) {
 			log.error(e);
 		}
@@ -84,7 +80,7 @@ public class LoginHandler extends GenericDAO {
 				return "success";
 			}
 		}
-		init();
+//		init();
 //		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Username und Passwort stimmen nicht überein!"));
 		return "failure";
 	}
@@ -92,6 +88,15 @@ public class LoginHandler extends GenericDAO {
 	public void doLogout() {
 //		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Auf Wiedersehen, " + currentUser));
 		currentUser = null;
+	}
+	
+	public boolean isLoggedIn() {
+		return currentUser != null;
+	}
+	
+	@Produces
+	public Credential getCredentials() {
+		return credentials;
 	}
 
 	@Produces

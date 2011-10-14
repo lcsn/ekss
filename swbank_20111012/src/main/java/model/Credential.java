@@ -32,7 +32,7 @@ public class Credential implements Serializable {
 	
 	@NotNull
 	@Size(min = 1, max = 25)
-	@Pattern(regexp = "[A-Za-z ]*", message = "Nur Buchstaben und Leerzeichen erlaubt!")
+	@Pattern(regexp = "[A-Za-z ].*", message = "Nur Buchstaben und Leerzeichen erlaubt!")
 	private String identity;
 
 	@NotNull
@@ -82,6 +82,13 @@ public class Credential implements Serializable {
 			return true;
 		}
 		return sEquals;
+	}
+
+	public boolean verify() {
+		if(pass.equals(pass2)) {
+			return true;
+		}
+		return false;
 	}
 	
 }

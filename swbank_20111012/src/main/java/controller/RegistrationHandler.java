@@ -15,6 +15,8 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
+import util.exception.RegistrationException;
+
 @Named("registrationHandler")
 @RequestScoped
 @Stateful
@@ -24,43 +26,51 @@ public class RegistrationHandler extends GenericDAO {
 	@Category("swbank_20111012")
 	private Logger log;
 	
-//	private User user;
+	private User newUser;
 	
-//	private Credential credentials;
+	private Credential newCredentials;
 	
-//	@EJB
-//	private CredentialDAOBean credentialDAO;
+	@Inject
+	private PasswordService service;
 	
-//	@EJB
-//	private UserDAOBean userDAO;
+	@Inject
+	private CredentialDAOBean credentialDAO;
 	
-//	@Produces
-//	@SessionScoped
-//	@Named
-//	public User getUser() {
-//		return user;
-//	}
+	@Inject
+	private UserDAOBean userDAO;
 	
-//	@Produces
-//	@SessionScoped
-//	@Named
-//	public Credential getCredentials() {
-//		return credentials;
-//	}
+	@Produces
+	public User getNewUser() {
+		return newUser;
+	}
+	
+	@Produces
+	public Credential getNewCredentials() {
+		return newCredentials;
+	}
 	
 	@PostConstruct
 	public void init() {
-//		this.credentials = new Credential();
-//		this.user = new User();
+		this.newCredentials = new Credential();
+		this.newUser = new User();
 	}
 	
-	public void doRegister() {
+	public String doRegister() throws RegistrationException {
 		log.trace("register..");
 		
-//		credentials = credentialDAO.createCredential(credentials);
-//		user.setCredentials(credentials);
-//		userDAO.createUser(user);
-		
-		log.trace("registered!");
+//		newCredentials = credentialDAO.createCredential(newCredentials);
+		if(newCredentials.verify()) {
+			String hash = service.encrypt(newCredentials.getPass());
+			newCredentials.setPass(hash);
+			newUser.setCredentials(newCredentials);
+			userDAO.createUser(newUser);
+			log.trace("registered!");
+			return "success";
+		}
+		else {
+			log.trace("registering " + newUser + " failed!");
+			return "failure";
+//			throw new RegistrationException(newUser);
+		}
 	}
 }

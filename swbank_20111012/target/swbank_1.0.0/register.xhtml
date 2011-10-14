@@ -11,37 +11,37 @@
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="firstname" value="Name: " /></th>
-               <td><h:inputText id="firstname" value="#{registrationHandler.user.firstname}" required="true" requiredMessage="Bitte, Nachnamen eintragen!" />
+               <td><h:inputText id="firstname" value="#{registrationHandler.newUser.firstname}" required="true" requiredMessage="Bitte, Nachnamen eintragen!" />
                   <h:message for="firstname" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="lastname" value="Vorname: " /></th>
-               <td><h:inputText id="lastname" value="#{registrationHandler.user.lastname}" required="true" requiredMessage="Bitte, Vornamen eintragen!" />
+               <td><h:inputText id="lastname" value="#{registrationHandler.newUser.lastname}" required="true" requiredMessage="Bitte, Vornamen eintragen!" />
                   <h:message for="lastname" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="email" value="Email: " /></th>
-               <td><h:inputText id="email" value="#{registrationHandler.user.email}" required="true" requiredMessage="Bitte, Email eintragen!" />
+               <td><h:inputText id="email" value="#{registrationHandler.newUser.email}" required="true" requiredMessage="Bitte, Email eintragen!" />
                   <h:message for="email" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="username" value="Benutzername: " /></th>
-               <td><h:inputText id="username" value="#{registrationHandler.credentials.identity}" required="true" requiredMessage="Bitte, Benutzernamen eintragen!" />
+               <td><h:inputText id="username" value="#{registrationHandler.newCredentials.identity}" required="true" requiredMessage="Bitte, Benutzernamen eintragen!" />
                   <h:message for="username" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="pass" value="Passwort: " /></th>
-               <td><h:inputSecret id="pass" value="#{registrationHandler.credentials.pass}" required="true" requiredMessage="Bitte, Passwort eintragen! "/>
+               <td><h:inputSecret id="pass" value="#{registrationHandler.newCredentials.pass}" required="true" requiredMessage="Bitte, Passwort eintragen! "/>
                   <h:message for="pass" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="passR" value="Passwort wiederholen: " /></th>
-               <td><h:inputSecret id="passR" value="#{registrationHandler.credentials.pass2}" required="true" requiredMessage="Bitte Passwort wiederholen!" />
+               <td><h:inputSecret id="passR" value="#{registrationHandler.newCredentials.pass2}" required="true" requiredMessage="Bitte, Passwort wiederholen!" />
                   <h:message for="passR" errorClass="invalid" /></td>
             </tr>
          </table>
