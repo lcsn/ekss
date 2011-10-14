@@ -25,7 +25,7 @@ public class PasswordService {
 	
 	public synchronized String encrypt(String src) {
 		try {
-			log.trace("encrypting..");
+//			log.trace("encrypting..");
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			md5.update(src.getBytes("UTF-8"));
 			byte[] raw = md5.digest();
@@ -44,6 +44,12 @@ public class PasswordService {
 			instance = new PasswordService();
 		}
 		return instance;
+	}
+	
+	public static void main(String[] args) {
+		
+		System.out.print(PasswordService.getInstance().encrypt("4711"));
+		
 	}
 	
 }

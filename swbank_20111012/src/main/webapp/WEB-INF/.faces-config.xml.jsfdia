@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:#bank.xhtml" PATH="/bank.xhtml"
-  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  SHAPE="48,56,50,57" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#bank.xhtml:0" NAME="item" PATH="/bank.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT ID="login::#login.xhtml" NAME="output"
     PATH="/login.xhtml" TARGET="rules:#login.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
