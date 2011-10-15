@@ -14,6 +14,12 @@
                   <h:message for="name" errorClass="invalid" /></td>
             </tr>
          </table>
+		 <p>
+            <h:commandButton id="logout"
+               action="#{loginHandler.doLogout}" value="Logout" />
+            <h:outputText value=" Done!"
+               style="color: green;" />
+         </p>
       </h:form>
    </ui:define>
 </ui:composition>
