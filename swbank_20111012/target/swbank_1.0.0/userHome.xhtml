@@ -3,6 +3,7 @@
    xmlns:ui="http://java.sun.com/jsf/facelets"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"  
    template="/WEB-INF/templates/default.xhtml">
    <ui:define name="content">
       <h:form id="user">
@@ -14,6 +15,7 @@
                   <h:message for="name" errorClass="invalid" /></td>
             </tr>
          </table>
+         <p:spinner />
 		 <p>
             <h:commandButton id="logout"
                action="#{loginHandler.doLogout}" value="Logout" />
