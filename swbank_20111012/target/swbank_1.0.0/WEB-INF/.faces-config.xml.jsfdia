@@ -32,16 +32,16 @@
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#userHome.xhtml" PATH="/userHome.xhtml"
-  SHAPE="480,17,0,0" model-entity="JSFProcessGroup">
+  SHAPE="480,40,50,41" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#userHome.xhtml:0" NAME="item"
    PATH="/userHome.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID=":#{loginHandler.doLogout}:#goodbye.xhtml"
-    NAME="output" PATH="/goodbye.xhtml" TARGET="rules:#goodbye.xhtml"
-    TITLE="#{loginHandler.doLogout}:[any]" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="success::#bank.xhtml" NAME="output"
+    PATH="/bank.xhtml" SHAPE="529,72,712,72,712,8,32,8,32,64,47,64"
+    TARGET="rules:#bank.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output1"
+    PATH="/failure.xhtml" TARGET="rules:#failure.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#failure.xhtml" PATH="/failure.xhtml"
-  SHAPE="480,161,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:#goodbye.xhtml" PATH="/goodbye.xhtml"
-  SHAPE="688,33,0,0" model-entity="JSFProcessGroup"/>
+  SHAPE="600,192,50,25" model-entity="JSFProcessGroup"/>
 </PROCESS>

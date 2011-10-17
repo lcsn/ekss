@@ -1,7 +1,7 @@
-package controller;
+package controller.service;
 
-import javax.ejb.Stateful;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -12,11 +12,10 @@ import model.Credential;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-
 @Named
-@RequestScoped
-@Stateful
-public class CredentialDAOBean extends GenericDAO {
+//@Dependent
+@Stateless
+public class CredentialService extends GenericService {
 	
 	@Inject
 	@Category("swbank_20111012")
@@ -25,16 +24,16 @@ public class CredentialDAOBean extends GenericDAO {
 	@Inject
 	private PasswordService pwService;
 
-	public Credential createCredential(Credential c) {
+	public Credential createCredential(Credential credentials) throws Exception {
 		log.trace("persist credentials..");
-		String pass = c.getPass();
-		c.setPass(pwService.encrypt(pass));
-		em.persist(c);
+		String pass = credentials.getPass();
+		credentials.setPass(pwService.encrypt(pass));
+		em.persist(credentials);
 		em.flush();
-		return em.find(Credential.class, c.getId());
+		return em.find(Credential.class, credentials.getId());
 	}
 	
-	public Credential findCredentialByIdentityAndPass(String identity, String pass) throws NoResultException {
+	public Credential findCredentialByIdentityAndPass(String identity, String pass) throws Exception {
 		Query q = em.createNamedQuery(Credential.FIND_BY_IDENTITY_AND_PASS);
 		q.setParameter("identity", identity);
 		q.setParameter("pass", pass);

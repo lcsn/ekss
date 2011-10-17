@@ -24,9 +24,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import util.LoginRole;
 
-@NamedQueries(
-		@NamedQuery(name=User.FIND_BY_CREDENTIALS, query="select u from User u where u.credentials=:credentials")
-		)
+@NamedQueries({
+		@NamedQuery(name=User.FIND_BY_CREDENTIALS, query="select u from User u where u.credentials=:credentials"),
+		@NamedQuery(name=User.FIND_BY_ID, query="select u from User u where u.id=:userId")
+		})
 @Entity
 @Table(name="UserBean", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements Serializable {
@@ -34,6 +35,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -8885764866253995330L;
 
 	public static final String FIND_BY_CREDENTIALS = "User.FIND_BY_CREDENTIALS";
+	public static final String FIND_BY_ID = "User.FIND_BY_ID";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -56,6 +58,13 @@ public class User implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private LoginRole role = LoginRole.CUSTOMER;
+	
+	/**
+	 * String, sonst Konverter für Date-Komponente in Primefaces schreiben.
+	 */
+	@NotNull
+	@NotEmpty
+	private String birthday;
 	
 	@OneToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="credentialId")
@@ -111,6 +120,14 @@ public class User implements Serializable {
 
 	public String toString() {
 		return this.firstname + ", " + this.lastname;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 	
 }

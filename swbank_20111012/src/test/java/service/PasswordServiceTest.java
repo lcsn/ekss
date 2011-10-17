@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import controller.PasswordService;
+import controller.service.PasswordService;
 
 public class PasswordServiceTest extends TestCase {
 

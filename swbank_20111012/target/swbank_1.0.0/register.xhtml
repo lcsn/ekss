@@ -3,51 +3,59 @@
    xmlns:ui="http://java.sun.com/jsf/facelets"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"  
    template="/WEB-INF/templates/default.xhtml">
    <ui:define name="content">
-      <h1>Please register..</h1>
+      <h1>Bitte, registrieren Sie sich..</h1>
       <h:form id="register">
+		 <p:messages id="msgs" showDetail="false"/>  
          <table>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="firstname" value="Name: " /></th>
-               <td><h:inputText id="firstname" value="#{registrationHandler.newUser.firstname}" required="true" requiredMessage="Bitte, Nachnamen eintragen!" />
-                  <h:message for="firstname" errorClass="invalid" /></td>
+               <td><p:inputText id="firstname" value="#{registrationHandler.newUser.firstname}" required="true" requiredMessage="Bitte, Nachnamen eintragen!" />
+                  <p:message for="firstname" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="lastname" value="Vorname: " /></th>
-               <td><h:inputText id="lastname" value="#{registrationHandler.newUser.lastname}" required="true" requiredMessage="Bitte, Vornamen eintragen!" />
-                  <h:message for="lastname" errorClass="invalid" /></td>
+               <td><p:inputText id="lastname" value="#{registrationHandler.newUser.lastname}" required="true" requiredMessage="Bitte, Vornamen eintragen!" />
+                  <p:message for="lastname" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="email" value="Email: " /></th>
-               <td><h:inputText id="email" value="#{registrationHandler.newUser.email}" required="true" requiredMessage="Bitte, Email eintragen!" />
-                  <h:message for="email" errorClass="invalid" /></td>
+               <td><p:inputText id="email" value="#{registrationHandler.newUser.email}" required="true" requiredMessage="Bitte, Email eintragen!" />
+                  <p:message for="email" errorClass="invalid" /></td>
+            </tr>
+            <tr>
+               <th style="text-align: right;"><h:outputLabel
+                     for="birthday" value="Geburtstag: " /></th>
+               <td><p:inputMask mask="99.99.9999" id="birthday" value="#{registrationHandler.newUser.birthday}" required="true" requiredMessage="Bitte, Geburtstag eintragen!" />
+                  <p:message for="birthday" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="username" value="Benutzername: " /></th>
-               <td><h:inputText id="username" value="#{registrationHandler.newCredentials.identity}" required="true" requiredMessage="Bitte, Benutzernamen eintragen!" />
-                  <h:message for="username" errorClass="invalid" /></td>
+               <td><p:inputText id="username" value="#{registrationHandler.newCredentials.identity}" required="true" requiredMessage="Bitte, Benutzernamen eintragen!" />
+                  <p:message for="username" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="pass" value="Passwort: " /></th>
-               <td><h:inputSecret id="pass" value="#{registrationHandler.newCredentials.pass}" required="true" requiredMessage="Bitte, Passwort eintragen! "/>
-                  <h:message for="pass" errorClass="invalid" /></td>
+               <td><p:password id="pass" value="#{registrationHandler.newCredentials.pass}" required="true" requiredMessage="Bitte, Passwort eintragen! "/>
+                  <p:message for="pass" errorClass="invalid" /></td>
             </tr>
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="passR" value="Passwort wiederholen: " /></th>
-               <td><h:inputSecret id="passR" value="#{registrationHandler.newCredentials.pass2}" required="true" requiredMessage="Bitte, Passwort wiederholen!" />
-                  <h:message for="passR" errorClass="invalid" /></td>
+               <td><p:password id="passR" value="#{registrationHandler.newCredentials.pass2}" required="true" requiredMessage="Bitte, Passwort wiederholen!" />
+                  <p:message for="passR" errorClass="invalid" /></td>
             </tr>
          </table>
          <p>
             <h:commandButton id="register"
-               action="#{registrationHandler.doRegister}" value="Register" />
+               action="#{registrationHandler.doRegister}" value="Registrieren" />
             <h:outputText value=" Done!"
                style="color: green;" />
          </p>

@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import util.exception.VerificationException;
+
 @NamedQueries(
 		@NamedQuery(name=Credential.FIND_BY_IDENTITY_AND_PASS, query="select c from Credential c where identity=:identity and pass=:pass")
 		)
@@ -84,11 +86,11 @@ public class Credential implements Serializable {
 		return sEquals;
 	}
 
-	public boolean verify() {
+	public boolean verify() throws VerificationException {
 		if(pass.equals(pass2)) {
 			return true;
 		}
-		return false;
+		throw new VerificationException(pass, pass2);
 	}
 	
 }

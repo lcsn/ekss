@@ -1,4 +1,4 @@
-package controller;
+package controller.handler;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -15,12 +15,18 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
+import controller.service.CredentialService;
+import controller.service.GenericService;
+import controller.service.PasswordService;
+import controller.service.UserService;
+
 import util.exception.RegistrationException;
+import util.exception.VerificationException;
 
 @Named("registrationHandler")
 @RequestScoped
 @Stateful
-public class RegistrationHandler extends GenericDAO {
+public class RegistrationHandler extends GenericService {
 
 	@Inject
 	@Category("swbank_20111012")
@@ -34,10 +40,10 @@ public class RegistrationHandler extends GenericDAO {
 	private PasswordService service;
 	
 	@Inject
-	private CredentialDAOBean credentialDAO;
+	private CredentialService credentialService;
 	
 	@Inject
-	private UserDAOBean userDAO;
+	private UserService userService;
 	
 	@Produces
 	public User getNewUser() {
@@ -55,22 +61,23 @@ public class RegistrationHandler extends GenericDAO {
 		this.newUser = new User();
 	}
 	
-	public String doRegister() throws RegistrationException {
+	public String doRegister() {
 		log.trace("register..");
-		
-//		newCredentials = credentialDAO.createCredential(newCredentials);
-		if(newCredentials.verify()) {
-			String hash = service.encrypt(newCredentials.getPass());
-			newCredentials.setPass(hash);
-			newUser.setCredentials(newCredentials);
-			userDAO.createUser(newUser);
-			log.trace("registered!");
-			return "success";
+		try {
+			if(newCredentials.verify()) {
+				String hash = service.encrypt(newCredentials.getPass());
+				newCredentials.setPass(hash);
+				newUser.setCredentials(newCredentials);
+				userService.createUser(newUser);
+				log.trace("registered!");
+				return "success";
+			}
+		} catch (VerificationException e) {
+			log.error(e);
+		} catch (Exception e) {
+			log.error(e);
 		}
-		else {
-			log.trace("registering " + newUser + " failed!");
-			return "failure";
-//			throw new RegistrationException(newUser);
-		}
+		log.trace("registering " + newUser + " failed!");
+		return "failure";
 	}
 }

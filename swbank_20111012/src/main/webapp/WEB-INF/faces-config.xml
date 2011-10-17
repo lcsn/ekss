@@ -47,8 +47,14 @@
  <navigation-rule>
   <from-view-id>/userHome.xhtml</from-view-id>
   <navigation-case>
-   <from-action>#{loginHandler.doLogout}</from-action>
-   <to-view-id>/goodbye.xhtml</to-view-id>
+   <!-- <from-action>#{loginHandler.doLogout}</from-action> -->
+   <from-outcome>success</from-outcome>
+   <to-view-id>/bank.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>failure</from-outcome>
+   <to-view-id>/failure.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

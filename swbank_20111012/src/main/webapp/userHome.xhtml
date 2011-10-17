@@ -11,14 +11,13 @@
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="name" value="Hallo, " /></th>
-               <td><h:outputText id="name" value="#{loginHandler.currentUser}" />
+               <td><h:outputText id="name" value="#{loginHandler.currentUser.firstname}" />
                   <h:message for="name" errorClass="invalid" /></td>
             </tr>
          </table>
-         <p:spinner />
 		 <p>
             <h:commandButton id="logout"
-               action="#{loginHandler.doLogout}" value="Logout" />
+               action="#{loginHandler.doLogout}" value="Abmelden" />
             <h:outputText value=" Done!"
                style="color: green;" />
          </p>
