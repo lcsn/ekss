@@ -1,10 +1,8 @@
 package controller.service;
 
 import javax.ejb.Stateless;
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import model.Credential;
@@ -13,7 +11,6 @@ import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
 @Named
-//@Dependent
 @Stateless
 public class CredentialService extends GenericService {
 	
@@ -25,7 +22,7 @@ public class CredentialService extends GenericService {
 	private PasswordService pwService;
 
 	public Credential createCredential(Credential credentials) throws Exception {
-		log.trace("persist credentials..");
+		log.trace("createCredential");
 		String pass = credentials.getPass();
 		credentials.setPass(pwService.encrypt(pass));
 		em.persist(credentials);
@@ -34,6 +31,7 @@ public class CredentialService extends GenericService {
 	}
 	
 	public Credential findCredentialByIdentityAndPass(String identity, String pass) throws Exception {
+		log.trace("findCredentialByIdentityAndPass");
 		Query q = em.createNamedQuery(Credential.FIND_BY_IDENTITY_AND_PASS);
 		q.setParameter("identity", identity);
 		q.setParameter("pass", pass);

@@ -82,4 +82,9 @@ public class Address implements Serializable {
 		this.user = user;
 	}
 	
+	@Override
+	public String toString() {
+		return this.street + "\n" + this.zipcode + " " + this.city;
+	}
+	
 }

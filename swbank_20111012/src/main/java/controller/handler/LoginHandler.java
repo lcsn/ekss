@@ -4,6 +4,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -71,6 +73,7 @@ public class LoginHandler extends GenericService {
 	public String doLogout() {
 		currentUser = new User();
 		credentials = new Credential();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Abmeldung!", "Sie haben sich erfolgreich abgemeldet!"));
 		return "success";
 	}
 	

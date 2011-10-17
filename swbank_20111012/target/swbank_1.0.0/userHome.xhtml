@@ -7,6 +7,7 @@
    template="/WEB-INF/templates/default.xhtml">
    <ui:define name="content">
       <h:form id="user">
+		 <p:messages id="msgs" showDetail="true"/>  
          <table>
             <tr>
                <th style="text-align: right;"><h:outputLabel
@@ -19,6 +20,7 @@
             <h:commandButton id="logout"
                action="#{loginHandler.doLogout}" value="Abmelden" />
             <h:outputText value=" Done!"
+               rendered="#{facesContext.postback and empty facesContext.messageList}"
                style="color: green;" />
          </p>
       </h:form>

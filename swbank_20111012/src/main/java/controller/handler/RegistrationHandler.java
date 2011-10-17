@@ -1,10 +1,8 @@
 package controller.handler;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,13 +13,11 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
+import util.exception.VerificationException;
 import controller.service.CredentialService;
 import controller.service.GenericService;
 import controller.service.PasswordService;
 import controller.service.UserService;
-
-import util.exception.RegistrationException;
-import util.exception.VerificationException;
 
 @Named("registrationHandler")
 @RequestScoped

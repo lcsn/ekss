@@ -1,6 +1,6 @@
 package util;
 
-public enum LoginRole {
+public enum Role {
 	CUSTOMER,
 	EMPLOYEE,
 	DEVELOPER

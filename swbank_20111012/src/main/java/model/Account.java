@@ -3,13 +3,18 @@ package model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +25,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @NamedQueries({
 	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER, query="select a from Account a where a.accountNumber=:accountNumber"),
-	@NamedQuery(name=Account.FIND_BY_ID, query="select a from Account a where a.id=:accountId")
+	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER_AND_BANKCODE, query="select a from Account a where a.accountNumber=:accountNumber and a.bankCode=:bankCode"),
+	@NamedQuery(name=Account.FIND_BY_ID, query="select a from Account a where a.id=:accountId"),
+	@NamedQuery(name=Account.FIND_BY_USER, query="select a from Account a where a.user=:user")
 	})
 @Entity
 @Table(name="AccountBean", uniqueConstraints = @UniqueConstraint(columnNames = "accountNumber"))
@@ -29,7 +36,9 @@ public class Account implements Serializable {
 	private static final long serialVersionUID = 5008343162571576351L;
 
 	public static final String FIND_BY_ACCOUNTNUMBER = "Account.FIND_BY_ACCOUNTNUMBER";
+	public static final String FIND_BY_ACCOUNTNUMBER_AND_BANKCODE = "Account.FIND_BY_ACCOUNTNUMBER_AND_BANKCODE";
 	public static final String FIND_BY_ID = "Account.FIND_BY_ID";
+	public static final String FIND_BY_USER = "Account.FIND_BY_USER";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -49,9 +58,16 @@ public class Account implements Serializable {
 	@NotNull
 	private BigDecimal amount;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="userId")
+	private User user;
+	
 	@Temporal(TemporalType.DATE)
 	private Date lastDebit;
 
+	@OneToMany(mappedBy="account", fetch=FetchType.LAZY)
+	private List<Transaction> transactions;
+	
 	public Long getId() {
 		return id;
 	}
@@ -84,12 +100,28 @@ public class Account implements Serializable {
 		this.amount = amount;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public Date getLastDebit() {
 		return lastDebit;
 	}
 
 	public void setLastDebit(Date lastDebit) {
 		this.lastDebit = lastDebit;
+	}
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 	
 }

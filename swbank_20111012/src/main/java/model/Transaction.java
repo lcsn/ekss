@@ -6,11 +6,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,7 +29,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @NamedQueries({
 	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONNUMBER, query="select t from Transaction t where t.transactionNumber=:transactionNumber"),
 	@NamedQuery(name=Transaction.FIND_BY_ID, query="select t from Transaction t where t.id=:transactionId"),
-	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE, query="select t from Transaction t where t.transactionDate>:date")
+//	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE, query="select t from Transaction t where t.transactionDate>:date"),
+//	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER, query="select t from Transaction t where t.transactionDate>:date and t.user:=user"),
+	@NamedQuery(name=Transaction.FIND_BY_USER, query="select t from Transaction t where t.user=:user")
 	})
 @Entity
 @Table(name="TransactionBean", uniqueConstraints = @UniqueConstraint(columnNames = "transactionNumber"))
@@ -35,7 +41,9 @@ public class Transaction implements Serializable {
 
 	public static final String FIND_BY_TRANSACTIONNUMBER = "Transaction.FIND_BY_ACCOUNTNUMBER";
 	public static final String FIND_BY_ID = "Transaction.FIND_BY_ID";
-	public static final String FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE = "Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE";
+//	public static final String FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE = "Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE";
+//	public static final String FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER = "Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER";
+	public static final String FIND_BY_USER = "Transaction.FIND_BY_USER";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -44,6 +52,14 @@ public class Transaction implements Serializable {
 	@NotEmpty
 	@NotNull
 	private String transactionNumber;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="accountId")
+	private Account account;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="userId")
+	private User user;
 	
 	@NotEmpty
 	@NotNull
@@ -111,11 +127,27 @@ public class Transaction implements Serializable {
 		this.transactionDate = transactionDate;
 	}
 	
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@PrePersist
 	private void setTransactionNumber() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(this.transactionDate);
-		this.transactionNumber = "" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR) + "/" + calendar.getTimeInMillis();
+		this.transactionNumber = this.user.getId() + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR) + "/" + calendar.getTimeInMillis();
 	}
 	
 	@Override
