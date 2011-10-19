@@ -143,6 +143,7 @@ public class Transaction implements Serializable {
 		this.user = user;
 	}
 
+	@SuppressWarnings("unused")
 	@PrePersist
 	private void setTransactionNumber() {
 		Calendar calendar = Calendar.getInstance();

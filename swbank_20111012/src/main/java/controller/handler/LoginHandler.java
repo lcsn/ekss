@@ -2,7 +2,7 @@ package controller.handler;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -21,26 +21,35 @@ import controller.service.PasswordService;
 import controller.service.UserService;
 
 @Named("loginHandler")
-@SessionScoped
+@RequestScoped
 @Stateful
 public class LoginHandler extends GenericService {
 
 	@Inject
-	@Category("swbank_20111012")
+	@Category("loginhandler")
 	private Logger log;
 
 	private User currentUser;
 
 	private Credential credentials;
-	
+
 	@Inject
 	private CredentialService credentialService;
-	
+
 	@Inject
 	private UserService userService;
-	
+
 	@Inject
 	private PasswordService service;
+
+//	@Inject
+//	private Event<User> userEventSrc;
+
+	@Inject
+	private UserHandler userHandler;
+	
+	@Inject
+	private ErrorHandler errorHandler;
 
 	@PostConstruct
 	public void init() {
@@ -54,17 +63,21 @@ public class LoginHandler extends GenericService {
 			try {
 				c = credentialService.findCredentialByIdentityAndPass(credentials.getIdentity(), service.encrypt(credentials.getPass()));
 			} catch (Exception e) {
+				errorHandler.setException(e);
 				log.error(e);
 			}
 			if (c != null) {
 				User user = userService.findUserByCredentials(c);
 				if (user != null) {
 					this.currentUser = user;
-					log.trace(currentUser + " logged in!");
+					userHandler.setCurrentUser(user);
+//					userEventSrc.fire(currentUser);
+					log.info(currentUser + " logged in!");
 					return "success";
 				}
 			}
 		} catch (Exception e) {
+			errorHandler.setException(e);
 			log.error(e);
 		}
 		return "failure";
@@ -73,14 +86,16 @@ public class LoginHandler extends GenericService {
 	public String doLogout() {
 		currentUser = new User();
 		credentials = new Credential();
+		userHandler.setCurrentUser(null);
+//		userEventSrc.fire(null);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Abmeldung!", "Sie haben sich erfolgreich abgemeldet!"));
 		return "success";
 	}
-	
+
 	public boolean isLoggedIn() {
 		return currentUser != null;
 	}
-	
+
 	@Produces
 	public Credential getCredentials() {
 		return credentials;

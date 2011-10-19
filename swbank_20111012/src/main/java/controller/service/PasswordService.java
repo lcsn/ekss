@@ -6,35 +6,43 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
+import controller.handler.ErrorHandler;
+
 import sun.misc.BASE64Encoder;
 
 @Singleton
+@ApplicationScoped
 @Startup
 public class PasswordService {
 
 	@Inject
-	@Category("swbank_20111012")
+	@Category("passwordservice")
 	private Logger log;
+	
+	@Inject
+	private ErrorHandler errorHandler;
 	
 	private static PasswordService instance;
 	
 	public synchronized String encrypt(String src) {
 		try {
-//			log.trace("encrypting..");
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			md5.update(src.getBytes("UTF-8"));
 			byte[] raw = md5.digest();
 			String hash = new BASE64Encoder().encode(raw);
 			return hash;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			errorHandler.setException(e);
+			log.error(e);
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			errorHandler.setException(e);
+			log.error(e);
 		}
 		return "-1";
 	}
@@ -46,10 +54,8 @@ public class PasswordService {
 		return instance;
 	}
 	
-	public static void main(String[] args) {
-		
-		System.out.print(PasswordService.getInstance().encrypt("4711"));
-		
-	}
+//	public static void main(String[] args) {
+//		System.out.print(PasswordService.getInstance().encrypt("4711"));
+//	}
 	
 }

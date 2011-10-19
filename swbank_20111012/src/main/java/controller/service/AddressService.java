@@ -28,6 +28,7 @@ public class AddressService extends GenericService {
 		return em.find(Address.class, address.getId());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Address> findAddressesByUser(User user) throws Exception {
 		log.trace("findAddressByUser");
 		Query q = em.createNamedQuery(Address.FIND_BY_USER);

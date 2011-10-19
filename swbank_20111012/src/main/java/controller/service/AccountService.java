@@ -3,14 +3,11 @@ package controller.service;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import model.Account;
-import model.Credential;
 import model.User;
 
 import org.jboss.logging.Logger;
@@ -54,6 +51,7 @@ public class AccountService extends GenericService {
 		return (Account) q.getSingleResult();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Account> findAccountsByUser(User user) throws Exception {
 		log.trace("findAccountsByUser");
 		Query q = em.createNamedQuery(Account.FIND_BY_USER);

@@ -6,5 +6,6 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h1>Fehler!</h1>
+		<h:outputText value="#{exception.message}" />
 	</ui:define>
 </ui:composition>

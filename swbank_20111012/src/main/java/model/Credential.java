@@ -90,7 +90,7 @@ public class Credential implements Serializable {
 		if(pass.equals(pass2)) {
 			return true;
 		}
-		throw new VerificationException(pass, pass2);
+		throw new VerificationException("Passwords do not match!");
 	}
 	
 }

@@ -7,6 +7,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import model.Address;
 import model.Credential;
 import model.User;
 
@@ -14,7 +15,7 @@ import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
 import util.exception.VerificationException;
-import controller.service.CredentialService;
+import controller.service.AddressService;
 import controller.service.GenericService;
 import controller.service.PasswordService;
 import controller.service.UserService;
@@ -32,14 +33,19 @@ public class RegistrationHandler extends GenericService {
 	
 	private Credential newCredentials;
 	
+	private Address newAddress;
+	
 	@Inject
 	private PasswordService service;
 	
 	@Inject
-	private CredentialService credentialService;
+	private UserService userService;
 	
 	@Inject
-	private UserService userService;
+	private AddressService addressService;
+	
+	@Inject
+	private ErrorHandler errorHandler;
 	
 	@Produces
 	public User getNewUser() {
@@ -51,10 +57,16 @@ public class RegistrationHandler extends GenericService {
 		return newCredentials;
 	}
 	
+	@Produces
+	public Address getNewAddress() {
+		return newAddress;
+	}
+	
 	@PostConstruct
 	public void init() {
 		this.newCredentials = new Credential();
 		this.newUser = new User();
+		this.newAddress = new Address();
 	}
 	
 	public String doRegister() {
@@ -65,15 +77,21 @@ public class RegistrationHandler extends GenericService {
 				newCredentials.setPass(hash);
 				newUser.setCredentials(newCredentials);
 				userService.createUser(newUser);
-				log.trace("registered!");
+				
+				newAddress.setUser(newUser);
+				addressService.createAddress(newAddress);
+				
+				log.trace(newUser + " has registered!");
 				return "success";
 			}
 		} catch (VerificationException e) {
+			errorHandler.setException(e);
 			log.error(e);
 		} catch (Exception e) {
+			errorHandler.setException(e);
 			log.error(e);
 		}
-		log.trace("registering " + newUser + " failed!");
+		log.warn("registering " + newUser + " failed!");
 		return "failure";
 	}
 }

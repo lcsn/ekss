@@ -22,7 +22,7 @@ import controller.service.GenericService;
 public class BankingHandler extends GenericService {
 
 	@Inject
-	@Category("swbank_20111012")
+	@Category("bankinghandler")
 	private Logger log;
 
 	@Produces

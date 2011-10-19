@@ -1,6 +1,5 @@
 package controller.service;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -58,6 +57,7 @@ public class TransactionService extends GenericService {
 //		return (List<Transaction>) q.getResultList();
 //	}
 
+	@SuppressWarnings("unchecked")
 	public List<Transaction> findTransactionsByUser(User user) throws Exception {
 		Query q = em.createNamedQuery(Transaction.FIND_BY_USER);
 		q.setParameter("user", user);
