@@ -4,7 +4,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>S &amp; W Bank</title>
+	<!-- <title>S &amp; W Bank</title> -->
+	<title>#{bankName}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<h:outputStylesheet name="css/screen.css" />
 </h:head>
@@ -15,6 +16,9 @@
                     [Template content will be inserted here]
 			</ui:insert>
 		</div>
+		<div id="footer">
+         <h:graphicImage value="/resources/gfx/swbank_logo.jpg" alt="S &amp; W logo" />
+      </div>
 	</div>
 </h:body>
 </html>

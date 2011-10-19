@@ -12,7 +12,7 @@
             <tr>
                <th style="text-align: right;"><h:outputLabel
                      for="name" value="Hallo, " /></th>
-               <td><h:outputText id="name" value="#{userHandler.currentUser.firstname}" />
+               <td><h:outputText style="text-align: right;" id="name" value="#{userHandler.currentUser.firstname}" />
                   <h:message for="name" errorClass="invalid" /></td>
             </tr>
          </table>
@@ -20,7 +20,6 @@
             <h:commandButton id="logout"
                action="#{loginHandler.doLogout}" value="Abmelden" />
             <h:outputText value=" Done!"
-               rendered="#{facesContext.postback and empty facesContext.messageList}"
                style="color: green;" />
          </p>
       </h:form>
