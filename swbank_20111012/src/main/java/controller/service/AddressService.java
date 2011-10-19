@@ -18,7 +18,7 @@ import org.jboss.seam.solder.logging.Category;
 public class AddressService extends GenericService {
 	
 	@Inject
-	@Category("swbank_20111012")
+	@Category("addressservice")
 	private Logger log;
 	
 	public Address createAddress(Address address) {

@@ -16,7 +16,7 @@ import org.jboss.seam.solder.logging.Category;
 public class UserService extends GenericService {
 
 	@Inject
-	@Category("swbank_20111012")
+	@Category("userservice")
 	private Logger log;
 
 	public User createUser(User user) throws Exception {

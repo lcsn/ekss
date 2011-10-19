@@ -72,7 +72,7 @@ public class LoginHandler extends GenericService {
 					this.currentUser = user;
 					userHandler.setCurrentUser(user);
 //					userEventSrc.fire(currentUser);
-					log.info(currentUser + " logged in!");
+//					log.info(currentUser + " logged in!");
 					return "success";
 				}
 			}
@@ -84,6 +84,7 @@ public class LoginHandler extends GenericService {
 	}
 
 	public String doLogout() {
+		log.info(userHandler.getCurrentUser() + " has logged out");
 		currentUser = new User();
 		credentials = new Credential();
 		userHandler.setCurrentUser(null);

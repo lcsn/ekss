@@ -15,7 +15,7 @@ import org.jboss.seam.solder.logging.Category;
 public class CredentialService extends GenericService {
 	
 	@Inject
-	@Category("swbank_20111012")
+	@Category("credentialservice")
 	private Logger log;
 	
 	@Inject

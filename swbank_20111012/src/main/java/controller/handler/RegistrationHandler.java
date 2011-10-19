@@ -26,7 +26,7 @@ import controller.service.UserService;
 public class RegistrationHandler extends GenericService {
 
 	@Inject
-	@Category("swbank_20111012")
+	@Category("registrationHandler")
 	private Logger log;
 	
 	private User newUser;
@@ -70,7 +70,7 @@ public class RegistrationHandler extends GenericService {
 	}
 	
 	public String doRegister() {
-		log.trace("register..");
+		log.info("register");
 		try {
 			if(newCredentials.verify()) {
 				String hash = service.encrypt(newCredentials.getPass());

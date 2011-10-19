@@ -19,7 +19,7 @@ import org.jboss.seam.solder.logging.Category;
 public class AccountService extends GenericService {
 	
 	@Inject
-	@Category("swbank_20111012")
+	@Category("accountservice")
 	private Logger log;
 	
 	public Account createAccount(Account account) throws Exception {

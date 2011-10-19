@@ -18,7 +18,7 @@ import org.jboss.seam.solder.logging.Category;
 public class TransactionService extends GenericService {
 	
 	@Inject
-	@Category("swbank_20111012")
+	@Category("transactionservice")
 	private Logger log;
 	
 	public Transaction createTransaction(Transaction transaction) throws Exception {
