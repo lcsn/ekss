@@ -63,7 +63,7 @@ public class User implements Serializable {
 	private Role role = Role.CUSTOMER;
 	
 	/**
-	 * String, sonst Konverter für Date-Komponente in Primefaces schreiben.
+	 * String, sonst Konverter fÃ¼r Date-Komponente in Primefaces schreiben.
 	 */
 	@NotNull
 	@NotEmpty

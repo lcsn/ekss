@@ -63,12 +63,12 @@ public class Transaction implements Serializable {
 	
 	@NotEmpty
 	@NotNull
-	@Size(min = 8, max = 8, message="BLZ hat die Länge 8")
+	@Size(min = 8, max = 8, message="BLZ hat die Laenge 8")
 	private String bankCode;
 
 	@NotEmpty
 	@NotNull
-	@Size(min = 9, max = 9, message="Kontonummer hat die Länge 9")
+	@Size(min = 9, max = 9, message="Kontonummer hat die Laenge 9")
 	private String accountNumber;
 	
 	@NotEmpty
