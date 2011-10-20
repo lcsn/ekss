@@ -3,12 +3,14 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+   	xmlns:p="http://primefaces.prime.com.tr/ui"  
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h1>Welcome to the famous S and W Bank on JBoss AS 7!</h1>
 
 		<p>This is a Java EE 6 web application on JBoss AS 7.</p>
 		<h:form id="bank">
+		 <p:messages id="msgs" showDetail="true"/>  
 			<h:commandButton id="login" action="login" value="Anmelden"
 				style=" width : 92px;" />
 			<h:outputText value=" Done!" style="color: green;" />
