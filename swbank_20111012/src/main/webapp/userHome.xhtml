@@ -1,27 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:ui="http://java.sun.com/jsf/facelets"
-   xmlns:f="http://java.sun.com/jsf/core"
-   xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:p="http://primefaces.prime.com.tr/ui"  
-   template="/WEB-INF/templates/default.xhtml">
-   <ui:define name="content">
-      <h:form id="user">
-		 <p:messages id="msgs" showDetail="true"/>  
-         <table>
-            <tr>
-               <th style="text-align: right;"><h:outputLabel
-                     for="name" value="Hallo, " /></th>
-               <td><h:outputText style="text-align: right;" id="name" value="#{userHandler.currentUser.firstname}" />
-                  <h:message for="name" errorClass="invalid" /></td>
-            </tr>
-         </table>
-		 <p>
-            <h:commandButton id="logout"
-               action="#{loginHandler.doLogout}" value="Abmelden" />
-            <h:outputText value=" Done!"
-               style="color: green;" />
-         </p>
-      </h:form>
-   </ui:define>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui" template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h:form id="user">
+			<p:messages />
+			
+			<table>
+				<tr>
+					<th style="text-align: right;"><h:outputLabel for="name" value="Hallo, " />
+					</th>
+					<td><h:outputText style="text-align: right;" id="name"
+							value="#{userHandler.currentUser.firstname}" /> <h:message for="name" errorClass="invalid" />
+					</td>
+				</tr>
+			</table>
+			<p>
+				<p:commandButton id="logout" style="text-align:right;" actionListener="#{loginHandler.doLogout}" value="Abmelden" />
+			</p>
+
+			<p:panel id="pnl0" header="Meine Daten" toggleable="true" closable="false" toggleSpeed="500"
+				closeListener="#{userHandler.handleClose}" onCloseUpdate="growl" closeSpeed="2000"
+				toggleListener="#{userHandler.handleToggle}" onToggleUpdate="growl" widgetVar="panel">
+				<h:form>
+					<h:outputText value="Hier stehen Ihre Daten." />
+					<br />
+					<p:commandButton type="button" value="Ändern" onclick="dlg0.show()" />
+
+					<p:dialog id="d0" header="Meine Daten ändern" widgetVar="dlg0" resizable="true" modal="true" height="500" width="400">
+						<h:form>
+							<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+								<h:outputLabel for="firstname" value="Vorname:" />
+								<p:inputText id="firstname" value="#{userHandler.currentUser.firstname}" />
+								<h:outputLabel for="lastname" value="Nachname:" />
+								<p:inputText id="lastname" value="#{userHandler.currentUser.lastname}" />
+								<h:outputLabel for="email" value="Email:" />
+								<p:inputText id="email" value="#{userHandler.currentUser.email}" />
+							</h:panelGrid>
+
+							<p:commandButton value="Speichern" update="d0" oncomplete="dlg0.hide();" />
+							<p:commandButton value="Abbrechen" style="align:right;" oncomplete="dlg0.hide();" />
+						</h:form>
+					</p:dialog>
+					
+					<p:commandButton type="button" value="Neue Adresse" onclick="dlg1.show()" />
+
+					<p:dialog id="d1" header="Neue Adresse" widgetVar="dlg1" resizable="true" modal="true" height="500" width="400">
+						<h:form>
+							<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+								<h:outputLabel for="firstname" value="Firstname:" />
+								<p:inputText id="firstname" value="MOO" />
+							</h:panelGrid>
+
+							<p:commandButton value="Speichern" update="d1" oncomplete="dlg1.hide();" />
+							<p:commandButton value="Abbrechen" oncomplete="dlg1.hide();" />
+						</h:form>
+					</p:dialog>
+				</h:form>
+
+				<f:facet name="options">
+					<p:menu>
+						<p:submenu label="Settings">
+							<p:menuitem value="Toggle" url="#" icon="/images/update.png" onclick="panel.toggle()" />
+							<!-- <p:menuitem value="Remove" url="#" icon="/images/delete.png" onclick="panel.close()" />  -->
+						</p:submenu>
+					</p:menu>
+				</f:facet>
+			</p:panel>
+			
+			<p:panel id="pnl1" header="Meine Konten" toggleable="true" closable="false" toggleSpeed="500"
+				closeListener="#{userHandler.handleClose}" onCloseUpdate="growl" closeSpeed="2000"
+				toggleListener="#{userHandler.handleToggle}" onToggleUpdate="growl" widgetVar="panel1">
+				<h:form>
+					<h:outputText value="Hier stehen Ihre Konten." />
+					<br />
+					
+					<p:commandButton type="button" value="Neues Konto" onclick="dlg2.show()" />
+
+					<p:dialog id="d2" header="Neues Konto" widgetVar="dlg2" resizable="true" modal="true" height="500" width="400">
+						<h:form>
+							<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+								<h:outputLabel for="firstname" value="Firstname:" />
+								<p:inputText id="firstname" value="MOO" />
+							</h:panelGrid>
+
+							<p:commandButton value="Speichern" update="d2" oncomplete="dlg2.hide();" />
+							<p:commandButton value="Abbrechen" oncomplete="dlg2.hide();" />
+						</h:form>
+					</p:dialog>
+				</h:form>
+
+				<f:facet name="options">
+					<p:menu>
+						<p:submenu label="Settings">
+							<p:menuitem value="Toggle" url="#" icon="/images/update.png" onclick="panel1.toggle()" />
+							<!-- <p:menuitem value="Remove" url="#" icon="/images/delete.png" onclick="panel1.close()" /> -->
+						</p:submenu>
+					</p:menu>
+				</f:facet>
+			</p:panel>
+			
+			<p:panel id="pnl2" header="Meine Transaktionen" toggleable="true" closable="false" toggleSpeed="500"
+				closeListener="#{userHandler.handleClose}" onCloseUpdate="growl" closeSpeed="2000"
+				toggleListener="#{userHandler.handleToggle}" onToggleUpdate="growl" widgetVar="panel2">
+				<h:form>
+					<h:outputText value="Hier stehen Ihre Transaktion." />
+					<br />
+					
+					<p:commandButton type="button" value="Neue Transaktion" onclick="dlg3.show()" />
+
+					<p:dialog id="d3" header="Neue Transaktion" widgetVar="dlg3" resizable="true" modal="true" height="500" width="400">
+						<h:form>
+							<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+								<h:outputLabel for="firstname" value="Vorname:" />
+								<h:outputText id="firstname" value="#{userHandler.currentUser.firstname}" />
+								<h:outputLabel for="lastname" value="Nachname:" />
+								<h:outputText id="lastname" value="#{userHandler.currentUser.lastname}" />
+								<h:outputLabel for="accountNumber" value="Kontonummer:" />
+								<p:inputText id="accountNumber" value="#{userHandler.newAccount.accountNumber}" />
+								<h:outputLabel for="bankCode" value="BLZ:" />
+								<p:inputText id="bankCode" value="#{userHandler.newAccount.bankCode}" />
+							</h:panelGrid>
+
+							<p:commandButton value="Speichern" update="d3" oncomplete="dlg3.hide();" />
+							<p:commandButton value="Abbrechen" oncomplete="dlg3.hide();" />
+						</h:form>
+					</p:dialog>
+				</h:form>
+
+				<f:facet name="options">
+					<p:menu>
+						<p:submenu label="Settings">
+							<p:menuitem value="Toggle" url="#" icon="/images/update.png" onclick="panel2.toggle()" />
+							<!-- <p:menuitem value="Remove" url="#" icon="/images/delete.png" onclick="panel2.close()" /> -->
+						</p:submenu>
+					</p:menu>
+				</f:facet>
+			</p:panel>
+
+		</h:form>
+	</ui:define>
 </ui:composition>
