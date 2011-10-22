@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -76,6 +77,7 @@ public class Transaction implements Serializable {
 	@DecimalMin(value="0.01", message="Minimum ist ein 1 cent!")
 	private BigDecimal amount;
 
+	@Future
 	@Temporal(TemporalType.DATE)
 	private Date transactionDate;
 

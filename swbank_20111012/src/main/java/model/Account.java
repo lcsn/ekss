@@ -43,20 +43,24 @@ public class Account implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty
+	@NotNull
+	private String bankName = "S & W Bank";
 
 	@NotEmpty
 	@NotNull
-	@Size(min = 8, max = 8, message="BLZ hat die L�nge 8")
+	@Size(min = 8, max = 8, message="BLZ hat die Laenge 8")
 	private String bankCode;
 
 	@NotEmpty
 	@NotNull
-	@Size(min = 9, max = 9, message="Kontonummer hat die L�nge 9")
+	@Size(min = 9, max = 9, message="Kontonummer hat die Laenge 9")
 	private String accountNumber;
 	
 	@NotEmpty
 	@NotNull
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ZERO;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="userId")
@@ -122,6 +126,14 @@ public class Account implements Serializable {
 
 	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	
 }

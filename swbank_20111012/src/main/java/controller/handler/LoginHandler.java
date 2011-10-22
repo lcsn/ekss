@@ -87,7 +87,7 @@ public class LoginHandler extends GenericService {
 		credentials = new Credential();
 		userHandler.setCurrentUser(null);
 //		userEventSrc.fire(null);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Abmeldung!", "Sie haben sich erfolgreich abgemeldet!"));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Sie haben sich erfolgreich abgemeldet!"));
 		return "success";
 	}
 

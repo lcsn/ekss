@@ -1,11 +1,8 @@
 package controller.service;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -26,14 +23,18 @@ import util.BankConstants;
 @Startup
 public class BankInformationService {
 
+	private static final int ACCOUNTNUMBER_SIZE = 9;
+
 	@Inject
 	@Category("bankinformationservice")
 	private Logger log;
 	
+	private static int accountCounter = 0;
+	
 	private static BankInformationService instance;
 	
-	private String bankName = "S & W Bank";
-	private String bankCode = "200 100 20";
+	private String bankName = "No Name";
+	private String bankCode = "No Code";
 	
 	@SuppressWarnings("unused")
 	@PostConstruct
@@ -44,15 +45,14 @@ public class BankInformationService {
 		defaultProps.put(BankConstants.BANK_CODE_KEY, bankCode);
 		Properties infs = new Properties(defaultProps);
 		try {
-			infs.load(new FileReader(new File(/*"C:/bank.properties")));*/new URI("file:///resources/bank.properties"))));
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream("bank.properties");
+			infs.load(in);
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 			log.error(e);
 		} catch (IOException e) {
 			log.error(e);
 		} 
-		catch (URISyntaxException e) {
-			log.error(e);
-		}
 		this.bankName = infs.getProperty(BankConstants.BANK_NAME_KEY);
 		this.bankCode = infs.getProperty(BankConstants.BANK_CODE_KEY);
 		log.info("Bank: " + bankName);
@@ -69,6 +69,19 @@ public class BankInformationService {
 	@Produces
 	public String getBankCode() {
 		return bankCode;
+	}
+	
+	@Named
+	@Produces
+	public String getNewAccountNumber() {
+		log.info("getNewAccountNumber");
+		accountCounter++;
+		String accNo = Integer.toString(accountCounter);
+		for (int i = ACCOUNTNUMBER_SIZE - accNo.length(); i > 0; i--) {
+			accNo = '0' + accNo;
+		}
+		
+		return accNo;
 	}
 	
 	public static BankInformationService getInstance() {

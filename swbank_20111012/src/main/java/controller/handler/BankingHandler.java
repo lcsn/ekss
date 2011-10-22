@@ -25,16 +25,16 @@ public class BankingHandler extends GenericService {
 	@Category("bankinghandler")
 	private Logger log;
 
-	@Produces
-	@Named
-	public List<Transaction> getTransactions() {
-		return null;
-	}
+//	@Produces
+//	@Named
+//	public List<Transaction> getTransactions() {
+//		return null;
+//	}
 
-	@Produces
-	@Named
-	public List<Account> getAccounts() {
-		return null;
-	}
+//	@Produces
+//	@Named
+//	public List<Account> getAccounts() {
+//		return null;
+//	}
 	
 }

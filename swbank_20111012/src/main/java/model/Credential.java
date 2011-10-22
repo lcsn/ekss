@@ -38,7 +38,7 @@ public class Credential implements Serializable {
 	private String identity;
 
 	@NotNull
-	@Size(min = 1, max = 25)
+	@Size(min = 4, max = 25, message = "Passwort muss mind. aus 4 Zeichen bestehen!")
 	private String pass;
 	
 	@Transient

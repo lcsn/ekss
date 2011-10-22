@@ -1,5 +1,8 @@
 package controller.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
@@ -29,6 +32,9 @@ public class UserHandler {
 
 	private User currentUser;
 
+	private List<Account> accounts;
+	private List<Transaction> transactions;
+	
 	private Account newAccount;
 	private Transaction newTransaction;
 	
@@ -38,6 +44,8 @@ public class UserHandler {
 	public void init() {
 		this.newAccount = new Account();
 		this.newTransaction = new Transaction();
+		loadAccounts(null);
+		loadTransactions(null, null);
 	}
 	
 	@Produces
@@ -63,6 +71,38 @@ public class UserHandler {
 		}
 		return null;
 	}
+	
+	@Produces
+	public List<Account> getAccounts() {
+		log.info("get accounts");
+		return accounts;
+	}
+	
+	private void loadAccounts(User user) {
+		log.info("load accounts");
+	}
+	
+	@Produces
+	public List<Transaction> getTransactions() {
+		log.info("get transactions");
+		return transactions;
+	}
+
+	private void loadTransactions(Account account, User user) {
+		log.info("load transactions");
+	}
+	
+	@Produces
+	public void saveNewAccount() {
+		log.info("save account");
+		loadAccounts(null);
+	}
+	
+	@Produces
+	public void saveNewTransaction() {
+		log.info("save transaction");
+		loadTransactions(null, null);
+	}
 
 	// public void onCurrentUserChanged(@Observes(notifyObserver =
 	// Reception.IF_EXISTS) final User user) {
@@ -73,6 +113,7 @@ public class UserHandler {
 		if (user == null) {
 			log.warn("User-Application-Singleton got null-user.");
 		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Sie haben sich erfolgreich angemeldet!"));
 			log.info(user + " has logged in!");
 			this.currentUser = user;
 		}

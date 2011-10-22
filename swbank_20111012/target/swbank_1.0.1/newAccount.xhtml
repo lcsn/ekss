@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui" template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h1>Neues Konto für #{userHandler.currentUser}</h1>
+		<h:form id="createAccount">
+			<p:messages id="msgs" showDetail="false" />
+			
+			<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+				<h:outputLabel for="firstname" value="Vorname:" />
+				<p:inputText id="firstname" readonly="true" value="#{userHandler.currentUser.firstname}" />
+				<h:outputLabel for="lastname" value="Nachname:" />
+				<p:inputText id="lastname" readonly="true" value="#{userHandler.currentUser.lastname}" />
+				<h:outputLabel for="bankName" value="Bank: " />
+				<p:inputText  id="bankName" value="#{bankName}" />
+				<h:outputLabel for="accountNumber" value="Kontonummer: " />
+				<p:inputText id="accountNumber" value="#{newAccountNumber}" />
+				<h:outputLabel for="bankCode" value="Bankleitzahl:" />
+				<p:inputMask id="bankCode" value="#{bankCode}" mask="999-999-99" />
+			</h:panelGrid>
+			<p>
+				<p:commandButton id="saveAccount" action="save" actionListener="#{userHandler.saveNewAccount}" value="Speichern" />
+				<h:message for="saveAccount" errorClass="invalid" />
+				<p:commandButton id="abortAccount" action="abort" value="Abbrechen" />
+				<h:message for="abortAccount" errorClass="invalid" />
+			</p>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
