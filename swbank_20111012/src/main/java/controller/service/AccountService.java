@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.Query;
 
 import model.Account;
@@ -13,8 +12,6 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-@Named
-//@Dependent
 @Stateless
 public class AccountService extends GenericService {
 	
@@ -26,6 +23,7 @@ public class AccountService extends GenericService {
 		log.trace("createAccount");
 		em.persist(account);
 		em.flush();
+		BankInformationService.getInstance().incrementAccountCounter();
 		return em.find(Account.class, account.getId());
 	}
 	

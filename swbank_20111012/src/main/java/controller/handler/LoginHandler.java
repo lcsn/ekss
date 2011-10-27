@@ -7,6 +7,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import model.Credential;
 import model.User;
@@ -85,7 +86,14 @@ public class LoginHandler extends GenericService {
 		log.info(userHandler.getCurrentUser() + " has logged out");
 		currentUser = new User();
 		credentials = new Credential();
-		userHandler.setCurrentUser(null);
+		
+		FacesContext fc = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+		session.invalidate();
+		
+//		userHandler.setCurrentUser(null);
+//		userHandler.setAccounts(null);
+//		userHandler.setTransactions(null);
 //		userEventSrc.fire(null);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Sie haben sich erfolgreich abgemeldet!"));
 		return "success";

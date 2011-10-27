@@ -1,13 +1,10 @@
 package controller.handler;
 
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,6 +18,8 @@ import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
 import util.AccountType;
+import controller.service.AccountService;
+import controller.service.BankInformationService;
 import controller.service.GenericService;
 
 @Named("bankingHandler")
@@ -32,7 +31,19 @@ public class BankingHandler extends GenericService {
 	private Logger log;
 	
 	@Inject
+	private ErrorHandler errorHandler;
+	
+	@Inject
 	private UserHandler userHandler;
+	
+	@Inject
+	private AccountService accountService;
+	
+//	@Inject
+//	private TransactionService transactionService;
+	
+	@Inject
+	private BankInformationService bankInformationService;
 	
 	private Account newAccount;
 	private Transaction newTransaction;
@@ -70,6 +81,16 @@ public class BankingHandler extends GenericService {
 		return null;
 	}
 	
+	private void setCommonAccountAttributes() {
+		log.info("setCommonAccountAttributes");
+		this.newAccount.setUser(userHandler.getCurrentUser());
+		this.newAccount.setBankName(bankInformationService.getBankName());
+		this.newAccount.setBankCode(bankInformationService.getBankCode());
+		this.newAccount.setAccountNumber(bankInformationService.getNewAccountNumber());
+		this.newAccount.setAmount(BigDecimal.ZERO);
+		this.newAccount.setLastDebit(null);
+	}
+	
 	public void saveNewAccount() {
 		log.info("saveNewAccount");
 		if(type.equals(AccountType.GIROACCOUNT)) {
@@ -82,8 +103,16 @@ public class BankingHandler extends GenericService {
 		}
 		else if(type.equals(AccountType.SMARTACCOUNT)) {
 			log.info("it is a " + AccountType.SMARTACCOUNT);	
-			this.newAccount = new SmartAccount();	
+			this.newAccount = new SmartAccount();
 		}
+		setCommonAccountAttributes();
+		try {
+			accountService.createAccount(newAccount);
+		} catch (Exception e) {
+			errorHandler.setException(e);
+			log.error(e);
+		}
+		userHandler.init();
 	}
 	
 	public void saveNewTransaction() {

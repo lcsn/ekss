@@ -26,6 +26,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import util.AccountType;
+
 @NamedQueries({
 	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER, query="select a from Account a where a.accountNumber=:accountNumber"),
 	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER_AND_BANKCODE, query="select a from Account a where a.accountNumber=:accountNumber and a.bankCode=:bankCode"),
@@ -62,7 +64,6 @@ public abstract class Account implements Serializable {
 	@Size(min = 9, max = 9, message="Kontonummer hat die Laenge 9")
 	private String accountNumber;
 	
-	@NotEmpty
 	@NotNull
 	private BigDecimal amount = BigDecimal.ZERO;
 	
@@ -138,6 +139,10 @@ public abstract class Account implements Serializable {
 
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
+	}
+	
+	public AccountType getType() {
+		return null;
 	}
 	
 }

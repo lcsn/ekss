@@ -23,7 +23,7 @@
 			<h:panelGroup rendered="#{empty userHandler.accounts}">
 				<em>Sie haben kein Konto.</em>
 			</h:panelGroup>
-			<h:dataTable var="_account" value="#{userHandler.accounts}" rendered="#{not empty userHandler.accounts}">
+			<h:dataTable var="_account" value="#{userHandler.accounts}" rendered="#{not empty userHandler.accounts}" >
 				<h:column>
 					<f:facet name="header">Kontonummer</f:facet>
                 #{_account.accountNumber}
@@ -32,9 +32,13 @@
 					<f:facet name="header">BLZ</f:facet>
                 #{_account.bankCode}
             </h:column>
+            <h:column>
+					<f:facet name="header">Kontotyp</f:facet>
+                #{_account.type}
+            </h:column>
 				<h:column>
 					<f:facet name="header">Saldo</f:facet>
-                #{_account.amount}
+			    #{_account.amount} €
             </h:column>
 				<h:column>
 					<f:facet name="header">letzte Abbuchung</f:facet>

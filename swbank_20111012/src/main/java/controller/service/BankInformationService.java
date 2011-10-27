@@ -29,7 +29,7 @@ public class BankInformationService {
 	@Category("bankinformationservice")
 	private Logger log;
 	
-	private static int accountCounter = 0;
+	private static int accountCounter = 1;
 	
 	private static BankInformationService instance;
 	
@@ -75,13 +75,17 @@ public class BankInformationService {
 	@Produces
 	public String getNewAccountNumber() {
 		log.info("getNewAccountNumber");
-		accountCounter++;
+//		accountCounter++;
 		String accNo = Integer.toString(accountCounter);
 		for (int i = ACCOUNTNUMBER_SIZE - accNo.length(); i > 0; i--) {
 			accNo = '0' + accNo;
 		}
 		
 		return accNo;
+	}
+	
+	public void incrementAccountCounter() {
+		accountCounter++;
 	}
 	
 	public static BankInformationService getInstance() {

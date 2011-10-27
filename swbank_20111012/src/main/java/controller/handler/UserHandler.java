@@ -20,6 +20,8 @@ import org.jboss.seam.solder.logging.Category;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 
+import controller.service.AccountService;
+
 @Named("userHandler")
 @SessionScoped
 @Stateful
@@ -29,8 +31,14 @@ public class UserHandler {
 	@Category("userhandler")
 	private Logger log;
 
-	private User currentUser;
+	@Inject
+	private ErrorHandler errorHandler;
+	
+	@Inject
+	private AccountService accountService;
 
+	private User currentUser;
+	
 	private List<Account> accounts;
 	private List<Transaction> transactions;
 	
@@ -56,8 +64,18 @@ public class UserHandler {
 		return accounts;
 	}
 	
-	private void loadAccounts(User user) {
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+	
+	public void loadAccounts(User user) {
 		log.info("load accounts");
+		try {
+			this.accounts = accountService.findAccountsByUser(user==null?currentUser:user);
+		} catch (Exception e) {
+			errorHandler.setException(e);
+			log.error(e);
+		}
 	}
 	
 	@Produces
@@ -65,8 +83,12 @@ public class UserHandler {
 		log.info("get transactions");
 		return transactions;
 	}
+	
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
 
-	private void loadTransactions(Account account, User user) {
+	public void loadTransactions(Account account, User user) {
 		log.info("load transactions");
 	}
 	
@@ -77,6 +99,7 @@ public class UserHandler {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Sie haben sich erfolgreich angemeldet!"));
 			log.info(user + " has logged in!");
 			this.currentUser = user;
+			init();
 		}
 	}
 
