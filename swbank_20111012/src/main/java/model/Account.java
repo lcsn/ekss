@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -21,6 +23,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 @NamedQueries({
@@ -30,8 +33,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name=Account.FIND_BY_USER, query="select a from Account a where a.user=:user")
 	})
 @Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name="AccountBean", uniqueConstraints = @UniqueConstraint(columnNames = "accountNumber"))
-public class Account implements Serializable {
+public abstract class Account implements Serializable {
 	
 	private static final long serialVersionUID = 5008343162571576351L;
 
@@ -41,7 +45,7 @@ public class Account implements Serializable {
 	public static final String FIND_BY_USER = "Account.FIND_BY_USER";
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
 	@NotEmpty
@@ -51,7 +55,7 @@ public class Account implements Serializable {
 	@NotEmpty
 	@NotNull
 	@Size(min = 8, max = 8, message="BLZ hat die Laenge 8")
-	private String bankCode;
+	private String bankCode = "11235813";
 
 	@NotEmpty
 	@NotNull

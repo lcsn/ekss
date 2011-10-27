@@ -34,7 +34,7 @@ public class BankInformationService {
 	private static BankInformationService instance;
 	
 	private String bankName = "No Name";
-	private String bankCode = "No Code";
+	private String bankCode = "11235813";
 	
 	@SuppressWarnings("unused")
 	@PostConstruct

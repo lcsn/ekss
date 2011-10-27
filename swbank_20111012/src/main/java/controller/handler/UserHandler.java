@@ -1,6 +1,5 @@
 package controller.handler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,15 +34,10 @@ public class UserHandler {
 	private List<Account> accounts;
 	private List<Transaction> transactions;
 	
-	private Account newAccount;
-	private Transaction newTransaction;
-	
-	private static UserHandler instance;
+//	private static UserHandler instance;
 
 	@PostConstruct
 	public void init() {
-		this.newAccount = new Account();
-		this.newTransaction = new Transaction();
 		loadAccounts(null);
 		loadTransactions(null, null);
 	}
@@ -52,22 +46,6 @@ public class UserHandler {
 	public User getCurrentUser() {
 		if (this.currentUser != null) {
 			return this.currentUser;
-		}
-		return null;
-	}
-	
-	@Produces
-	public Account getNewAccount() {
-		if (this.newAccount != null) {
-			return this.newAccount;
-		}
-		return null;
-	}
-	
-	@Produces
-	public Transaction getNewTransaction() {
-		if (this.newTransaction != null) {
-			return this.newTransaction;
 		}
 		return null;
 	}
@@ -92,23 +70,6 @@ public class UserHandler {
 		log.info("load transactions");
 	}
 	
-	@Produces
-	public void saveNewAccount() {
-		log.info("save account");
-		loadAccounts(null);
-	}
-	
-	@Produces
-	public void saveNewTransaction() {
-		log.info("save transaction");
-		loadTransactions(null, null);
-	}
-
-	// public void onCurrentUserChanged(@Observes(notifyObserver =
-	// Reception.IF_EXISTS) final User user) {
-	// setCurrentUser(user);
-	// }
-
 	public void setCurrentUser(User user) {
 		if (user == null) {
 			log.warn("User-Application-Singleton got null-user.");
@@ -121,7 +82,6 @@ public class UserHandler {
 
 	public void updateCustomer() {
 		log.info("updateCustomer");
-		System.out.println("TEEEST: " + this.currentUser);
 	}
 	
 	public void handleClose(CloseEvent event) {
@@ -138,11 +98,11 @@ public class UserHandler {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
-	public static UserHandler getInstance() {
-		if (instance == null) {
-			instance = new UserHandler();
-		}
-		return instance;
-	}
+//	public static UserHandler getInstance() {
+//		if (instance == null) {
+//			instance = new UserHandler();
+//		}
+//		return instance;
+//	}
 
 }

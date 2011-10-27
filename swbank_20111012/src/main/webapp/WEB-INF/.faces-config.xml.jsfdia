@@ -69,10 +69,8 @@
   PATH="/newTransaction.xhtml" SHAPE="912,320,50,73" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#newTransaction.xhtml:0" NAME="item"
    PATH="/newTransaction.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT
-    ID=":#{userHandler.saveNewTransaction()}:#userHome.xhtml"
-    NAME="output" PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml"
-    TITLE="#{userHandler.saveNewTransaction()}:[any]" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="save::#userHome.xhtml" NAME="output"
+    PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml" TITLE="save" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="abort::#userHome.xhtml" NAME="output1"
     PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml" TITLE="abort" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output2"

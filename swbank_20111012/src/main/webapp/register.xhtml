@@ -9,7 +9,7 @@
 			<h2>Benutzerdaten</h2>
 			<table id="userdata" title="Benutzerdaten">
 				<tr>
-					<th style="text-align: right;"><h:outputLabel for="firstname" value="Name: " />
+					<th style="text-align: right;"><h:outputLabel for="firstname" value="Vorname: " />
 					</th>
 					<td><p:inputText id="firstname" value="#{registrationHandler.newUser.firstname}"
 							required="true" requiredMessage="Bitte, Nachnamen eintragen!" /> <p:message for="firstname"
@@ -17,7 +17,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th style="text-align: right;"><h:outputLabel for="lastname" value="Vorname: " />
+					<th style="text-align: right;"><h:outputLabel for="lastname" value="Nachname: " />
 					</th>
 					<td><p:inputText id="lastname" value="#{registrationHandler.newUser.lastname}"
 							required="true" requiredMessage="Bitte, Vornamen eintragen!" /> <p:message for="lastname"
@@ -68,7 +68,7 @@
 			</table>
 			<br />
 			<h2>Adressdaten</h2>
-			<table id="addressdata" title="Adresse">
+			<table id="addressdata" title="Adressdaten">
 				<tr>
 					<th style="text-align: right;"><h:outputLabel for="street" value="Strasse/Hausnummer:" />
 					</th>

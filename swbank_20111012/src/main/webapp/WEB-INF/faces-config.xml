@@ -93,7 +93,7 @@
 	<navigation-rule>
 		<from-view-id>/newTransaction.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{userHandler.saveNewTransaction()}</from-action>
+			<from-outcome>save</from-outcome>
 			<to-view-id>/userHome.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
