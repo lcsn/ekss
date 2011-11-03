@@ -81,6 +81,9 @@ public class Transaction implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date transactionDate;
 
+	@NotNull
+	private boolean processed;
+
 	public Long getId() {
 		return id;
 	}
@@ -156,6 +159,14 @@ public class Transaction implements Serializable {
 	@Override
 	public String toString() {
 		return bankCode + "/" + accountNumber + "/" + transactionNumber;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 	
 }

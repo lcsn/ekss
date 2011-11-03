@@ -1,10 +1,13 @@
 package controller.handler;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,6 +19,7 @@ import model.Transaction;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
+import org.primefaces.event.DateSelectEvent;
 
 import util.AccountType;
 import controller.service.AccountService;
@@ -113,10 +117,17 @@ public class BankingHandler extends GenericService {
 			log.error(e);
 		}
 		userHandler.init();
+		init();
 	}
 	
 	public void saveNewTransaction() {
 		log.info("saveNewTransaction");
 	}
 	
+	public void handleDateSelection(DateSelectEvent event) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ausführungsdatum: ", sdf.format(event.getDate())));
+	}
 }

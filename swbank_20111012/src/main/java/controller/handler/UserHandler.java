@@ -3,6 +3,7 @@ package controller.handler;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
@@ -42,12 +43,17 @@ public class UserHandler {
 	private List<Account> accounts;
 	private List<Transaction> transactions;
 	
-//	private static UserHandler instance;
-
 	@PostConstruct
 	public void init() {
 		loadAccounts(null);
 		loadTransactions(null, null);
+	}
+	
+	@PreDestroy
+	public void destroy() {
+		this.currentUser = null;
+		this.accounts = null;
+		this.transactions = null;
 	}
 	
 	@Produces
@@ -120,12 +126,5 @@ public class UserHandler {
 	private void addMessage(FacesMessage message) {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-
-//	public static UserHandler getInstance() {
-//		if (instance == null) {
-//			instance = new UserHandler();
-//		}
-//		return instance;
-//	}
 
 }

@@ -2,27 +2,47 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.prime.com.tr/ui" template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<h1>Neues Konto für #{userHandler.currentUser}</h1>
-		<h:form id="createAccount">
+		<h1>Neue Transaktion für #{userHandler.currentUser}</h1>
+		<h:form id="createTransaction">
 			<p:messages id="msgs" showDetail="false" />
+			<p:growl id="growl" showDetail="true" />
 			
 			<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
-				<h:outputLabel for="firstname" value="Vorname:" />
-				<h:outputText id="firstname" value="#{userHandler.currentUser.firstname}" />
-				<h:outputLabel for="lastname" value="Nachname:" />
-				<h:outputText id="lastname" value="#{userHandler.currentUser.lastname}" />
-				<h:outputLabel for="bankName" value="Bank: " />
-				<p:inputText id="bankName" binding="#{bankName}" value="#{userHandler.newAccount.bankName}" />
-				<h:outputLabel for="accountNumber" value="Kontonummer: " />
-				<p:inputText id="accountNumber" binding="#{newAccountNumber}" value="#{userHandler.newAccount.accountNumber}" />
-				<h:outputLabel for="bankCode" value="Bankleitzahl:" />
-				<p:inputText id="bankCode" binding="#{bankCode}" value="#{userHandler.newAccount.bankCode}" />
+				<h:outputLabel for="account" value="Konto:" />
+				<h:panelGroup>
+					<h:selectOneMenu id="account" value="#{bankingHandler.newTransaction.account}" required="true" converter="accountConverter" requiredMessage="Bitte Konto auswählen!">
+						<f:selectItems value="#{userHandler.accounts}" var="acc" itemLabel="#{acc.accountNumber}/#{acc.bankCode}" itemValue="#{acc}" />
+					</h:selectOneMenu>
+					<p:message for="account" />
+				</h:panelGroup>
+				<h:outputLabel for="amount" value="Betrag:" />
+				<h:panelGroup>
+					<p:inputText id="amount" value="#{bankingHandler.newTransaction.amount}" required="true" requiredMessage="Bitte Betrag eingeben!" >
+						<!-- <f:convertNumber type="currency" maxIntegerDigits="9" maxFractionDigits="2" pattern="###.###,##" /> -->
+					</p:inputText>
+					<p:message for="amount" />
+				</h:panelGroup>
+				<h:outputLabel for="accountNumber" value="Kontonummer:" />
+				<h:panelGroup>
+					<p:inputMask id="accountNumber" value="#{bankingHandler.newTransaction.accountNumber}" mask="999999999" required="true" requiredMessage="Bitte Ziel-Kontonummer angeben!" />
+					<p:message for="accountNumber" />
+				</h:panelGroup>
+				<h:outputLabel for="bankCode" value="BLZ:" />
+				<h:panelGroup>
+					<p:inputMask id="bankCode" value="#{bankingHandler.newTransaction.bankCode}" mask="99999999" required="true" requiredMessage="Bitte Ziel-Bankleitzahl eingeben!" />
+					<p:message for="bankCode" />
+				</h:panelGroup>
+				<h:outputLabel for="transactionDate" value="Ausführung zum:" />
+				<h:panelGroup>
+					<p:calendar id="transactionDate" value="#{bankingHandler.newTransaction.transactionDate}" pattern="dd.MM.yyyy" effect="slideDown" selectListener="#{bankingHandler.handleDateSelection}" onSelectUpdate="growl" />
+					<p:message for="transactionDate" />
+				</h:panelGroup>
 			</h:panelGrid>
 			<p>
-				<h:commandButton id="saveAccount" style="text-align:right;" action="save" value="Speichern" />
-				<h:message for="saveAccount" errorClass="invalid" />
-				<h:commandButton id="abortAccount" style="text-align:right;" action="abort" value="Abbrechen" />
-				<h:message for="abortAccount" errorClass="invalid" />
+				<h:commandButton id="saveTransaction" style="text-align:right;" action="save" actionListener="#{bankingHandler.saveNewTransaction}" value="Speichern" />
+				<h:message for="saveTransaction" errorClass="invalid" />
+				<h:commandButton id="abortTransaction" style="text-align:right;" action="abort" value="Abbrechen" />
+				<h:message for="abortTransaction" errorClass="invalid" />
 			</p>
 
 		</h:form>

@@ -144,5 +144,10 @@ public abstract class Account implements Serializable {
 	public AccountType getType() {
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return this.getType() + "/" + this.accountNumber + "/" + this.bankCode;
+	}
 	
 }
