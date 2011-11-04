@@ -58,20 +58,28 @@
 			</h:panelGroup>
 			<h:dataTable var="_transaction" value="#{userHandler.transactions}" rendered="#{not empty userHandler.transactions}">
 				<h:column>
+					<f:facet name="header">Transaktionsnummer</f:facet>
+                #{_transaction.transactionNumber}
+            </h:column>
+				<h:column>
+					<f:facet name="header">Ausführungsdatum</f:facet>
+                #{_transaction.transactionDate}
+            </h:column>
+				<h:column>
 					<f:facet name="header">Kontonummer</f:facet>
-                #{_account.accountNumber}
+                #{_transaction.accountNumber}
             </h:column>
 				<h:column>
 					<f:facet name="header">BLZ</f:facet>
-                #{_account.bankCode}
+                #{_transaction.bankCode}
             </h:column>
 				<h:column>
-					<f:facet name="header">Saldo</f:facet>
-                #{_account.amount}
+					<f:facet name="header">Betrag</f:facet>
+                #{_transaction.amount} €
             </h:column>
 				<h:column>
-					<f:facet name="header">letzte Abbuchung</f:facet>
-                #{_account.lastDebit}
+					<f:facet name="header">bearbeitet?</f:facet>
+                #{_transaction.processed?"Ja":"Nein"}
             </h:column>
 			</h:dataTable>
 			<h:panelGroup>

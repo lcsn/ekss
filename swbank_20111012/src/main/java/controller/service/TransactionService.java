@@ -23,6 +23,7 @@ public class TransactionService extends GenericService {
 	
 	public Transaction createTransaction(Transaction transaction) throws Exception {
 		log.trace("createTransaction");
+		transaction.generateTransactionNumber();
 		em.persist(transaction);
 		em.flush();
 		return em.find(Transaction.class, transaction.getId());

@@ -150,4 +150,14 @@ public abstract class Account implements Serializable {
 		return this.getType() + "/" + this.accountNumber + "/" + this.bankCode;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Account && (this.id != null) ? this.id.equals(((Account) obj).getId()) : (obj == this);
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.id != null ? this.getClass().hashCode() + this.getId().hashCode() : super.hashCode();
+	}
+	
 }

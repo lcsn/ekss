@@ -22,6 +22,7 @@ import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 
 import controller.service.AccountService;
+import controller.service.TransactionService;
 
 @Named("userHandler")
 @SessionScoped
@@ -37,6 +38,9 @@ public class UserHandler {
 	
 	@Inject
 	private AccountService accountService;
+
+	@Inject
+	private TransactionService transactionService;
 
 	private User currentUser;
 	
@@ -96,6 +100,12 @@ public class UserHandler {
 
 	public void loadTransactions(Account account, User user) {
 		log.info("load transactions");
+		try {
+			this.transactions = transactionService.findTransactionsByUser(user==null?currentUser:user);
+		} catch (Exception e) {
+			errorHandler.setException(e);
+			log.error(e);
+		}
 	}
 	
 	public void setCurrentUser(User user) {

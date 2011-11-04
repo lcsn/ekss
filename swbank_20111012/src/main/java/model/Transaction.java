@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
@@ -50,7 +51,6 @@ public class Transaction implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty
 	@NotNull
 	private String transactionNumber;
 	
@@ -72,9 +72,9 @@ public class Transaction implements Serializable {
 	@Size(min = 9, max = 9, message="Kontonummer hat die Laenge 9")
 	private String accountNumber;
 	
-	@NotEmpty
 	@NotNull
-	@DecimalMin(value="0.01", message="Minimum ist ein 1 cent!")
+	@DecimalMin(value="0.01", message="Minimaler Betrag ist 0,01 €!")
+	@DecimalMax(value="2500.00", message="Maximaler Betrag ist 2500,00 €")
 	private BigDecimal amount;
 
 	@Future
@@ -148,12 +148,9 @@ public class Transaction implements Serializable {
 		this.user = user;
 	}
 
-	@SuppressWarnings("unused")
-	@PrePersist
-	private void setTransactionNumber() {
+	public void generateTransactionNumber() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(this.transactionDate);
-		this.transactionNumber = this.user.getId() + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR) + "/" + calendar.getTimeInMillis();
+		this.transactionNumber = this.user.getId() + "/" + calendar.getTimeInMillis();
 	}
 	
 	@Override

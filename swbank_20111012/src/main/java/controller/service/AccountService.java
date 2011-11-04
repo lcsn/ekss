@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.Query;
 
 import model.Account;
+import model.BankInformation;
 import model.User;
 
 import org.jboss.logging.Logger;
@@ -19,11 +20,19 @@ public class AccountService extends GenericService {
 	@Category("accountservice")
 	private Logger log;
 	
+	@Inject
+	private BankInformationService bankInformationService;
+	
 	public Account createAccount(Account account) throws Exception {
 		log.trace("createAccount");
 		em.persist(account);
 		em.flush();
+		BankInformation bi = bankInformationService.findInformationByName("maxAccountNumber");
+		bi.setName("maxAccountNumber");
 		BankInformationService.getInstance().incrementAccountCounter();
+		bi.setValue(String.valueOf(BankInformationService.getInstance().accountCounter));
+		bi.setValueClass(Integer.class.getName());
+		bankInformationService.updateBankInformation(bi);
 		return em.find(Account.class, account.getId());
 	}
 	

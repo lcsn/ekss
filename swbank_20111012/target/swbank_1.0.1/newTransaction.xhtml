@@ -10,15 +10,15 @@
 			<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
 				<h:outputLabel for="account" value="Konto:" />
 				<h:panelGroup>
-					<h:selectOneMenu id="account" value="#{bankingHandler.newTransaction.account}" required="true" converter="accountConverter" requiredMessage="Bitte Konto auswählen!">
-						<f:selectItems value="#{userHandler.accounts}" var="acc" itemLabel="#{acc.accountNumber}/#{acc.bankCode}" itemValue="#{acc}" />
+					<h:selectOneMenu id="account" value="#{bankingHandler.newTransaction.account}" required="true" requiredMessage="Bitte Konto auswählen!">
+						<f:selectItems value="#{userHandler.accounts}" />
 					</h:selectOneMenu>
 					<p:message for="account" />
 				</h:panelGroup>
 				<h:outputLabel for="amount" value="Betrag:" />
 				<h:panelGroup>
 					<p:inputText id="amount" value="#{bankingHandler.newTransaction.amount}" required="true" requiredMessage="Bitte Betrag eingeben!" >
-						<!-- <f:convertNumber type="currency" maxIntegerDigits="9" maxFractionDigits="2" pattern="###.###,##" /> -->
+						<f:convertNumber type="currency" currencyCode="EUR" />
 					</p:inputText>
 					<p:message for="amount" />
 				</h:panelGroup>
@@ -41,7 +41,7 @@
 			<p>
 				<h:commandButton id="saveTransaction" style="text-align:right;" action="save" actionListener="#{bankingHandler.saveNewTransaction}" value="Speichern" />
 				<h:message for="saveTransaction" errorClass="invalid" />
-				<h:commandButton id="abortTransaction" style="text-align:right;" action="abort" value="Abbrechen" />
+				<h:commandButton id="abortTransaction" style="text-align:right;" action="abort" actionListener="#{bankingHandler.abortNewTransaction}" value="Abbrechen" />
 				<h:message for="abortTransaction" errorClass="invalid" />
 			</p>
 

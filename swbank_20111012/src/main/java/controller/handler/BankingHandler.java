@@ -25,6 +25,7 @@ import util.AccountType;
 import controller.service.AccountService;
 import controller.service.BankInformationService;
 import controller.service.GenericService;
+import controller.service.TransactionService;
 
 @Named("bankingHandler")
 @Stateless
@@ -43,8 +44,8 @@ public class BankingHandler extends GenericService {
 	@Inject
 	private AccountService accountService;
 	
-//	@Inject
-//	private TransactionService transactionService;
+	@Inject
+	private TransactionService transactionService;
 	
 	@Inject
 	private BankInformationService bankInformationService;
@@ -57,6 +58,7 @@ public class BankingHandler extends GenericService {
 	@PostConstruct
 	public void init() {
 //		this.newAccount = new Account();
+		this.newAccount = null;
 		this.newTransaction = new Transaction();
 	}
 	
@@ -117,11 +119,32 @@ public class BankingHandler extends GenericService {
 			log.error(e);
 		}
 		userHandler.init();
-		init();
+		this.newAccount = null;
+	}
+	
+	public void abortNewAccount() {
+		log.info("abortNewAccount");
+		this.newAccount = null;
 	}
 	
 	public void saveNewTransaction() {
 		log.info("saveNewTransaction");
+
+		try {
+			newTransaction.setUser(userHandler.getCurrentUser());
+			transactionService.createTransaction(newTransaction);
+		} catch (Exception e) {
+			errorHandler.setException(e);
+			log.error(e);
+		}
+		
+		userHandler.init();
+		this.newTransaction = new Transaction();
+	}
+	
+	public void abortNewTransaction() {
+		log.info("abortNewTransaction");
+		this.newTransaction = new Transaction();
 	}
 	
 	public void handleDateSelection(DateSelectEvent event) {

@@ -1,28 +1,29 @@
 package util.converter;
 
-import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import javax.naming.InitialContext;
 
 import model.Account;
 import controller.service.AccountService;
 
-@FacesConverter(forClass = Account.class, value = "accountConverter")
+@FacesConverter(forClass = Account.class)
 public class AccountConverter implements Converter {
-
-	@EJB
-	private AccountService accountService;
 
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String value) {
 		if (value.isEmpty()) {
 			return null;
 		}
+		
 		Account account = null;
 		try {
-			account = accountService.findAccountById(new Long(value));
+			InitialContext ic = new InitialContext();
+			AccountService accountSerivce = (AccountService) ic.lookup("java:global/swbank_20111012/AccountService");
+			account = accountSerivce.findAccountById(new Long(value));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
