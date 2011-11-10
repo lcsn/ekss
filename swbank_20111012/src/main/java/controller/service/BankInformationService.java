@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Asynchronous;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
@@ -42,6 +44,12 @@ public class BankInformationService extends GenericService {
 	
 	private String bankName = "No Name";
 	private String bankCode = "11235813";
+	
+//	@Asynchronous
+	@Schedule(second="*/5", minute="*",hour="*", persistent=false)
+	private void sayHello() {
+		System.out.println("server says hello.");
+	}
 	
 	@SuppressWarnings("unused")
 	@PostConstruct

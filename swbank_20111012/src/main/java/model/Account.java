@@ -77,6 +77,8 @@ public abstract class Account implements Serializable {
 	@OneToMany(mappedBy="account", fetch=FetchType.LAZY)
 	private List<Transaction> transactions;
 	
+	private boolean activ = false;
+	
 	public Long getId() {
 		return id;
 	}
@@ -158,6 +160,14 @@ public abstract class Account implements Serializable {
 	@Override
 	public int hashCode() {
 		return this.id != null ? this.getClass().hashCode() + this.getId().hashCode() : super.hashCode();
+	}
+
+	public boolean isActiv() {
+		return activ;
+	}
+
+	public void setActiv(boolean activ) {
+		this.activ = activ;
 	}
 	
 }

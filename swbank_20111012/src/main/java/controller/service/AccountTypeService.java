@@ -10,8 +10,7 @@ public class AccountTypeService {
 	@Named
 	@Produces
 	public AccountType[] getAccountTypes() {
-	    return AccountType.values();
-	  }
+		return AccountType.values();
+	}
 
-	
 }

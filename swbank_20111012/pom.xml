@@ -10,9 +10,15 @@
 
 	<properties>
 		<jboss.home>${env.JBOSS_HOME}</jboss.home>
-   	</properties>
+	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>jms</groupId>
+			<artifactId>jms</artifactId>
+			<version>1.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-web-6.0</artifactId>
@@ -22,11 +28,11 @@
 		</dependency>
 
 		<dependency>
-		   <groupId>org.jboss.seam.solder</groupId>
-		   <artifactId>seam-solder</artifactId>
-		   <version>3.0.0.Final</version>
+			<groupId>org.jboss.seam.solder</groupId>
+			<artifactId>seam-solder</artifactId>
+			<version>3.0.0.Final</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -39,20 +45,20 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Primefaces -->
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>2.2.1</version>
-		</dependency>  
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -71,7 +77,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 		<!-- Primefaces -->
 		<repository>
 			<id>prime-repo</id>

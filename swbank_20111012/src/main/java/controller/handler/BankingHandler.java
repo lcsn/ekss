@@ -4,12 +4,20 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
 
 import model.Account;
 import model.CommonAccount;
@@ -34,43 +42,49 @@ public class BankingHandler extends GenericService {
 	@Inject
 	@Category("bankinghandler")
 	private Logger log;
-	
+
 	@Inject
 	private ErrorHandler errorHandler;
-	
+
 	@Inject
 	private UserHandler userHandler;
-	
+
 	@Inject
 	private AccountService accountService;
-	
+
 	@Inject
 	private TransactionService transactionService;
-	
+
 	@Inject
 	private BankInformationService bankInformationService;
-	
+
+	@Resource(mappedName = "java:/ConnectionFactory")
+	private ConnectionFactory connectionFactory;
+
+	@Resource(mappedName = "java:/queue/transactionQueue")
+	private Queue queue;
+
 	private Account newAccount;
 	private Transaction newTransaction;
-	
+
 	private AccountType type;
-	
+
 	@PostConstruct
 	public void init() {
-//		this.newAccount = new Account();
+		// this.newAccount = new Account();
 		this.newAccount = null;
 		this.newTransaction = new Transaction();
 	}
-	
+
 	@Produces
 	public AccountType getType() {
 		return type;
 	}
-	
+
 	public void setType(AccountType type) {
 		this.type = type;
 	}
-	
+
 	@Produces
 	public Account getNewAccount() {
 		if (this.newAccount != null) {
@@ -78,7 +92,7 @@ public class BankingHandler extends GenericService {
 		}
 		return null;
 	}
-	
+
 	@Produces
 	public Transaction getNewTransaction() {
 		if (this.newTransaction != null) {
@@ -86,7 +100,7 @@ public class BankingHandler extends GenericService {
 		}
 		return null;
 	}
-	
+
 	private void setCommonAccountAttributes() {
 		log.info("setCommonAccountAttributes");
 		this.newAccount.setUser(userHandler.getCurrentUser());
@@ -96,19 +110,17 @@ public class BankingHandler extends GenericService {
 		this.newAccount.setAmount(BigDecimal.ZERO);
 		this.newAccount.setLastDebit(null);
 	}
-	
+
 	public void saveNewAccount() {
 		log.info("saveNewAccount");
-		if(type.equals(AccountType.GIROACCOUNT)) {
+		if (type.equals(AccountType.GIROACCOUNT)) {
 			log.info("it is a " + AccountType.GIROACCOUNT);
 			this.newAccount = new GiroAccount();
-		}
-		else if(type.equals(AccountType.COMMONACCOUNT)) {
+		} else if (type.equals(AccountType.COMMONACCOUNT)) {
 			log.info("it is a " + AccountType.COMMONACCOUNT);
 			this.newAccount = new CommonAccount();
-		}
-		else if(type.equals(AccountType.SMARTACCOUNT)) {
-			log.info("it is a " + AccountType.SMARTACCOUNT);	
+		} else if (type.equals(AccountType.SMARTACCOUNT)) {
+			log.info("it is a " + AccountType.SMARTACCOUNT);
 			this.newAccount = new SmartAccount();
 		}
 		setCommonAccountAttributes();
@@ -121,32 +133,44 @@ public class BankingHandler extends GenericService {
 		userHandler.init();
 		this.newAccount = null;
 	}
-	
+
 	public void abortNewAccount() {
 		log.info("abortNewAccount");
 		this.newAccount = null;
 	}
-	
+
 	public void saveNewTransaction() {
 		log.info("saveNewTransaction");
 
 		try {
 			newTransaction.setUser(userHandler.getCurrentUser());
 			transactionService.createTransaction(newTransaction);
+
+//			Send JMS message
+			Connection connection = connectionFactory.createConnection();
+			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			MessageProducer producer = session.createProducer(queue);
+			Message message = session.createTextMessage();
+			message.setLongProperty("id", newTransaction.getId());
+			producer.send(message);
+
+		} catch (JMSException e) {
+			errorHandler.setException(e);
+			log.error(e);
 		} catch (Exception e) {
 			errorHandler.setException(e);
 			log.error(e);
 		}
-		
+
 		userHandler.init();
 		this.newTransaction = new Transaction();
 	}
-	
+
 	public void abortNewTransaction() {
 		log.info("abortNewTransaction");
 		this.newTransaction = new Transaction();
 	}
-	
+
 	public void handleDateSelection(DateSelectEvent event) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
