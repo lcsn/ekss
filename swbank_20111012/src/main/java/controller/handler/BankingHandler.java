@@ -16,6 +16,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
 
@@ -150,9 +151,16 @@ public class BankingHandler extends GenericService {
 			Connection connection = connectionFactory.createConnection();
 			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			MessageProducer producer = session.createProducer(queue);
-			Message message = session.createTextMessage();
-			message.setLongProperty("id", newTransaction.getId());
-			producer.send(message);
+			ObjectMessage objectMessage = session.createObjectMessage(newTransaction.clone());
+			
+			producer.send(objectMessage);
+			producer.close();
+			session.close();
+			connection.close();
+			
+//			Message message = session.createTextMessage();
+//			message.setLongProperty("id", newTransaction.getId());
+//			producer.send(message);
 
 		} catch (JMSException e) {
 			errorHandler.setException(e);

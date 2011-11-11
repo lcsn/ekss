@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Query;
 
+import model.Account;
 import model.Transaction;
 import model.User;
 
@@ -27,6 +28,25 @@ public class TransactionService extends GenericService {
 		em.persist(transaction);
 		em.flush();
 		return em.find(Transaction.class, transaction.getId());
+	}
+	
+	public Transaction updateTransaction(Transaction transaction) {
+		log.trace("updateTransaction");
+		if(transaction.getId() != null) {
+			em.merge(transaction);
+			em.flush();
+			return em.find(Transaction.class, transaction.getId());
+		}
+		log.info("Transaction is not persistent.");
+		return transaction;
+	}
+	
+	public boolean markTransactionAsProcessed(Long transactionId) throws Exception {
+		log.trace("markTransactionAsProcessed");
+		Transaction transaction = findTransactionById(transactionId);
+		transaction.setProcessed(true);
+		updateTransaction(transaction);
+		return true;
 	}
 	
 	public Transaction findTransactionByTransactionNumber(String transactionNumber) throws Exception {
@@ -65,5 +85,4 @@ public class TransactionService extends GenericService {
 		return (List<Transaction>) q.getResultList();
 	}
 
-	
 }

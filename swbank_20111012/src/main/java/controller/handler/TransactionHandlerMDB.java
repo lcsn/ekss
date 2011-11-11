@@ -1,18 +1,22 @@
 package controller.handler;
 
+import java.math.BigDecimal;
+
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.jms.ObjectMessage;
 
+import model.Account;
 import model.Transaction;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
+import controller.service.AccountService;
 import controller.service.TransactionService;
 
 @MessageDriven(activationConfig = {
@@ -27,30 +31,29 @@ public class TransactionHandlerMDB implements MessageListener {
 	private Logger log;
 
 	@Inject
+	private AccountService accountService;
+	
+	@Inject
 	private TransactionService transactionService;
 	
 	public TransactionHandlerMDB() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void onMessage(Message message) {
-		Long entityId = null;
+		ObjectMessage objectMessage = (ObjectMessage) message;
 		try {
-			entityId = message.getLongProperty("id");
-			log.info("Received message: " + entityId);
+			Transaction transaction = (Transaction) objectMessage.getObject();
+			log.info("Received message: " + transaction);
+			Account sourceAccount = transaction.getAccount();
+			Account targetAccount = accountService.findAccountByBankCodeAndAccountNumber(transaction.getBankCode(), transaction.getAccountNumber());
+			accountService.transferCash(sourceAccount, targetAccount, transaction.getAmount());
+			transactionService.markTransactionAsProcessed(transaction.getId());
 		} catch (JMSException e1) {
 			e1.printStackTrace();
-		}
-		
-		if(entityId != null) {
-			try {
-//				Transaction transaction = transactionService.findTransactionById(entityId);
-//				log.info("Transactionnumber: " + transaction.getTransactionNumber());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			log.error("Error while transferring ca$h.");
+			e.printStackTrace();
 		}
 	}
-
 }

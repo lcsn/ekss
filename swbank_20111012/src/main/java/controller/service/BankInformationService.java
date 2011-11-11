@@ -46,10 +46,10 @@ public class BankInformationService extends GenericService {
 	private String bankCode = "11235813";
 	
 //	@Asynchronous
-	@Schedule(second="*/5", minute="*",hour="*", persistent=false)
-	private void sayHello() {
-		System.out.println("server says hello.");
-	}
+//	@Schedule(second="*/5", minute="*",hour="*", persistent=false)
+//	private void sayHello() {
+//		System.out.println("server says hello.");
+//	}
 	
 	@SuppressWarnings("unused")
 	@PostConstruct

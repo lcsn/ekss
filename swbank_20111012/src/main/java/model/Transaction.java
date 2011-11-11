@@ -37,7 +37,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 	})
 @Entity
 @Table(name="TransactionBean", uniqueConstraints = @UniqueConstraint(columnNames = "transactionNumber"))
-public class Transaction implements Serializable {
+public class Transaction implements Serializable, Cloneable {
 	
 	private static final long serialVersionUID = 2013925495267385363L;
 
@@ -164,6 +164,21 @@ public class Transaction implements Serializable {
 
 	public void setProcessed(boolean processed) {
 		this.processed = processed;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Transaction && (this.id != null) ? this.id.equals(((Transaction) obj).getId()) : (obj == this);
+	}
+
+	@Override
+	public Transaction clone() {
+		try {
+			return (Transaction) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return this;
+		}
 	}
 	
 }

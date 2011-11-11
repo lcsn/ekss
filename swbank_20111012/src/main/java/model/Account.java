@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +34,8 @@ import util.AccountType;
 	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER, query="select a from Account a where a.accountNumber=:accountNumber"),
 	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER_AND_BANKCODE, query="select a from Account a where a.accountNumber=:accountNumber and a.bankCode=:bankCode"),
 	@NamedQuery(name=Account.FIND_BY_ID, query="select a from Account a where a.id=:accountId"),
-	@NamedQuery(name=Account.FIND_BY_USER, query="select a from Account a where a.user=:user")
+	@NamedQuery(name=Account.FIND_BY_USER, query="select a from Account a where a.user=:user"),
+	@NamedQuery(name=Account.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER, query="select a from Account a where a.bankCode=:bankCode and a.accountNumber=:accountNumber")
 	})
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
@@ -45,6 +48,7 @@ public abstract class Account implements Serializable {
 	public static final String FIND_BY_ACCOUNTNUMBER_AND_BANKCODE = "Account.FIND_BY_ACCOUNTNUMBER_AND_BANKCODE";
 	public static final String FIND_BY_ID = "Account.FIND_BY_ID";
 	public static final String FIND_BY_USER = "Account.FIND_BY_USER";
+	public static final String FIND_BY_BANKCODE_AND_ACCOUNTNUMBER = "Account.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
@@ -170,4 +174,12 @@ public abstract class Account implements Serializable {
 		this.activ = activ;
 	}
 	
+	public void debit(BigDecimal subtrahend) {
+		this.amount = this.amount.subtract(subtrahend);
+		this.lastDebit = Calendar.getInstance().getTime();
+	}
+	
+	public void add(BigDecimal augend) {
+		this.amount = this.amount.add(augend);
+	}
 }

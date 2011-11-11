@@ -1,5 +1,6 @@
 package controller.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -36,6 +37,17 @@ public class AccountService extends GenericService {
 		return em.find(Account.class, account.getId());
 	}
 	
+	public Account updateAccount(Account account) throws Exception {
+		log.trace("updateAccount");
+		if (account.getId() != null) {
+			em.merge(account);
+			em.flush();
+			return em.find(Account.class, account.getId());
+		}
+		log.info("Account is not persistent.");
+		return account;
+	}
+	
 	public Account findAccountByAccountNumber(String accountNumber) throws Exception {
 		log.trace("findAccountByAccountNumber");
 		Query q = em.createNamedQuery(Account.FIND_BY_ACCOUNTNUMBER);
@@ -65,5 +77,22 @@ public class AccountService extends GenericService {
 		q.setParameter("user", user);
 		return (List<Account>) q.getResultList();
 	}
+
+	public Account findAccountByBankCodeAndAccountNumber(String bankCode, String accountNumber) {
+		Query q = em.createNamedQuery(Account.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER);
+		q.setParameter("bankCode", bankCode);
+		q.setParameter("accountNumber", accountNumber);
+		return (Account) q.getSingleResult();
+	}
 	
+	public boolean transferCash(Account source, Account target, BigDecimal amount) throws Exception {
+		source.debit(amount);
+		log.info(amount + " from " + source + " was debited.");
+		target.add(amount);
+		log.info(amount + " was added to " + target + ".");
+		updateAccount(source);
+		updateAccount(target);
+		return true;
+		
+	}
 }
