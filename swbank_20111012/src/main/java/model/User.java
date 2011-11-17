@@ -29,7 +29,8 @@ import util.Role;
 
 @NamedQueries({
 		@NamedQuery(name=User.FIND_BY_CREDENTIALS, query="select u from User u where u.credentials=:credentials"),
-		@NamedQuery(name=User.FIND_BY_ID, query="select u from User u where u.id=:userId")
+		@NamedQuery(name=User.FIND_BY_ID, query="select u from User u where u.id=:userId"),
+		@NamedQuery(name=User.FIND_USERS, query="select u from User u")
 		})
 @Entity
 @Table(name="UserBean", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -39,6 +40,7 @@ public class User implements Serializable {
 
 	public static final String FIND_BY_CREDENTIALS = "User.FIND_BY_CREDENTIALS";
 	public static final String FIND_BY_ID = "User.FIND_BY_ID";
+	public static final String FIND_USERS = "User.FIND_CUSTOMER";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -72,7 +74,7 @@ public class User implements Serializable {
 	@JoinColumn(name="credentialId")
 	private Credential credentials;
 
-	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Account> accounts;
 	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
@@ -113,11 +115,11 @@ public class User implements Serializable {
 		this.credentials = credentials;
 	}
 
-	public Role getLoginRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setLoginRole(Role role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

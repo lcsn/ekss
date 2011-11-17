@@ -1,7 +1,5 @@
 package controller.handler;
 
-import java.math.BigDecimal;
-
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;

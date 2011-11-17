@@ -8,31 +8,41 @@
 			<p:growl id="growl" showDetail="true" />
 			
 			<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
-				<h:outputLabel for="account" value="Konto:" />
+				<h:outputLabel for="account" value="Konto" />
 				<h:panelGroup>
 					<h:selectOneMenu id="account" value="#{bankingHandler.newTransaction.account}" required="true" requiredMessage="Bitte Konto auswählen!">
 						<f:selectItems value="#{userHandler.accounts}" />
 					</h:selectOneMenu>
 					<p:message for="account" />
 				</h:panelGroup>
-				<h:outputLabel for="amount" value="Betrag:" />
+				<h:outputLabel for="nameOfReceiver" value="Vorname" />
+				<h:panelGroup>
+					<p:inputText id="nameOfReceiver" value="#{bankingHandler.newTransaction.firstnameOfReceiver}" required="true" requiredMessage="Bitte Vornamen des Begünstigten eingeben!" />
+					<p:message for="nameOfReceiver" />
+				</h:panelGroup>
+				<h:outputLabel for="lastnameOfReceiver" value="Name" />
+				<h:panelGroup>
+					<p:inputText id="lastnameOfReceiver" value="#{bankingHandler.newTransaction.lastnameOfReceiver}" required="true" requiredMessage="Bitte Namen des Begünstigten eingeben!" />
+					<p:message for="lastnameOfReceiver" />
+				</h:panelGroup>
+				<h:outputLabel for="accountNumber" value="Kontonummer" />
+				<h:panelGroup>
+					<p:inputMask id="accountNumber" value="#{bankingHandler.newTransaction.accountNumber}" mask="999999999" required="true" requiredMessage="Bitte Ziel-Kontonummer angeben!" />
+					<p:message for="accountNumber" />
+				</h:panelGroup>
+				<h:outputLabel for="bankCode" value="BLZ" />
+				<h:panelGroup>
+					<p:inputMask id="bankCode" value="#{bankingHandler.newTransaction.bankCode}" mask="99999999" required="true" requiredMessage="Bitte Ziel-Bankleitzahl eingeben!" />
+					<p:message for="bankCode" />
+				</h:panelGroup>
+				<h:outputLabel for="amount" value="Betrag" />
 				<h:panelGroup>
 					<p:inputText id="amount" value="#{bankingHandler.newTransaction.amount}" required="true" requiredMessage="Bitte Betrag eingeben!" >
 						<f:convertNumber type="currency" currencyCode="EUR" />
 					</p:inputText>
 					<p:message for="amount" />
 				</h:panelGroup>
-				<h:outputLabel for="accountNumber" value="Kontonummer:" />
-				<h:panelGroup>
-					<p:inputMask id="accountNumber" value="#{bankingHandler.newTransaction.accountNumber}" mask="999999999" required="true" requiredMessage="Bitte Ziel-Kontonummer angeben!" />
-					<p:message for="accountNumber" />
-				</h:panelGroup>
-				<h:outputLabel for="bankCode" value="BLZ:" />
-				<h:panelGroup>
-					<p:inputMask id="bankCode" value="#{bankingHandler.newTransaction.bankCode}" mask="99999999" required="true" requiredMessage="Bitte Ziel-Bankleitzahl eingeben!" />
-					<p:message for="bankCode" />
-				</h:panelGroup>
-				<h:outputLabel for="transactionDate" value="Ausführung zum:" />
+				<h:outputLabel for="transactionDate" value="Ausführung zum" />
 				<h:panelGroup>
 					<p:calendar id="transactionDate" value="#{bankingHandler.newTransaction.transactionDate}" pattern="dd.MM.yyyy" effect="slideDown" selectListener="#{bankingHandler.handleDateSelection}" onSelectUpdate="growl" />
 					<p:message for="transactionDate" />

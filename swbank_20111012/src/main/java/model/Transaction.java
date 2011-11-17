@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +23,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -31,6 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @NamedQueries({
 	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONNUMBER, query="select t from Transaction t where t.transactionNumber=:transactionNumber"),
 	@NamedQuery(name=Transaction.FIND_BY_ID, query="select t from Transaction t where t.id=:transactionId"),
+	@NamedQuery(name=Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER, query="select t from Transaction t where t.bankCode=:bankCode and t.accountNumber=:accountNumber"),
 //	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE, query="select t from Transaction t where t.transactionDate>:date"),
 //	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER, query="select t from Transaction t where t.transactionDate>:date and t.user:=user"),
 	@NamedQuery(name=Transaction.FIND_BY_USER, query="select t from Transaction t where t.user=:user")
@@ -46,6 +47,7 @@ public class Transaction implements Serializable, Cloneable {
 //	public static final String FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE = "Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE";
 //	public static final String FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER = "Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER";
 	public static final String FIND_BY_USER = "Transaction.FIND_BY_USER";
+	public static final String FIND_BY_BANKCODE_AND_ACCOUNTNUMBER = "Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -61,6 +63,16 @@ public class Transaction implements Serializable, Cloneable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="userId")
 	private User user;
+	
+	@NotNull
+	@Size(min = 1, max = 25, message="max. 25 Buchstaben")
+	@Pattern(regexp = "[A-Za-z ]*", message = "Nur Buchstaben und Leerzeichen erlaubt!")
+	private String firstnameOfReceiver;
+	
+	@NotNull
+	@Size(min = 1, max = 25, message="max. 25 Buchstaben")
+	@Pattern(regexp = "[A-Za-z ]*", message = "Nur Buchstaben und Leerzeichen erlaubt!")
+	private String lastnameOfReceiver;
 	
 	@NotEmpty
 	@NotNull
@@ -146,6 +158,22 @@ public class Transaction implements Serializable, Cloneable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getFirstnameOfReceiver() {
+		return firstnameOfReceiver;
+	}
+
+	public void setFirstnameOfReceiver(String firstnameOfReceiver) {
+		this.firstnameOfReceiver = firstnameOfReceiver;
+	}
+
+	public String getLastnameOfReceiver() {
+		return lastnameOfReceiver;
+	}
+
+	public void setLastnameOfReceiver(String lastnameOfReceiver) {
+		this.lastnameOfReceiver = lastnameOfReceiver;
 	}
 
 	public void generateTransactionNumber() {

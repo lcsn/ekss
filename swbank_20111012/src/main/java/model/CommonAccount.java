@@ -37,5 +37,5 @@ public class CommonAccount extends Account {
 	public void setInterest(BigDecimal interest) {
 		this.interest = interest;
 	}
-	
+
 }

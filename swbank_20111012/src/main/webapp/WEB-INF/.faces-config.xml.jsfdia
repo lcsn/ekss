@@ -14,10 +14,16 @@
   SHAPE="256,33,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#login.xhtml:0" NAME="item"
    PATH="/login.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="success::#userHome.xhtml" NAME="output"
-    PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml"
-    TITLE="success" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output1"
+   <PROCESS-ITEM-OUTPUT ID="customer_success::#userHome.xhtml"
+    NAME="output" PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml"
+    TITLE="customer_success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="employee_success::#empHome.xhtml"
+    NAME="output1" PATH="/empHome.xhtml" TARGET="rules:#empHome.xhtml"
+    TITLE="employee_success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="developer_success::#develHome.xhtml"
+    NAME="output2" PATH="/develHome.xhtml"
+    TARGET="rules:#develHome.xhtml" TITLE="developer_success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output3"
     PATH="/failure.xhtml" TARGET="rules:#failure.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
@@ -74,6 +80,26 @@
    <PROCESS-ITEM-OUTPUT ID="abort::#userHome.xhtml" NAME="output1"
     PATH="/userHome.xhtml" TARGET="rules:#userHome.xhtml" TITLE="abort" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output2"
+    PATH="/failure.xhtml" TARGET="rules:#failure.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#empHome.xhtml" PATH="/empHome.xhtml"
+  SHAPE="528,225,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#empHome.xhtml:0" NAME="item"
+   PATH="/empHome.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#bank.xhtml" NAME="output"
+    PATH="/bank.xhtml" TARGET="rules:#bank.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output1"
+    PATH="/failure.xhtml" TARGET="rules:#failure.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#develHome.xhtml" PATH="/develHome.xhtml"
+  SHAPE="528,545,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#develHome.xhtml:0" NAME="item"
+   PATH="/develHome.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#bank.xhtml" NAME="output"
+    PATH="/bank.xhtml" TARGET="rules:#bank.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="failure::#failure.xhtml" NAME="output1"
     PATH="/failure.xhtml" TARGET="rules:#failure.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>

@@ -19,8 +19,18 @@
 	<navigation-rule>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>success</from-outcome>
+			<from-outcome>customer_success</from-outcome>
 			<to-view-id>/userHome.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>employee_success</from-outcome>
+			<to-view-id>/empHome.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>developer_success</from-outcome>
+			<to-view-id>/develHome.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
@@ -45,7 +55,6 @@
 	<navigation-rule>
 		<from-view-id>/userHome.xhtml</from-view-id>
 		<navigation-case>
-			<!-- <from-action>#{loginHandler.doLogout}</from-action> -->
 			<from-outcome>success</from-outcome>
 			<to-view-id>/bank.xhtml</to-view-id>
 			<redirect />
@@ -56,7 +65,32 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-
+	<navigation-rule>
+		<from-view-id>/empHome.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/bank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/failure.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/develHome.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/bank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/failure.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/userHome.xhtml</from-view-id>
 		<navigation-case>

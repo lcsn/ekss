@@ -1,5 +1,6 @@
 package controller.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -83,6 +84,21 @@ public class TransactionService extends GenericService {
 		Query q = em.createNamedQuery(Transaction.FIND_BY_USER);
 		q.setParameter("user", user);
 		return (List<Transaction>) q.getResultList();
+	}
+	
+	public List<Transaction> findTransactionsByBankCodeAndAccountnumber(String bankCode, String accountNumber) {
+		Query q = em.createNamedQuery(Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER);
+		q.setParameter("bankCode", bankCode);
+		q.setParameter("accountNumber", accountNumber);
+		return (List<Transaction>) q.getResultList();
+	}
+	
+	public List<Transaction> findTransactionsByBankCodeAndAccountnumber(List<Account> accounts) {
+		List<Transaction> outgoing = new ArrayList<Transaction>();
+		for (Account account : accounts) {
+			outgoing.addAll(findTransactionsByBankCodeAndAccountnumber(account.getBankCode(), account.getAccountNumber()));
+		}
+		return outgoing;
 	}
 
 }

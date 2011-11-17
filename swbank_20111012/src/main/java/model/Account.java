@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -82,6 +83,9 @@ public abstract class Account implements Serializable {
 	private List<Transaction> transactions;
 	
 	private boolean activ = false;
+	
+	@Transient
+	private String activAsString = "Nein";
 	
 	public Long getId() {
 		return id;
@@ -172,6 +176,26 @@ public abstract class Account implements Serializable {
 
 	public void setActiv(boolean activ) {
 		this.activ = activ;
+		if(activ) {
+			setActivAsString("Ja");
+		}
+		else {
+			setActivAsString("Nein");
+		}
+	}
+	
+	public String getActivAsString() {
+		return activAsString;
+	}
+
+	public void setActivAsString(String activAsString) {
+		this.activAsString = activAsString;
+		if(activAsString.equals("Ja")) {
+			setActiv(true);
+		}
+		else {
+			setActiv(false);
+		}
 	}
 	
 	public void debit(BigDecimal subtrahend) {
@@ -181,5 +205,15 @@ public abstract class Account implements Serializable {
 	
 	public void add(BigDecimal augend) {
 		this.amount = this.amount.add(augend);
+	}
+	
+	@PostLoad
+	public void load() {
+		if(isActiv()) {
+			this.activAsString = "Ja";
+		}
+		else {
+			this.activAsString = "Nein";
+		}
 	}
 }

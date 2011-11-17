@@ -33,11 +33,7 @@ public class BankInformationService extends GenericService {
 	@Inject
 	@Category("bankinformationservice")
 	private Logger log;
-	
-	/**
-	 * FIXME Kann Probleme geben Neustart. Variable wird nat. immer wieder mit 1 initialisiert.
-	 * Auslesen des höchsten Wertes aus der Datenbank würde Abhilfe schaffen.
-	 */
+
 	public static int accountCounter = 1;
 	
 	private static BankInformationService instance;

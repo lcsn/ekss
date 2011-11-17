@@ -58,5 +58,5 @@ public class GiroAccount extends Account {
 	public void setDispoOverdrawInterest(BigDecimal dispoOverdrawInterest) {
 		this.dispoOverdrawInterest = dispoOverdrawInterest;
 	}
-	
+
 }

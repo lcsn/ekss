@@ -1,5 +1,7 @@
 package controller.service;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -10,6 +12,8 @@ import model.User;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
+
+import util.Role;
 
 @Named
 @Stateless
@@ -39,4 +43,11 @@ public class UserService extends GenericService {
 		q.setParameter("credentials", credentials);
 		return (User) q.getSingleResult();
 	}
+
+	public List<User> findUsers() {
+		log.trace("findUsers");
+		Query q = em.createNamedQuery(User.FIND_USERS);
+		return (List<User>) q.getResultList();
+	}
+
 }

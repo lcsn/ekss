@@ -15,6 +15,8 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
+import util.Role;
+
 import controller.service.CredentialService;
 import controller.service.GenericService;
 import controller.service.PasswordService;
@@ -72,7 +74,20 @@ public class LoginHandler extends GenericService {
 					userHandler.setCurrentUser(user);
 //					userEventSrc.fire(currentUser);
 //					log.info(currentUser + " logged in!");
-					return "success";
+					
+					if(this.currentUser.getRole().equals(Role.CUSTOMER)) {
+						return "customer_success";
+					}
+					else if (this.currentUser.getRole().equals(Role.EMPLOYEE)) {
+						return "employee_success";
+					}
+					else if(this.currentUser.getRole().equals(Role.DEVELOPER)) {
+						return "developer_success";
+					}
+					else {
+						errorHandler.setException(new Exception("Unbekannte Login-Rolle!"));
+						return "failure";
+					}
 				}
 			}
 		} catch (Exception e) {

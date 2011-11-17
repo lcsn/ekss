@@ -45,7 +45,8 @@ public class UserHandler {
 	private User currentUser;
 	
 	private List<Account> accounts;
-	private List<Transaction> transactions;
+	private List<Transaction> inTransactions;
+	private List<Transaction> outTransactions;
 	
 	@PostConstruct
 	public void init() {
@@ -57,7 +58,8 @@ public class UserHandler {
 	public void destroy() {
 		this.currentUser = null;
 		this.accounts = null;
-		this.transactions = null;
+		this.inTransactions = null;
+		this.outTransactions = null;
 	}
 	
 	@Produces
@@ -89,19 +91,30 @@ public class UserHandler {
 	}
 	
 	@Produces
-	public List<Transaction> getTransactions() {
-		log.info("get transactions");
-		return transactions;
+	public List<Transaction> getInTransactions() {
+		log.info("get inTransactions");
+		return inTransactions;
 	}
 	
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void setInTransactions(List<Transaction> inTransactions) {
+		this.inTransactions = inTransactions;
+	}
+	
+	@Produces
+	public List<Transaction> getOutTransactions() {
+		log.info("get outTransactions");
+		return outTransactions;
+	}
+	
+	public void setOutTransactions(List<Transaction> outTransactions) {
+		this.outTransactions = outTransactions;
 	}
 
 	public void loadTransactions(Account account, User user) {
 		log.info("load transactions");
 		try {
-			this.transactions = transactionService.findTransactionsByUser(user==null?currentUser:user);
+			this.inTransactions = transactionService.findTransactionsByBankCodeAndAccountnumber(accountService.findAccountsByUser(user==null?currentUser:user));
+			this.outTransactions = transactionService.findTransactionsByUser(user==null?currentUser:user);
 		} catch (Exception e) {
 			errorHandler.setException(e);
 			log.error(e);

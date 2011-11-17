@@ -37,4 +37,5 @@ public class SmartAccount extends Account {
 	public void setDuration(ContractDuration duration) {
 		this.duration = duration;
 	}
+
 }

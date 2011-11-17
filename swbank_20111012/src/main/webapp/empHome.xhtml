@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui" template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h:form id="employee">
+			<p:messages />
+			<p:growl id="growl" showDetail="true" />
+			<h1>Home Employee</h1>
+			<table>
+				<tr>
+					<th style="text-align: right;"><h:outputLabel for="name" value="Hallo, " />
+					</th>
+					<td><h:outputText style="text-align: right;" id="name" value="#{userHandler.currentUser.firstname}" /> <h:message for="name" errorClass="invalid" />
+					</td>
+				</tr>
+			</table>
+			<p>
+				<h:commandButton id="logout" style="text-align:right;" action="#{loginHandler.doLogout}" value="Abmelden" />
+			</p>
+			
+			<br />
+			
+			<h1>Kunden</h1>
+			<p:dataTable id="userTable" var="cust" value="#{employeeHandler.customers}" emptyMessage="Keine Kunden gefunden!"
+				paginator="true" rows="5" selection="#{employeeHandler.selectedUser}" selectionMode="single" onRowSelectUpdate="employee:accountTable,growl"
+				rowSelectListener="#{employeeHandler.onCustomerSelect}">
+
+				<p:column filterBy="#{cust.firstname}" headerText="Vorname" filterMatchMode="contains">
+					<h:outputText value="#{cust.firstname}" />
+				</p:column>
+
+				<p:column filterBy="#{cust.lastname}" headerText="Nachname" filterMatchMode="contains">
+					<h:outputText value="#{cust.lastname}" />
+				</p:column>
+				
+				<p:column filterBy="#{cust.birthday}" headerText="Geburtstag" filterMatchMode="startsWith">
+					<h:outputText value="#{cust.birthday}" />
+				</p:column>
+
+				<p:column filterBy="#{cust.email}" headerText="Email" filterMatchMode="contains">
+					<h:outputText value="#{cust.email}" />
+				</p:column>
+
+				<p:column filterBy="#{cust.role}" headerText="Status" filterOptions="#{employeeHandler.userOptions}" filterMatchMode="exact">
+					<h:outputText value="#{cust.role}" />
+				</p:column>
+
+				<f:facet name="footer">
+					<p:commandButton value="Anzeigen" image="ui-icon ui-icon-search" update="employee:accountTable" oncomplete="userDialog.show()" />
+				</f:facet>
+			</p:dataTable>
+			<p:dialog id="dialog" header="Kundeninformation" widgetVar="userDialog" resizable="false" width="700" height="450" showEffect="clip" hideEffect="fold">
+
+					<h1>Konten</h1>
+					<p:dataTable id="accountTable" var="acc" value="#{employeeHandler.selectedUser.accounts}" emptyMessage="Keine Konten gefunden!" paginator="true" rows="5">
+
+						<p:column filterBy="#{acc.accountNumber}" headerText="Kontonummer" filterMatchMode="startsWith">
+							<h:outputText value="#{acc.accountNumber}" />
+						</p:column>
+
+						<p:column filterBy="#{acc.bankCode}" headerText="BLZ" filterMatchMode="startsWith">
+							<h:outputText value="#{acc.bankCode}" />
+						</p:column>
+						
+						<p:column filterBy="#{acc.activAsString}" headerText="Aktiviert?" filterOptions="#{employeeHandler.activOptions}" filterMatchMode="exact">
+							<h:outputText value="#{acc.activAsString}" />
+						</p:column>
+
+						<f:facet name="footer">
+							<p:commandButton value="Anzeigen" image="ui-icon ui-icon-search" update="accountTable" />
+						</f:facet>
+					</p:dataTable>
+
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
