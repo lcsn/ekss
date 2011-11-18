@@ -175,13 +175,13 @@ public abstract class Account implements Serializable {
 	}
 
 	public void setActiv(boolean activ) {
-		this.activ = activ;
 		if(activ) {
 			setActivAsString("Ja");
 		}
 		else {
 			setActivAsString("Nein");
 		}
+		this.activ = activ;
 	}
 	
 	public String getActivAsString() {
@@ -190,12 +190,6 @@ public abstract class Account implements Serializable {
 
 	public void setActivAsString(String activAsString) {
 		this.activAsString = activAsString;
-		if(activAsString.equals("Ja")) {
-			setActiv(true);
-		}
-		else {
-			setActiv(false);
-		}
 	}
 	
 	public void debit(BigDecimal subtrahend) {

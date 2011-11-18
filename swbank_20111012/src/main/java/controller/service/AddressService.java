@@ -36,4 +36,11 @@ public class AddressService extends GenericService {
 		return (List<Address>) q.getResultList();
 	}
 	
+	public Address findDefaultAddressByUser(User user) throws Exception {
+		log.trace("findDefaultAddressByUser");
+		Query q = em.createNamedQuery(Address.FIND_DEFAULTADDRESS_BY_USER);
+		q.setParameter("user", user);
+		return (Address) q.getSingleResult();
+	}
+	
 }

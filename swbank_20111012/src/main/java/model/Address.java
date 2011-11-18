@@ -14,9 +14,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@NamedQueries(
-		@NamedQuery(name=Address.FIND_BY_USER , query="select a from Address a where a.user=:user")
-		)
+@NamedQueries({
+		@NamedQuery(name=Address.FIND_BY_USER , query="select a from Address a where a.user=:user"),
+		@NamedQuery(name=Address.FIND_DEFAULTADDRESS_BY_USER , query="select a from Address a where a.user=:user and a.defaultAddress=true")
+	})
 @Entity
 @Table(name="AddressBean")
 public class Address implements Serializable {
@@ -24,6 +25,7 @@ public class Address implements Serializable {
 	private static final long serialVersionUID = -1020692856549419032L;
 
 	public static final String FIND_BY_USER = "Address.FIND_BY_USER";
+	public static final String FIND_DEFAULTADDRESS_BY_USER = "Address.FIND_DEFAULTADDRESS_BY_USER";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,6 +43,8 @@ public class Address implements Serializable {
 
 	@NotNull
 	private String zipcode;
+	
+	private boolean defaultAddress = false;
 
 	public Long getId() {
 		return id;
@@ -82,6 +86,14 @@ public class Address implements Serializable {
 		this.user = user;
 	}
 	
+	public boolean isDefaultAddress() {
+		return defaultAddress;
+	}
+
+	public void setDefaultAddress(boolean defaultAddress) {
+		this.defaultAddress = defaultAddress;
+	}
+
 	@Override
 	public String toString() {
 		return this.street + "\n" + this.zipcode + " " + this.city;

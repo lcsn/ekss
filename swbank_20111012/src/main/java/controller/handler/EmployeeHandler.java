@@ -8,26 +8,23 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import model.Account;
-import model.Transaction;
+import model.Address;
 import model.User;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
-import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.event.ToggleEvent;
 
 import util.Role;
-
 import controller.service.AccountService;
-import controller.service.TransactionService;
+import controller.service.AddressService;
 import controller.service.UserService;
 
 @Named("employeeHandler")
@@ -42,9 +39,21 @@ public class EmployeeHandler {
 	@Inject
 	private UserService userService;
 	
+	@Inject
+	private AccountService accountService;
+
+	@Inject
+	private AddressService addressService;
+	
 	private User selectedUser;
 	
+	private Account selectedAccount;
+	
+	private Address selectedAddress;
+	
 	private List<User> users;
+	
+	private List<Address> userAddresses;
 
 	@PostConstruct
 	public void init() {
@@ -58,6 +67,8 @@ public class EmployeeHandler {
 	@PreDestroy
 	public void destroy() {
 		this.users = null;
+		this.selectedUser = null;
+		this.selectedAccount = null;
 	}
 	
 	@Produces
@@ -99,11 +110,71 @@ public class EmployeeHandler {
 
 	public void setSelectedUser(User selectedUser) {
 		this.selectedUser = selectedUser;
+		this.selectedAccount = null;
+		this.selectedAddress = null;
+		try {
+			this.userAddresses = addressService.findAddressesByUser(selectedUser);
+		} catch (Exception e) {
+			log.error(e);
+		}
 	}
 	
+	@Produces
+	public Account getSelectedAccount() {
+		return selectedAccount;
+	}
+
+	public void setSelectedAccount(Account selectedAccount) {
+		this.selectedAccount = selectedAccount;
+	}
+
+	@Produces
+	public Address getSelectedAddress() {
+		return selectedAddress;
+	}
+
+	public void setSelectedAddress(Address selectedAddress) {
+		this.selectedAddress = selectedAddress;
+	}
+
+	@Produces
+	public List<Address> getUserAddresses() {
+		return userAddresses;
+	}
+
+	public void setUserAddresses(List<Address> userAddresses) {
+		this.userAddresses = userAddresses;
+	}
+
 	public void onCustomerSelect(SelectEvent event) {
-		User user = (User) event.getObject();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Kunde ausgewählt", user + " wurde ausgewählt!"));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Kunde ausgewählt", event.getObject() + " wurde ausgewählt!"));
+	}
+	
+	public void onAccountSelect(SelectEvent event) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Konto ausgewählt", event.getObject() + " wurde ausgewählt!"));
+	}
+	
+	public void onAddressSelect(SelectEvent event) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Konto ausgewählt", event.getObject() + " wurde ausgewählt!"));
+	}
+	
+	public void activate(ActionEvent event) {
+		log.info("activate");
+		try {
+			if (selectedAccount != null) {
+				if (selectedAccount.isActiv()) {
+					selectedAccount.setActiv(false);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Konto deaktiviert", selectedAccount + " wurde deaktiviert!"));
+				} else {
+					selectedAccount.setActiv(true);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Konto aktiviert", selectedAccount + " wurde aktiviert!"));
+				}
+				accountService.updateAccount(selectedAccount);
+			}
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Kein Konto ausgewählt!", "Bitte wählen sie zuerst ein Konto!"));
+		} catch (Exception e) {
+			log.error(e);
+		}
 	}
 	
 }
