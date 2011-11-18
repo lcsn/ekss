@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -71,7 +70,6 @@ public class EmployeeHandler {
 		this.selectedAccount = null;
 	}
 	
-	@Produces
 	public List<User> getCustomers() {
 		if (this.users == null) {
 			this.users = loadUsers();
@@ -79,7 +77,6 @@ public class EmployeeHandler {
 		return users;
 	}
 
-	@Produces
 	public SelectItem[] getUserOptions() {
 		Role[] roles = Role.values();
 		SelectItem[] options = new SelectItem[roles.length + 1]; 
@@ -93,7 +90,6 @@ public class EmployeeHandler {
 		return options;
 	}
 	
-	@Produces
 	public SelectItem[] getActivOptions() {
 		SelectItem[] options = new SelectItem[3]; 
 		options[0] = new SelectItem("", "Bitte wählen"); 
@@ -103,7 +99,6 @@ public class EmployeeHandler {
 	}
 
 
-	@Produces
 	public User getSelectedUser() {
 		return selectedUser;
 	}
@@ -119,7 +114,6 @@ public class EmployeeHandler {
 		}
 	}
 	
-	@Produces
 	public Account getSelectedAccount() {
 		return selectedAccount;
 	}
@@ -128,7 +122,6 @@ public class EmployeeHandler {
 		this.selectedAccount = selectedAccount;
 	}
 
-	@Produces
 	public Address getSelectedAddress() {
 		return selectedAddress;
 	}
@@ -137,7 +130,6 @@ public class EmployeeHandler {
 		this.selectedAddress = selectedAddress;
 	}
 
-	@Produces
 	public List<Address> getUserAddresses() {
 		return userAddresses;
 	}

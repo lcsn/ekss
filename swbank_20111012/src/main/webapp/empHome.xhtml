@@ -69,7 +69,7 @@
 						</p:column>
 						
 						 <!-- filterOptions="#{employeeHandler.activOptions}" filterMatchMode="exact" -->
-						<p:column filterBy="#{acc.activAsString}" headerText="Aktiviert?">
+						<p:column filterBy="#{acc.activAsString}" headerText="Aktiviert?" filterOptions="#{employeeHandler.activOptions}" filterMatchMode="exact">
 							<h:outputText value="#{acc.activAsString}" />
 						</p:column>
 						
