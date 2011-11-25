@@ -3,6 +3,7 @@ package model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import util.AccountType;
 import util.ContractDuration;
@@ -11,6 +12,7 @@ import util.ContractDuration;
  * Festzinskonto
  * @author lars
  */
+@XmlRootElement
 @Entity(name="SmartAccountBean")
 public class SmartAccount extends Account {
 

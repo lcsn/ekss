@@ -26,6 +26,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -36,6 +37,7 @@ import util.AccountType;
 	@NamedQuery(name=Account.FIND_BY_ACCOUNTNUMBER_AND_BANKCODE, query="select a from Account a where a.accountNumber=:accountNumber and a.bankCode=:bankCode"),
 	@NamedQuery(name=Account.FIND_BY_ID, query="select a from Account a where a.id=:accountId"),
 	@NamedQuery(name=Account.FIND_BY_USER, query="select a from Account a where a.user=:user"),
+	@NamedQuery(name=Account.FIND_ALL, query="select a from Account a"),
 	@NamedQuery(name=Account.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER, query="select a from Account a where a.bankCode=:bankCode and a.accountNumber=:accountNumber")
 	})
 @Entity
@@ -50,6 +52,7 @@ public abstract class Account implements Serializable {
 	public static final String FIND_BY_ID = "Account.FIND_BY_ID";
 	public static final String FIND_BY_USER = "Account.FIND_BY_USER";
 	public static final String FIND_BY_BANKCODE_AND_ACCOUNTNUMBER = "Account.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER";
+	public static final String FIND_ALL = "Account.FIND_ALL";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
@@ -118,7 +121,8 @@ public abstract class Account implements Serializable {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-
+	
+	@XmlTransient
 	public User getUser() {
 		return user;
 	}
@@ -135,6 +139,7 @@ public abstract class Account implements Serializable {
 		this.lastDebit = lastDebit;
 	}
 
+	@XmlTransient
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}

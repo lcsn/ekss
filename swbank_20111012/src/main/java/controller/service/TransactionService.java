@@ -86,6 +86,7 @@ public class TransactionService extends GenericService {
 		return (List<Transaction>) q.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Transaction> findTransactionsByBankCodeAndAccountnumber(String bankCode, String accountNumber) {
 		Query q = em.createNamedQuery(Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER);
 		q.setParameter("bankCode", bankCode);
@@ -99,6 +100,12 @@ public class TransactionService extends GenericService {
 			outgoing.addAll(findTransactionsByBankCodeAndAccountnumber(account.getBankCode(), account.getAccountNumber()));
 		}
 		return outgoing;
+	}
+
+	public List<Transaction> findTransactionsByAccount(Account account) {
+		Query q = em.createNamedQuery(Transaction.FIND_TRANSACTIONS_BY_ACCOUNT);
+		q.setParameter("account", account);
+		return (List<Transaction>) q.getResultList();
 	}
 
 }

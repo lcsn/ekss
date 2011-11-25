@@ -42,6 +42,7 @@ public class UserService extends GenericService {
 		return (User) q.getSingleResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> findUsers() {
 		log.trace("findUsers");
 		Query q = em.createNamedQuery(User.FIND_USERS);

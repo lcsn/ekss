@@ -9,10 +9,14 @@ import javax.persistence.Query;
 
 import model.Account;
 import model.BankInformation;
+import model.SmartAccount;
+import model.Transaction;
 import model.User;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
+
+import util.AccountType;
 
 @Stateless
 public class AccountService extends GenericService {
@@ -20,6 +24,9 @@ public class AccountService extends GenericService {
 	@Inject
 	@Category("accountservice")
 	private Logger log;
+	
+	@Inject
+	private TransactionService transactionService;
 	
 	@Inject
 	private BankInformationService bankInformationService;
@@ -67,7 +74,10 @@ public class AccountService extends GenericService {
 		log.trace("findAccountById");
 		Query q = em.createNamedQuery(Account.FIND_BY_ID);
 		q.setParameter("accountId", accountId);
-		return (Account) q.getSingleResult();
+		Account account = (Account) q.getSingleResult();
+		List<Transaction> transactions = transactionService.findTransactionsByAccount(account);
+		account.setTransactions(transactions);
+		return account;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -75,10 +85,15 @@ public class AccountService extends GenericService {
 		log.trace("findAccountsByUser");
 		Query q = em.createNamedQuery(Account.FIND_BY_USER);
 		q.setParameter("user", user);
-		return (List<Account>) q.getResultList();
+		List<Account> accounts = (List<Account>) q.getResultList();
+		for (Account account : accounts) {
+			account.setTransactions(transactionService.findTransactionsByAccount(account));
+		}
+		return accounts;
 	}
 
 	public Account findAccountByBankCodeAndAccountNumber(String bankCode, String accountNumber) {
+		log.trace("findAccountByBankCodeAndAccountNumber");
 		Query q = em.createNamedQuery(Account.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER);
 		q.setParameter("bankCode", bankCode);
 		q.setParameter("accountNumber", accountNumber);
@@ -86,6 +101,7 @@ public class AccountService extends GenericService {
 	}
 	
 	public boolean transferCash(Account source, Account target, BigDecimal amount) throws Exception {
+		log.trace("transferCash");
 		source.debit(amount);
 		log.info(amount + " from " + source + " was debited.");
 		target.add(amount);
@@ -94,5 +110,17 @@ public class AccountService extends GenericService {
 		updateAccount(target);
 		return true;
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Account> findAllAccounts() {
+		log.trace("findAllAccounts");
+		Query q = em.createNamedQuery(Account.FIND_ALL);
+		List<Account> accounts = (List<Account>) q.getResultList();
+		for (Account account : accounts) {
+			List<Transaction> transactions = transactionService.findTransactionsByAccount(account);
+			account.setTransactions(transactions);
+		}
+		return accounts;
 	}
 }

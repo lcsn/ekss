@@ -40,11 +40,15 @@
            		 <p:column headerText="aktiv?">
 					<h:outputText value="#{_account.activ?'Ja':'Nein'}" />
            		 </p:column>
+           		 <p:column headerText="rest">
+					<a href="#{request.contextPath}/rest/accounts/#{_account.id}">/rest/accounts/#{_account.id}</a>
+           		 </p:column>
 
 				<p:columnGroup type="footer">
 					<p:row>
 						<p:column colspan="3" footerText="Summe:" style="text-align:right" />
 						<p:column footerText="#{userHandler.totalAmount} €" />
+						<p:column />
 						<p:column />
 						<p:column />
 					</p:row>

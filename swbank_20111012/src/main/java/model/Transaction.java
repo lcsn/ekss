@@ -32,6 +32,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONNUMBER, query="select t from Transaction t where t.transactionNumber=:transactionNumber"),
 	@NamedQuery(name=Transaction.FIND_BY_ID, query="select t from Transaction t where t.id=:transactionId"),
 	@NamedQuery(name=Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER, query="select t from Transaction t where t.bankCode=:bankCode and t.accountNumber=:accountNumber"),
+	@NamedQuery(name=Transaction.FIND_TRANSACTIONS_BY_ACCOUNT, query="select t from Transaction t where t.account=:account"),
 //	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE, query="select t from Transaction t where t.transactionDate>:date"),
 //	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER, query="select t from Transaction t where t.transactionDate>:date and t.user:=user"),
 	@NamedQuery(name=Transaction.FIND_BY_USER, query="select t from Transaction t where t.user=:user")
@@ -48,6 +49,7 @@ public class Transaction implements Serializable, Cloneable {
 //	public static final String FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER = "Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER";
 	public static final String FIND_BY_USER = "Transaction.FIND_BY_USER";
 	public static final String FIND_BY_BANKCODE_AND_ACCOUNTNUMBER = "Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER";
+	public static final String FIND_TRANSACTIONS_BY_ACCOUNT = "Transaction.FIND_TRANSACTIONS_BY_ACCOUNT";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import util.AccountType;
 
@@ -12,6 +13,7 @@ import util.AccountType;
  * TagesgeldKonto
  * @author lars
  */
+@XmlRootElement
 @Entity(name="CommonAccountBean")
 public class CommonAccount extends Account {
 
