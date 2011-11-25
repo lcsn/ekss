@@ -13,8 +13,6 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-import util.Role;
-
 @Named
 @Stateless
 public class UserService extends GenericService {

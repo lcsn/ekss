@@ -1,12 +1,12 @@
 package controller.handler;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
-import javax.enterprise.inject.Produces;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -32,12 +32,12 @@ import org.primefaces.event.DateSelectEvent;
 import util.AccountType;
 import controller.service.AccountService;
 import controller.service.BankInformationService;
-import controller.service.GenericService;
 import controller.service.TransactionService;
 
+@SuppressWarnings("serial")
 @Named("bankingHandler")
-@Stateless
-public class BankingHandler extends GenericService {
+@RequestScoped
+public class BankingHandler implements Serializable {
 
 	@Inject
 	@Category("bankinghandler")
@@ -76,7 +76,6 @@ public class BankingHandler extends GenericService {
 		this.newTransaction = new Transaction();
 	}
 
-	@Produces
 	public AccountType getType() {
 		return type;
 	}
@@ -85,7 +84,6 @@ public class BankingHandler extends GenericService {
 		this.type = type;
 	}
 
-	@Produces
 	public Account getNewAccount() {
 		if (this.newAccount != null) {
 			return this.newAccount;
@@ -93,7 +91,6 @@ public class BankingHandler extends GenericService {
 		return null;
 	}
 
-	@Produces
 	public Transaction getNewTransaction() {
 		if (this.newTransaction != null) {
 			return this.newTransaction;

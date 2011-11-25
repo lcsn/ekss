@@ -4,136 +4,226 @@
 	<ui:define name="content">
 		<h:form id="user">
 			<p:messages />
-			<h1>Home User</h1>
-			<table>
-				<tr>
-					<th style="text-align: right;"><h:outputLabel for="name" value="Hallo, " />
-					</th>
-					<td><h:outputText style="text-align: right;" id="name" value="#{userHandler.currentUser.firstname}" /> <h:message for="name" errorClass="invalid" />
-					</td>
-				</tr>
-			</table>
-			<p>
-				<h:commandButton id="logout" style="text-align:right;" action="#{loginHandler.doLogout}" value="Abmelden" />
-			</p>
+			<p:growl id="growl" showDetail="true" />
+			<h1>Home</h1>
+			<h2>Hallo, #{userHandler.currentUser.firstname}</h2>
+			
+			<p:menubar>
+				<p:submenu label="Neu" icon="ui-icon ui-icon-gear">
+						<p:menuitem value="Neues Konto" action="newAccount" />
+						<p:menuitem value="Neues Konto DLG" onclick="dlgNewAccount.show()" />
+						<p:menuitem value="Transaktion" action="newTransaction" />
+						<p:menuitem value="Transaktion DLG" onclick="dlgNewTransaction.show()" />
+				</p:submenu>
+				<p:menuitem id="logout" action="#{loginHandler.doLogout}" value="Abmelden" icon="ui-icon ui-icon-close" />
+			</p:menubar>
 
 			<h2>Konten</h2>
-			<h:panelGroup rendered="#{empty userHandler.accounts}">
-				<em>Sie haben kein Konto.</em>
-			</h:panelGroup>
-			<h:dataTable var="_account" value="#{userHandler.accounts}" rendered="#{not empty userHandler.accounts}">
-				<h:column>
-					<f:facet name="header">Kontonummer</f:facet>
-                #{_account.accountNumber}
-            </h:column>
-				<h:column>
-					<f:facet name="header">BLZ</f:facet>
-                #{_account.bankCode}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Kontotyp</f:facet>
-                #{_account.type}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Saldo</f:facet>
-			    #{_account.amount} €
-            </h:column>
-				<h:column>
-					<f:facet name="header">letzte Abbuchung</f:facet>
-                #{_account.lastDebit}
-            </h:column>
-				<h:column>
-					<f:facet name="header">aktiv?</f:facet>
-                #{_account.activ?"Ja":"Nein"}
-            </h:column>
-			</h:dataTable>
-			<h:panelGroup>
-				<p>
-					<h:commandButton id="newAccount" style="text-align:right;" action="newAccount" value="Neues Konto" />
-					<h:message for="newAccount" errorClass="invalid" />
-				</p>
-			</h:panelGroup>
+			<p:dataTable id="accountTable" var="_account" value="#{userHandler.accounts}" emptyMessage="Keine Konten gefunden!" paginator="true" rows="5"
+				selection="#{userHandler.selectedAccount}" selectionMode="single" rowSelectListener="#{userHandler.onAccountSelect}" onRowSelectUpdate="growl">
+			
+				<p:column headerText="Kontonummer">
+					<h:outputText value="#{_account.accountNumber}" />
+            	</p:column>
+				<p:column headerText="BLZ">
+					<h:outputText value="#{_account.bankCode}" />
+           		 </p:column>
+           		 <p:column headerText="Kontotyp">
+					<h:outputText value="#{_account.type}" />
+           		 </p:column>
+           		 <p:column headerText="Saldo">
+					<h:outputText value="#{_account.amount} €" />
+           		 </p:column>
+           		 <p:column headerText="letzte Abbuchung">
+					<h:outputText value="#{_account.lastDebit}" />
+           		 </p:column>
+           		 <p:column headerText="aktiv?">
+					<h:outputText value="#{_account.activ?'Ja':'Nein'}" />
+           		 </p:column>
+
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="3" footerText="Summe:" style="text-align:right" />
+						<p:column footerText="#{userHandler.totalAmount} €" />
+						<p:column />
+						<p:column />
+					</p:row>
+				</p:columnGroup>
+
+				<f:facet name="footer">
+					<p:commandButton value="Neues Konto" action="newAccount" image="ui-icon ui-icon-disk" />
+				</f:facet>
+			</p:dataTable>
+
+			<p:spacer height="5" />
 
 			<h2>Transaktionen</h2>
 			<h3>Ausgehend</h3>
-			<h:panelGroup rendered="#{empty userHandler.outTransactions}">
-				<em>Sie haben keine Transaktionen.</em>
-			</h:panelGroup>
-			<h:dataTable var="_transaction" value="#{userHandler.outTransactions}" rendered="#{not empty userHandler.outTransactions}">
-				<h:column>
-					<f:facet name="header">Transaktionsnummer</f:facet>
-                #{_transaction.transactionNumber}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Ausführungsdatum</f:facet>
-                #{_transaction.transactionDate}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Vorname</f:facet>
-                #{_transaction.firstnameOfReceiver}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Name</f:facet>
-                #{_transaction.lastnameOfReceiver}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Kontonummer</f:facet>
-                #{_transaction.accountNumber}
-            </h:column>
-				<h:column>
-					<f:facet name="header">BLZ</f:facet>
-                #{_transaction.bankCode}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Betrag</f:facet>
-                #{_transaction.amount} €
-            </h:column>
-				<h:column>
-					<f:facet name="header">bearbeitet?</f:facet>
-                #{_transaction.processed?"Ja":"Nein"}
-            </h:column>
-			</h:dataTable>
+			<p:dataTable id="outTransactionTable" var="_transaction" value="#{userHandler.outTransactions}" emptyMessage="Keine ausgehenden Transaktionen gefunden!" paginator="true" rows="5"
+				selection="#{userHandler.selectedOutTransaction}" selectionMode="single" rowSelectListener="#{userHandler.onOutTransactionSelect}" onRowSelectUpdate="growl">
+			
+           		 <p:column headerText="Transaktionsnummer">
+					<h:outputText value="#{_transaction.transactionNumber}" />
+           		 </p:column>
+           		 <p:column headerText="Ausführungsdatum">
+					<h:outputText value="#{_transaction.transactionDate}" />
+           		 </p:column>
+           		 <p:column headerText="Vorname">
+					<h:outputText value="#{_transaction.firstnameOfReceiver}" />
+           		 </p:column>
+           		 <p:column headerText="Name">
+					<h:outputText value="#{_transaction.lastnameOfReceiver}" />
+           		 </p:column>
+           		 <p:column headerText="Kontonummer">
+					<h:outputText value="#{_transaction.accountNumber}" />
+           		 </p:column>
+           		 <p:column headerText="BLZ">
+					<h:outputText value="#{_transaction.bankCode}" />
+           		 </p:column>
+           		 <p:column headerText="Betrag">
+					<h:outputText value="#{_transaction.amount} €" />
+           		 </p:column>
+           		 <p:column headerText="bearbeitet?">
+					<h:outputText value="#{_transaction.processed?'Ja':'Nein'}" />
+           		 </p:column>
+
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="6" footerText="Summe:" style="text-align:right" />
+						<p:column footerText="#{userHandler.totalOutTransactionAmount} €" />
+						<p:column />
+					</p:row>
+				</p:columnGroup>
+				
+				<f:facet name="footer">
+					<p:commandButton id="newTransaction" action="newTransaction" value="Neue Transaktion" />
+				</f:facet>
+			</p:dataTable>
 
 			<h3>Eingehend</h3>
-			<h:panelGroup rendered="#{empty userHandler.inTransactions}">
-				<em>Sie haben keine Transaktionen.</em>
-			</h:panelGroup>
-			<h:dataTable var="_transaction" value="#{userHandler.inTransactions}" rendered="#{not empty userHandler.inTransactions}">
-				<h:column>
-					<f:facet name="header">Transaktionsnummer</f:facet>
-                #{_transaction.transactionNumber}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Ausführungsdatum</f:facet>
-                #{_transaction.transactionDate}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Vorname</f:facet>
-                #{_transaction.user.firstname}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Name</f:facet>
-                #{_transaction.user.lastname}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Kontonummer</f:facet>
-                #{_transaction.accountNumber}
-            </h:column>
-				<h:column>
-					<f:facet name="header">BLZ</f:facet>
-                #{_transaction.bankCode}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Betrag</f:facet>
-                #{_transaction.amount} €
-            </h:column>
-			</h:dataTable>
-			<h:panelGroup>
-				<p>
-					<h:commandButton id="newTransaction" style="text-align:right;" action="newTransaction" value="Neue Transaktion" />
-					<h:message for="newTransaction" errorClass="invalid" />
-				</p>
-			</h:panelGroup>
+			<p:dataTable id="inTransactionTable" var="_transaction" value="#{userHandler.inTransactions}" emptyMessage="Keine eingehenden Transaktionen gefunden!" paginator="true" rows="5"
+				selection="#{userHandler.selectedInTransaction}" selectionMode="single" rowSelectListener="#{userHandler.onInTransactionSelect}" onRowSelectUpdate="growl">
+			
+           		 <p:column headerText="Transaktionsnummer">
+					<h:outputText value="#{_transaction.transactionNumber}" />
+           		 </p:column>
+           		 <p:column headerText="Ausführungsdatum">
+					<h:outputText value="#{_transaction.transactionDate}" />
+           		 </p:column>
+           		 <p:column headerText="Vorname">
+					<h:outputText value="#{_transaction.user.firstname}" />
+           		 </p:column>
+           		 <p:column headerText="Name">
+					<h:outputText value="#{_transaction.user.lastname}" />
+           		 </p:column>
+           		 <p:column headerText="Kontonummer">
+					<h:outputText value="#{_transaction.accountNumber}" />
+           		 </p:column>
+           		 <p:column headerText="BLZ">
+					<h:outputText value="#{_transaction.bankCode}" />
+           		 </p:column>
+           		 <p:column headerText="Betrag">
+					<h:outputText value="#{_transaction.amount} €" />
+           		 </p:column>
+           	
+           		<p:columnGroup type="footer">  
+				<p:row>  
+				    <p:column colspan="6" footerText="Summe:" style="text-align:right"  />  
+				        <p:column footerText="#{userHandler.totalInTransactionAmount} €" />  
+				   </p:row>  
+				</p:columnGroup>
+			</p:dataTable>
+
+			<p:dialog header="Neues Konto für #{userHandler.currentUser}" widgetVar="dlgNewAccount" resizable="false" height="450" width="500"
+				showEffect="clip" hideEffect="clip" modal="true">
+				<h:form id="createAccount">
+					<p:messages id="msgs" showDetail="false" />
+					<p:growl id="growl" showDetail="true" />
+					<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+						<h:outputLabel for="firstname" value="Vorname:" />
+						<p:inputText id="firstname" readonly="true" value="#{userHandler.currentUser.firstname}" disabled="true" />
+						<h:outputLabel for="lastname" value="Nachname:" />
+						<p:inputText id="lastname" value="#{userHandler.currentUser.lastname}" disabled="true" />
+						<h:outputLabel for="bankName" value="Bank:"  />
+						<p:inputText  id="bankName" value="#{bankName}" disabled="true" />
+						<h:outputLabel for="accountNumber" value="Kontonummer:" />
+						<p:inputText id="accountNumber" value="#{newAccountNumber}" disabled="true" />
+						<h:outputLabel for="bankCode" value="Bankleitzahl:" />
+						<p:inputMask id="bankCode" value="#{bankCode}" mask="99999999" disabled="true" />
+						<h:outputLabel for="accountType" value="Kontoart:" />
+						<h:selectOneMenu id="accountType" value="#{bankingHandler.type}" converter="accountTypeConverter" >
+							<f:selectItems value="#{accountTypes}" />
+						</h:selectOneMenu>
+		
+					</h:panelGrid>
+					<p>
+						<p:commandButton id="saveAccount" action="save" actionListener="#{bankingHandler.saveNewAccount}" value="Speichern" update="user" oncomplete="dlgNewAccount.hide();" />
+						<h:message for="saveAccount" errorClass="invalid" />
+						<p:commandButton id="abortAccount" action="abort" actionListener="#{bankingHandler.abortNewAccount}" value="Abbrechen" oncomplete="dlgNewAccount.hide();" />
+						<h:message for="abortAccount" errorClass="invalid" />
+					</p>
+					
+					<p:ajax event="close" update="growl" listener="#{userHandler.handleNewAccountViewClose}"/>  
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Neue Transaktion für #{userHandler.currentUser}" widgetVar="dlgNewTransaction" resizable="false"  height="450" width="500"
+				showEffect="clip" hideEffect="clip" modal="true">
+				<h:form id="createTransaction">
+					<p:messages id="msgs" showDetail="false" />
+					<p:growl id="growl" showDetail="true" />
+					<h:panelGrid columns="2" style="display:block;margin-bottom:60px">
+						<h:outputLabel for="account" value="Konto" />
+						<h:panelGroup>
+							<h:selectOneMenu id="account" value="#{bankingHandler.newTransaction.account}" required="true" requiredMessage="Bitte Konto auswählen!">
+								<f:selectItems value="#{userHandler.accounts}" />
+							</h:selectOneMenu>
+							<p:message for="account" />
+						</h:panelGroup>
+						<h:outputLabel for="nameOfReceiver" value="Vorname" />
+						<h:panelGroup>
+							<p:inputText id="nameOfReceiver" value="#{bankingHandler.newTransaction.firstnameOfReceiver}" required="true" requiredMessage="Bitte Vornamen des Begünstigten eingeben!" />
+							<p:message for="nameOfReceiver" />
+						</h:panelGroup>
+						<h:outputLabel for="lastnameOfReceiver" value="Name" />
+						<h:panelGroup>
+							<p:inputText id="lastnameOfReceiver" value="#{bankingHandler.newTransaction.lastnameOfReceiver}" required="true" requiredMessage="Bitte Namen des Begünstigten eingeben!" />
+							<p:message for="lastnameOfReceiver" />
+						</h:panelGroup>
+						<h:outputLabel for="accountNumber" value="Kontonummer" />
+						<h:panelGroup>
+							<p:inputMask id="accountNumber" value="#{bankingHandler.newTransaction.accountNumber}" mask="999999999" required="true" requiredMessage="Bitte Ziel-Kontonummer angeben!" />
+							<p:message for="accountNumber" />
+						</h:panelGroup>
+						<h:outputLabel for="bankCode" value="BLZ" />
+						<h:panelGroup>
+							<p:inputMask id="bankCode" value="#{bankingHandler.newTransaction.bankCode}" mask="99999999" required="true" requiredMessage="Bitte Ziel-Bankleitzahl eingeben!" />
+							<p:message for="bankCode" />
+						</h:panelGroup>
+						<h:outputLabel for="amount" value="Betrag" />
+						<h:panelGroup>
+							<p:inputText id="amount" value="#{bankingHandler.newTransaction.amount}" required="true" requiredMessage="Bitte Betrag eingeben!" >
+								<f:convertNumber type="currency" currencyCode="EUR" />
+							</p:inputText>
+							<p:message for="amount" />
+						</h:panelGroup>
+						<h:outputLabel for="transactionDate" value="Ausführung zum" />
+						<h:panelGroup>
+							<p:calendar id="transactionDate" value="#{bankingHandler.newTransaction.transactionDate}" pattern="dd.MM.yyyy" effect="slideDown" selectListener="#{bankingHandler.handleDateSelection}" onSelectUpdate="growl" />
+							<p:message for="transactionDate" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<p>
+						<p:commandButton id="saveTransaction" action="#{bankingHandler.saveNewTransaction}" value="Speichern" update="user" oncomplete="dlgNewTransaction.hide();" />
+						<h:message for="saveTransaction" errorClass="invalid" />
+						<p:commandButton id="abortTransaction" action="#{bankingHandler.abortNewTransaction}" value="Abbrechen" oncomplete="dlgNewTransaction.hide();" />
+						<h:message for="abortTransaction" errorClass="invalid" />
+					</p>
+		
+					<p:ajax event="close" update="growl" listener="#{userHandler.handleNewTransactionViewClose}"/>  
+				</h:form>
+			</p:dialog>
+
 		</h:form>
 	</ui:define>
 </ui:composition>

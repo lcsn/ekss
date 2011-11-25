@@ -1,9 +1,9 @@
 package controller.handler;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,14 +16,13 @@ import org.jboss.seam.solder.logging.Category;
 
 import util.exception.VerificationException;
 import controller.service.AddressService;
-import controller.service.GenericService;
 import controller.service.PasswordService;
 import controller.service.UserService;
 
+@SuppressWarnings("serial")
 @Named("registrationHandler")
 @RequestScoped
-@Stateful
-public class RegistrationHandler extends GenericService {
+public class RegistrationHandler implements Serializable {
 
 	@Inject
 	@Category("registrationHandler")
@@ -47,17 +46,14 @@ public class RegistrationHandler extends GenericService {
 	@Inject
 	private ErrorHandler errorHandler;
 	
-	@Produces
 	public User getNewUser() {
 		return newUser;
 	}
 	
-	@Produces
 	public Credential getNewCredentials() {
 		return newCredentials;
 	}
 	
-	@Produces
 	public Address getNewAddress() {
 		return newAddress;
 	}

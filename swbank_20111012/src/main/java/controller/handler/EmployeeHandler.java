@@ -1,11 +1,12 @@
 package controller.handler;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -22,14 +23,15 @@ import org.jboss.seam.solder.logging.Category;
 import org.primefaces.event.SelectEvent;
 
 import util.Role;
+import util.qualifier.CustomerInfo;
 import controller.service.AccountService;
 import controller.service.AddressService;
 import controller.service.UserService;
 
+@SuppressWarnings("serial")
 @Named("employeeHandler")
 @SessionScoped
-@Stateful
-public class EmployeeHandler {
+public class EmployeeHandler implements Serializable {
 
 	@Inject
 	@Category("employeeHandler")
@@ -98,7 +100,8 @@ public class EmployeeHandler {
 		return options;
 	}
 
-
+	@CustomerInfo
+	@Produces
 	public User getSelectedUser() {
 		return selectedUser;
 	}

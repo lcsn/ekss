@@ -47,60 +47,64 @@
 				</p:column>
 
 				<f:facet name="footer">
-					<p:commandButton value="Anzeigen" image="ui-icon ui-icon-search" oncomplete="userDialog.show()" />
+					<p:commandButton value="Anzeigen" image="ui-icon ui-icon-search" />
 				</f:facet>
 			</p:dataTable>
-			<p:dialog header="Kundeninformation" widgetVar="userDialog" resizable="false" width="700" height="500" showEffect="clip" hideEffect="fold">
-					<p:dataTable id="accountTable" var="acc" value="#{employeeHandler.selectedUser.accounts}" emptyMessage="Keine Konten gefunden!" paginator="true" rows="5"
-					selection="#{employeeHandler.selectedAccount}" selectionMode="single" rowSelectListener="#{employeeHandler.onAccountSelect}" onRowSelectUpdate="growl">
+			
+			<p:spacer height="5" />
+			
+			<p:dataTable id="accountTable" var="acc" value="#{employeeHandler.selectedUser.accounts}" emptyMessage="Keine Konten gefunden!" paginator="true" rows="5"
+			selection="#{employeeHandler.selectedAccount}" selectionMode="single" rowSelectListener="#{employeeHandler.onAccountSelect}" onRowSelectUpdate="growl">
 
-						<f:facet name="header">Konten</f:facet>
+				<f:facet name="header">Konten</f:facet>
 
-						<p:column filterBy="#{acc.type}" headerText="Kontoart" filterMatchMode="contains">
-							<h:outputText value="#{acc.type}" />
-						</p:column>
+				<p:column filterBy="#{acc.type}" headerText="Kontoart" filterMatchMode="contains">
+					<h:outputText value="#{acc.type}" />
+				</p:column>
 
-						<p:column filterBy="#{acc.accountNumber}" headerText="Kontonummer" filterMatchMode="startsWith">
-							<h:outputText value="#{acc.accountNumber}" />
-						</p:column>
+				<p:column filterBy="#{acc.accountNumber}" headerText="Kontonummer" filterMatchMode="startsWith">
+					<h:outputText value="#{acc.accountNumber}" />
+				</p:column>
 
-						<p:column filterBy="#{acc.bankCode}" headerText="BLZ" filterMatchMode="startsWith">
-							<h:outputText value="#{acc.bankCode}" />
-						</p:column>
-						
-						 <!-- filterOptions="#{employeeHandler.activOptions}" filterMatchMode="exact" -->
-						<p:column filterBy="#{acc.activAsString}" headerText="Aktiviert?" filterOptions="#{employeeHandler.activOptions}" filterMatchMode="exact">
-							<h:outputText value="#{acc.activAsString}" />
-						</p:column>
-						
-						<f:facet name="footer">
-							<p:commandButton value="Aktivieren/Deaktivieren" actionListener="#{employeeHandler.activate}" image="ui-icon ui-icon-arrowrefresh-1-w" update="growl,employee:accountTable" />
-						</f:facet>
-					</p:dataTable>
-					<p:spacer height="5" />
-					<p:dataTable id="addressTable" var="address" value="#{employeeHandler.userAddresses}" emptyMessage="Keine Adressen gefunden!" paginator="true" rows="5"
-					selection="#{employeeHandler.selectedAddress}" selectionMode="single" rowSelectListener="#{employeeHandler.onAddressSelect}" onRowSelectUpdate="growl">
+				<p:column filterBy="#{acc.bankCode}" headerText="BLZ" filterMatchMode="startsWith">
+					<h:outputText value="#{acc.bankCode}" />
+				</p:column>
+				
+				 <!-- filterBy="#{acc.activAsString}" filterOptions="#{employeeHandler.activOptions}" filterMatchMode="exact" -->
+				<p:column headerText="Aktiviert?">
+					<h:outputText value="#{acc.activAsString}" />
+				</p:column>
+				
+				<f:facet name="footer">
+					<p:commandButton value="Aktivieren/Deaktivieren" actionListener="#{employeeHandler.activate}" image="ui-icon ui-icon-arrowrefresh-1-w" update="growl,employee:accountTable" />
+				</f:facet>
+			</p:dataTable>
+			
+			<p:spacer height="5" />
+			
+			<p:dataTable id="addressTable" var="address" value="#{employeeHandler.userAddresses}" emptyMessage="Keine Adressen gefunden!" paginator="true" rows="5"
+			selection="#{employeeHandler.selectedAddress}" selectionMode="single" rowSelectListener="#{employeeHandler.onAddressSelect}" onRowSelectUpdate="growl">
 
-						<f:facet name="header">Adressen</f:facet>
+				<f:facet name="header">Adressen</f:facet>
 
-						<p:column filterBy="#{address.defaultAddress}" headerText="default?">
-							<h:outputText value="#{address.defaultAddress}" />
-						</p:column>
+				<p:column filterBy="#{address.defaultAddress}" headerText="default?">
+					<h:outputText value="#{address.defaultAddress}" />
+				</p:column>
 
-						<p:column filterBy="#{address.street}" headerText="Straße" filterMatchMode="contains">
-							<h:outputText value="#{address.street}" />
-						</p:column>
+				<p:column filterBy="#{address.street}" headerText="Straße" filterMatchMode="contains">
+					<h:outputText value="#{address.street}" />
+				</p:column>
 
-						<p:column filterBy="#{address.city}" headerText="Stadt" filterMatchMode="contains">
-							<h:outputText value="#{address.city}" />
-						</p:column>
-						
-						<p:column filterBy="#{address.zipcode}" headerText="PLZ" filterMatchMode="startsWith">
-							<h:outputText value="#{address.zipcode}" />
-						</p:column>
-					</p:dataTable>
-					<p:spacer height="5" />
-			</p:dialog>
+				<p:column filterBy="#{address.city}" headerText="Stadt" filterMatchMode="contains">
+					<h:outputText value="#{address.city}" />
+				</p:column>
+				
+				<p:column filterBy="#{address.zipcode}" headerText="PLZ" filterMatchMode="startsWith">
+					<h:outputText value="#{address.zipcode}" />
+				</p:column>
+			</p:dataTable>
+			
+			<p:spacer height="5" />
 		</h:form>
 	</ui:define>
 </ui:composition>

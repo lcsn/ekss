@@ -1,15 +1,15 @@
 package controller.handler;
 
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import java.io.Serializable;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 
-@Singleton
+@SuppressWarnings("serial")
+@Named("errorHandler")
 @ApplicationScoped
-@Startup
-public class ErrorHandler {
+public class ErrorHandler implements Serializable {
 
 	private static ErrorHandler instance;
 

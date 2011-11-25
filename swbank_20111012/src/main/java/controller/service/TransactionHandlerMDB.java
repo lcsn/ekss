@@ -1,4 +1,4 @@
-package controller.handler;
+package controller.service;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -14,8 +14,6 @@ import model.Transaction;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-import controller.service.AccountService;
-import controller.service.TransactionService;
 
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),

@@ -1,8 +1,7 @@
 package controller.handler;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.enterprise.inject.Produces;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -16,15 +15,13 @@ import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
 import util.Role;
-
 import controller.service.CredentialService;
-import controller.service.GenericService;
 import controller.service.PasswordService;
 import controller.service.UserService;
 
 @Named("loginHandler")
-@Stateless
-public class LoginHandler extends GenericService {
+@RequestScoped
+public class LoginHandler {
 
 	@Inject
 	@Category("loginhandler")
@@ -118,12 +115,10 @@ public class LoginHandler extends GenericService {
 		return currentUser != null;
 	}
 
-	@Produces
 	public Credential getCredentials() {
 		return credentials;
 	}
 
-	@Produces
 	public User getCurrentUser() {
 		return currentUser;
 	}
