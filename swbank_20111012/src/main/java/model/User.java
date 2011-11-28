@@ -108,6 +108,7 @@ public class User implements Serializable {
 		this.lastname = lastname;
 	}
 
+	@XmlTransient
 	public Credential getCredentials() {
 		return credentials;
 	}
@@ -140,6 +141,7 @@ public class User implements Serializable {
 		this.birthday = birthday;
 	}
 
+	@XmlTransient
 	public List<Account> getAccounts() {
 		return accounts;
 	}
@@ -148,6 +150,7 @@ public class User implements Serializable {
 		this.accounts = accounts;
 	}
 	
+	@XmlTransient
 	public List<Address> getAddresses() {
 		return addresses;
 	}
@@ -156,6 +159,7 @@ public class User implements Serializable {
 		this.addresses = addresses;
 	}
 
+	@XmlTransient
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}

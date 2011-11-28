@@ -83,24 +83,60 @@
 			<p:spacer height="5" />
 			
 			<p:dataTable id="addressTable" var="address" value="#{employeeHandler.userAddresses}" emptyMessage="Keine Adressen gefunden!" paginator="true" rows="5"
-			selection="#{employeeHandler.selectedAddress}" selectionMode="single" rowSelectListener="#{employeeHandler.onAddressSelect}" onRowSelectUpdate="growl">
+				selection="#{employeeHandler.selectedAddress}" selectionMode="single" rowSelectListener="#{employeeHandler.onAddressSelect}"
+				rowEditListener="#{employeeHandler.addressEditListener}" onRowSelectUpdate="growl" onRowEditUpdate="growl,employee:addressTable">
 
 				<f:facet name="header">Adressen</f:facet>
 
-				<p:column filterBy="#{address.defaultAddress}" headerText="default?">
-					<h:outputText value="#{address.defaultAddress}" />
+				<p:column filterBy="#{address.defaultAddress}" headerText="default?" style="width:125px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{address.defaultAddress}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:selectOneMenu value="#{address.defaultAddress}">
+								<f:selectItem itemLabel="Ja" itemValue="#{true}"/>
+								<f:selectItem itemLabel="Nein" itemValue="#{false}"/>
+							</h:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
 				</p:column>
 
-				<p:column filterBy="#{address.street}" headerText="Straße" filterMatchMode="contains">
-					<h:outputText value="#{address.street}" />
+				<p:column filterBy="#{address.street}" headerText="Straße" filterMatchMode="contains" style="width:125px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{address.street}" />
+						</f:facet>
+						<f:facet name="input">
+                     		<p:inputText value="#{address.street}" style="width:100%"/> 
+						</f:facet>
+					</p:cellEditor>
 				</p:column>
 
-				<p:column filterBy="#{address.city}" headerText="Stadt" filterMatchMode="contains">
-					<h:outputText value="#{address.city}" />
+				<p:column filterBy="#{address.city}" headerText="Stadt" filterMatchMode="contains" style="width:125px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{address.city}" />
+						</f:facet>
+						<f:facet name="input">
+                     		<p:inputText value="#{address.city}" style="width:100%"/> 
+						</f:facet>
+					</p:cellEditor>
 				</p:column>
 				
-				<p:column filterBy="#{address.zipcode}" headerText="PLZ" filterMatchMode="startsWith">
-					<h:outputText value="#{address.zipcode}" />
+				<p:column filterBy="#{address.zipcode}" headerText="PLZ" filterMatchMode="startsWith" style="width:125px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{address.zipcode}" />
+						</f:facet>
+						<f:facet name="input">
+                     		<p:inputText value="#{address.zipcode}" style="width:100%"/> 
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Options" style="width:50px">
+					<p:rowEditor />
 				</p:column>
 			</p:dataTable>
 			

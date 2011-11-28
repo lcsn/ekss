@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Query;
 
+import model.Account;
 import model.Address;
 import model.User;
 
@@ -26,6 +27,17 @@ public class AddressService extends GenericService {
 		em.persist(address);
 		em.flush();
 		return em.find(Address.class, address.getId());
+	}
+
+	public Address updateAddress(Address address) {
+		log.trace("updateAddress");
+		if (address.getId() != null) {
+			em.merge(address);
+			em.flush();
+			return em.find(Address.class, address.getId());
+		}
+		log.info("Address is not persistent.");
+		return address;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -20,6 +20,7 @@ import model.User;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
 import util.Role;
@@ -150,7 +151,7 @@ public class EmployeeHandler implements Serializable {
 	}
 	
 	public void onAddressSelect(SelectEvent event) {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Konto ausgewählt", event.getObject() + " wurde ausgewählt!"));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Adresse ausgewählt", event.getObject() + " wurde ausgewählt!"));
 	}
 	
 	public void activate(ActionEvent event) {
@@ -170,6 +171,13 @@ public class EmployeeHandler implements Serializable {
 		} catch (Exception e) {
 			log.error(e);
 		}
+	}
+
+	public void addressEditListener(RowEditEvent editEvent) {
+		log.info("addressEditListener");
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Addresse editiert", editEvent.getObject() + " wurde bearbeitet!"));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Jetzt speichern!", "Speichern!!!!"));
+		addressService.updateAddress((Address) editEvent.getObject());
 	}
 	
 }

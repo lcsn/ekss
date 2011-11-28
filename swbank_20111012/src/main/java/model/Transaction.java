@@ -25,9 +25,12 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+@XmlRootElement
 @NamedQueries({
 	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONNUMBER, query="select t from Transaction t where t.transactionNumber=:transactionNumber"),
 	@NamedQuery(name=Transaction.FIND_BY_ID, query="select t from Transaction t where t.id=:transactionId"),
@@ -54,6 +57,8 @@ public class Transaction implements Serializable, Cloneable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	private Long foreignId;
 
 	@NotNull
 	private String transactionNumber;
@@ -106,6 +111,14 @@ public class Transaction implements Serializable, Cloneable {
 		this.id = id;
 	}
 
+	public Long getForeignId() {
+		return foreignId;
+	}
+
+	public void setForeignId(Long foreignId) {
+		this.foreignId = foreignId;
+	}
+
 	public String getTransactionNumber() {
 		return transactionNumber;
 	}
@@ -146,6 +159,7 @@ public class Transaction implements Serializable, Cloneable {
 		this.transactionDate = transactionDate;
 	}
 	
+	@XmlTransient
 	public Account getAccount() {
 		return account;
 	}
@@ -153,7 +167,7 @@ public class Transaction implements Serializable, Cloneable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
+	
 	public User getUser() {
 		return user;
 	}
@@ -180,7 +194,7 @@ public class Transaction implements Serializable, Cloneable {
 
 	public void generateTransactionNumber() {
 		Calendar calendar = Calendar.getInstance();
-		this.transactionNumber = this.user.getId() + "/" + calendar.getTimeInMillis();
+		this.transactionNumber = (this.user!=null?this.user.getId():foreignId) + "/" + calendar.getTimeInMillis();
 	}
 	
 	@Override
