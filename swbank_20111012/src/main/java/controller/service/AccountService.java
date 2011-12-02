@@ -105,8 +105,11 @@ public class AccountService extends GenericService {
 			log.info(amount + " from " + source + " was debited.");
 			updateAccount(source);
 		}
-		target.add(amount);
-		log.info(amount + " was added to " + target + ".");
+//		if target is null, we send an webservice-request
+		if (target != null) {
+			target.add(amount);
+			log.info(amount + " was added to " + target + ".");
+		}
 		updateAccount(target);
 		return true;
 		

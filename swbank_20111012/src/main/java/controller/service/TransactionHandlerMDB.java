@@ -1,5 +1,7 @@
 package controller.service;
 
+import java.util.List;
+
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
@@ -7,12 +9,18 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
+import javax.ws.rs.core.MediaType;
 
 import model.Account;
 import model.Transaction;
+import model.WebResourceInformation;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
+
+import util.RequestType;
+import util.TargetType;
+import util.WebServiceHelper;
 
 
 @MessageDriven(activationConfig = {
@@ -27,10 +35,16 @@ public class TransactionHandlerMDB implements MessageListener {
 	private Logger log;
 
 	@Inject
+	private BankInformationService bankInformationService;
+	
+	@Inject
 	private AccountService accountService;
 	
 	@Inject
 	private TransactionService transactionService;
+	
+	@Inject
+	private WebResourceInformationService webResourceInformationService;
 	
 	public TransactionHandlerMDB() {
 	}
@@ -42,7 +56,14 @@ public class TransactionHandlerMDB implements MessageListener {
 			Transaction transaction = (Transaction) objectMessage.getObject();
 			log.info("Received message: " + transaction);
 			Account sourceAccount = transaction.getAccount();
-			Account targetAccount = accountService.findAccountByBankCodeAndAccountNumber(transaction.getBankCode(), transaction.getAccountNumber());
+			Account targetAccount = null;
+			if (bankInformationService.getBankCode().equals(transaction.getBankCode())) {
+				targetAccount = accountService.findAccountByBankCodeAndAccountNumber(transaction.getBankCode(), transaction.getAccountNumber());
+			}
+			else {
+				WebResourceInformation webResInf = webResourceInformationService.findWebResourceInformationsByBankCodeAndMediaTypeAndRequestType(transaction.getBankCode(), "text/xml", RequestType.POST, TargetType.TRANSACTION);
+				WebServiceHelper.getInstance().doPostXML(webResInf.getPath(), transaction);
+			}
 			accountService.transferCash(sourceAccount, targetAccount, transaction.getAmount());
 			transactionService.markTransactionAsProcessed(transaction.getId());
 		} catch (JMSException e1) {

@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import javax.swing.text.DateFormatter;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -137,14 +141,20 @@ public class JaxRsClient {
 			Transaction transaction = new Transaction();
 			transaction.setForeignId(1337l);
 			transaction.setBankCode("20010010");
-			transaction.setAccountNumber("000012345");
-			transaction.setFirstnameOfReceiver("Lars");
-			transaction.setLastnameOfReceiver("Simon");
-			transaction.setAmount(new BigDecimal("10.20"));
+			transaction.setAccountNumber("000000004");
+			transaction.setFirstnameOfReceiver("Sebastian");
+			transaction.setLastnameOfReceiver("Wisniewski");
+//			transaction.setFirstnameOfSender("Lars");
+//			transaction.setLastnameOfSender("Simon");
+//			transaction.setBankCodeOfSender("20010010");
+//			transaction.setAccountNumberOfSender("000000002");
+			transaction.setAmount(new BigDecimal("1000.00"));
+			transaction.setTransactionDate(new Date());
 			
-//			client1.doPostTransactionCreateViaXML(transaction);
+			client1.doPostTransactionCreateViaXML(transaction);
 			
-			client1.doPostTransactionCreateViaJSON(transaction);
+//			There is a problem deserializing java.util.date by adding a transaction via json
+//			client1.doPostTransactionCreateViaJSON(transaction);
 			
 			
 	}
