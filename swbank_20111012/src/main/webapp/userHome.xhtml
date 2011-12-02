@@ -79,10 +79,10 @@
 					<h:outputText value="#{_transaction.lastnameOfReceiver}" />
            		 </p:column>
            		 <p:column headerText="Kontonummer">
-					<h:outputText value="#{_transaction.accountNumber}" />
+					<h:outputText value="#{_transaction.account.accountNumber}" />
            		 </p:column>
            		 <p:column headerText="BLZ">
-					<h:outputText value="#{_transaction.bankCode}" />
+					<h:outputText value="#{_transaction.account.bankCode}" />
            		 </p:column>
            		 <p:column headerText="Betrag">
 					<h:outputText value="#{_transaction.amount} €" />

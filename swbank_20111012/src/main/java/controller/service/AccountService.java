@@ -9,14 +9,11 @@ import javax.persistence.Query;
 
 import model.Account;
 import model.BankInformation;
-import model.SmartAccount;
 import model.Transaction;
 import model.User;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
-
-import util.AccountType;
 
 @Stateless
 public class AccountService extends GenericService {
@@ -102,11 +99,14 @@ public class AccountService extends GenericService {
 	
 	public boolean transferCash(Account source, Account target, BigDecimal amount) throws Exception {
 		log.trace("transferCash");
-		source.debit(amount);
-		log.info(amount + " from " + source + " was debited.");
+//		if source is null, this transaction must be the result of a webservice call
+		if (source != null) {
+			source.debit(amount);
+			log.info(amount + " from " + source + " was debited.");
+			updateAccount(source);
+		}
 		target.add(amount);
 		log.info(amount + " was added to " + target + ".");
-		updateAccount(source);
 		updateAccount(target);
 		return true;
 		

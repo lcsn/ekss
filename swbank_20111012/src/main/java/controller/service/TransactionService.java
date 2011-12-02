@@ -1,11 +1,11 @@
 package controller.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.Query;
 
 import model.Account;
@@ -15,7 +15,6 @@ import model.User;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-@Named
 @Stateless
 public class TransactionService extends GenericService {
 	
@@ -102,9 +101,18 @@ public class TransactionService extends GenericService {
 		return outgoing;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Transaction> findTransactionsByAccount(Account account) {
 		Query q = em.createNamedQuery(Transaction.FIND_TRANSACTIONS_BY_ACCOUNT);
 		q.setParameter("account", account);
+		return (List<Transaction>) q.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Transaction> findTransactionsByDate(Calendar cal) {
+		Query q = em.createNamedQuery(Transaction.FIND_TRANSACTIONS_BY_DAY_AND_MONTH);
+		q.setParameter("day", cal.get(Calendar.DAY_OF_MONTH));
+		q.setParameter("month", (cal.get(Calendar.MONTH)+1));
 		return (List<Transaction>) q.getResultList();
 	}
 

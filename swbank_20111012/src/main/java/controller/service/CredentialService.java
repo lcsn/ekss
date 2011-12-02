@@ -2,7 +2,6 @@ package controller.service;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.Query;
 
 import model.Credential;
@@ -10,7 +9,6 @@ import model.Credential;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-@Named
 @Stateless
 public class CredentialService extends GenericService {
 	

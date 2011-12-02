@@ -5,19 +5,12 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.Session;
 
 import model.Account;
 import model.CommonAccount;
@@ -58,11 +51,11 @@ public class BankingHandler implements Serializable {
 	@Inject
 	private BankInformationService bankInformationService;
 
-	@Resource(mappedName = "java:/ConnectionFactory")
-	private ConnectionFactory connectionFactory;
+//	@Resource(mappedName = "java:/ConnectionFactory")
+//	private ConnectionFactory connectionFactory;
 
-	@Resource(mappedName = "java:/queue/transactionQueue")
-	private Queue queue;
+//	@Resource(mappedName = "java:/queue/transactionQueue")
+//	private Queue queue;
 
 	private Account newAccount;
 	private Transaction newTransaction;
@@ -144,15 +137,15 @@ public class BankingHandler implements Serializable {
 			transactionService.createTransaction(newTransaction);
 
 //			Send JMS message
-			Connection connection = connectionFactory.createConnection();
-			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			MessageProducer producer = session.createProducer(queue);
-			ObjectMessage objectMessage = session.createObjectMessage(newTransaction.clone());
+//			Connection connection = connectionFactory.createConnection();
+//			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+//			MessageProducer producer = session.createProducer(queue);
+//			ObjectMessage objectMessage = session.createObjectMessage(newTransaction.clone());
 			
-			producer.send(objectMessage);
-			producer.close();
-			session.close();
-			connection.close();
+//			producer.send(objectMessage);
+//			producer.close();
+//			session.close();
+//			connection.close();
 			
 //			Message message = session.createTextMessage();
 //			message.setLongProperty("id", newTransaction.getId());

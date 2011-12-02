@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -21,7 +23,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -38,8 +39,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name=Transaction.FIND_TRANSACTIONS_BY_ACCOUNT, query="select t from Transaction t where t.account=:account"),
 //	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE, query="select t from Transaction t where t.transactionDate>:date"),
 //	@NamedQuery(name=Transaction.FIND_BY_TRANSACTIONDATE_GREATER_GIVEN_DATE_AND_USER, query="select t from Transaction t where t.transactionDate>:date and t.user:=user"),
-	@NamedQuery(name=Transaction.FIND_BY_USER, query="select t from Transaction t where t.user=:user")
+	@NamedQuery(name=Transaction.FIND_BY_USER, query="select t from Transaction t where t.user=:user"),
+
+	@NamedQuery(name=Transaction.FIND_TRANSACTIONS_BY_DAY_AND_MONTH, query="select t from Transaction t where day(t.transactionDate)=:day and month(t.transactionDate)=:month and t.processed = false")
+//	@NamedQuery(name=Transaction.FIND_TRANSACTIONS_BY_DAY_AND_MONTH, query="select t from Transaction t where date_part('day', t.transactionDate)=:day and date_part('month', t.transactionDate)=:month and t.processed = false")
 	})
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Entity
 @Table(name="TransactionBean", uniqueConstraints = @UniqueConstraint(columnNames = "transactionNumber"))
 public class Transaction implements Serializable, Cloneable {
@@ -53,6 +58,7 @@ public class Transaction implements Serializable, Cloneable {
 	public static final String FIND_BY_USER = "Transaction.FIND_BY_USER";
 	public static final String FIND_BY_BANKCODE_AND_ACCOUNTNUMBER = "Transaction.FIND_BY_BANKCODE_AND_ACCOUNTNUMBER";
 	public static final String FIND_TRANSACTIONS_BY_ACCOUNT = "Transaction.FIND_TRANSACTIONS_BY_ACCOUNT";
+	public static final String FIND_TRANSACTIONS_BY_DAY_AND_MONTH = "Transactions.FIND_TRANSACTIONS_BY_DAY_AND_MONTH";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -96,7 +102,7 @@ public class Transaction implements Serializable, Cloneable {
 	@DecimalMax(value="2500.00", message="Maximaler Betrag ist 2500,00 €")
 	private BigDecimal amount;
 
-	@Future
+//	@Future
 	@Temporal(TemporalType.DATE)
 	private Date transactionDate;
 
