@@ -1,7 +1,5 @@
 package controller.service;
 
-import java.util.List;
-
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
@@ -9,7 +7,6 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import javax.ws.rs.core.MediaType;
 
 import model.Account;
 import model.Transaction;
@@ -62,6 +59,9 @@ public class TransactionHandlerMDB implements MessageListener {
 			}
 			else {
 				WebResourceInformation webResInf = webResourceInformationService.findWebResourceInformationsByBankCodeAndMediaTypeAndRequestType(transaction.getBankCode(), "text/xml", RequestType.POST, TargetType.TRANSACTION);
+//				Is it possible to send the user and the sourceAccount in this transactionObject as well or must they be null?
+//				user and sourceAccount with their ids are unknown or possibly other entities on the other side
+//				the members are xmltransient. sufficient?
 				WebServiceHelper.getInstance().doPostXML(webResInf.getPath(), transaction);
 			}
 			accountService.transferCash(sourceAccount, targetAccount, transaction.getAmount());

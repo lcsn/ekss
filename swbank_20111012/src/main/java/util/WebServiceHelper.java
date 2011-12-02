@@ -22,6 +22,7 @@ public class WebServiceHelper {
 	public WebServiceHelper() {
 	}
 
+//	Is synchronized valid? Thought this must be synchronized, because of multiple instances could try to retrieve it
 	public void doPostXML(String path, Object postObject) throws Exception {
         StringWriter sw = new StringWriter();
         JAXBContext context = JAXBContext.newInstance(Transaction.class);

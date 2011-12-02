@@ -174,6 +174,7 @@ public class Transaction implements Serializable, Cloneable {
 		this.account = account;
 	}
 	
+	@XmlTransient
 	public User getUser() {
 		return user;
 	}
