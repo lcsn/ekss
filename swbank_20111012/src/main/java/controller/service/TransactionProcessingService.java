@@ -1,7 +1,9 @@
 package controller.service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,10 +19,15 @@ import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
 
+import model.Account;
+import model.Message;
 import model.Transaction;
+import model.User;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
+
+import util.MailInterval;
 
 @Singleton
 public class TransactionProcessingService extends GenericService {
@@ -36,8 +43,44 @@ public class TransactionProcessingService extends GenericService {
 	private Queue queue;
 
 	@Inject
+	private AccountService accountService;
+	
+	@Inject
 	private TransactionService transactionService;
+	
+	@Inject
+	private MailService mailService;
 
+
+	@SuppressWarnings("unused")
+	@Schedule(second = "*/30", minute = "*", hour = "*", persistent = false)
+	private void creditOffering() {
+		log.info("Check customer accounts for possible credit offers");
+		List<Account> accounts = accountService.findAllAccounts();
+		int count = 0;
+		for (Account acc : accounts) {
+			User user = acc.getUser();
+			boolean receivedMailBefore = mailService.wasUserMailedWithinTheGivenInterval(user, MailInterval.h24);
+			if(receivedMailBefore && acc.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+				Message msg = new Message();
+				msg.setRecipient(user);
+				msg.setSender("swbank@customercare.de");
+				msg.setSmtpHost("smtp.live.com");
+				msg.setSubject("A special offer for you!");
+				msg.setText("Dear customer,\n" +
+				"\nthis is your bank.\n" +
+				"We would like to offer you a credit.\n" +
+				"\nyours sincerely,\n" +
+				"Your Bank");
+				msg.setTimestamp(new Date());
+				mailService.createMessage(msg);
+				log.info("A creditoffer-message to " + user.getEmail() + " was stored and is ready to be sent!");
+				count++;
+			}
+		}
+		log.info(count + " message(s) have been stored!");
+	}
+	
 	@SuppressWarnings("unused")
 	@Schedule(second = "*/30", minute = "*", hour = "*", persistent = false)
 	private void processTransactions() {
