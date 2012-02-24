@@ -2,9 +2,15 @@ package controller.service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 import javax.persistence.Query;
 
 import model.Message;
@@ -18,6 +24,8 @@ import util.MailInterval;
 @Stateless
 public class MailService extends GenericService {
 
+	public static final String SMTP_SERVER = "bcc-sv005.bcc.intern";
+	
 	@Inject
 	@Category("mailservice")
 	private Logger log;
@@ -60,27 +68,37 @@ public class MailService extends GenericService {
 		return true;
 	}
 	
-/*	
-	public void send(String smtpHost, String sender, String recipient, String subject, String text) {
+	public boolean send(Message msg) {
+		return send(msg.getSender(), msg.getRecipient().getEmail(), msg.getSubject(), msg.getText());
+	}
+	
+	public boolean send(String sender, String recipient, String subject, String text) {
 //		log.info("sending message to " + recipient);
 		Properties properties = new Properties();
-		properties.put("mail.smtp.host", smtpHost);
+//		properties.put("mail.smtp.host", smtpHost);
 //		properties.put("mail.smtp.auth", "true");
+		properties.setProperty("mail.mime.charset", "utf-8");
 		properties.put("mail.smtp.starttls.enable","false" ); 
 		Session session = Session.getDefaultInstance(properties);//, new MailAuthenticator("lars-christian.simon@hotmail.de", ""));
 		try {
-			Message msg = new MimeMessage(session);
+			javax.mail.Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(sender));
 			msg.setRecipient(RecipientType.TO, new InternetAddress(recipient));
 			msg.setSubject(subject);
 			msg.setText(text);
 			msg.setSentDate(new Date());
-			Transport.send(msg);
+			Transport t = session.getTransport("smtp");
+			t.connect(SMTP_SERVER, null, null);
+			t.sendMessage(msg, msg.getAllRecipients());
+			t.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
+	/*
 	public static void main(String[] args) {
 		MailService mailman = new MailService();
 		

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +39,7 @@ public class Message implements Serializable {
 	private Long id;
 	
 	@NotNull
-	private String smtpHost;
+	private String mailHost;
 	
 	@NotNull
 	@Email
@@ -65,12 +67,12 @@ public class Message implements Serializable {
 		this.id = id;
 	}
 
-	public String getSmtpHost() {
-		return smtpHost;
+	public String getMailHost() {
+		return mailHost;
 	}
 
-	public void setSmtpHost(String smtpHost) {
-		this.smtpHost = smtpHost;
+	public void setMailHost(String mailHost) {
+		this.mailHost = mailHost;
 	}
 
 	public String getSender() {

@@ -1,6 +1,7 @@
 package util;
 
 public enum MailInterval {
+	m10(10, "m"),
 	h12(12, "h"),
 	h24(24, "h"),
 	d7(7, "d"),
@@ -16,6 +17,8 @@ public enum MailInterval {
 	
 	public long getIntervalInMillis() {
 		switch (this) {
+		case m10:
+			return this.val * 60 * 1000;
 		case h12:
 			return this.val * 60 * 60 * 1000;
 		case h24:
