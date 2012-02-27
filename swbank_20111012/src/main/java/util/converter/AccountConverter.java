@@ -21,7 +21,7 @@ public class AccountConverter implements Converter {
 		Account account = null;
 		try {
 			InitialContext ic = new InitialContext();
-			AccountService accountSerivce = (AccountService) ic.lookup("java:global/swbank_20111012/AccountService");
+			AccountService accountSerivce = (AccountService) ic.lookup("java:global/swbank/AccountService");
 			account = accountSerivce.findAccountById(new Long(value));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();

@@ -44,7 +44,7 @@ public class Address implements Serializable {
 	@NotNull
 	private String zipcode;
 	
-	private boolean defaultAddress = false;
+	private boolean defaultAddress = true;
 
 	public Long getId() {
 		return id;
