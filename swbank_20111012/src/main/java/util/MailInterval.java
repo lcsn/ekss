@@ -5,7 +5,8 @@ public enum MailInterval {
 	h12(12, "h"),
 	h24(24, "h"),
 	d7(7, "d"),
-	d30(30, "d");
+	d30(30, "d"),
+	y1(1, "y");
 	
 	private final int val;
 	private final String type;
