@@ -20,11 +20,17 @@ public class TestClient {
 	}
 	
 	public static void main(String[] args) {
-		try {
-			jndi = getInitialContext("localhost:1099");
-			System.out.println(jndi);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+		
+		String s = "lars-christian.simon@hotmail.co.uk";
+		
+		String tmp = s.replaceFirst("[A-Za-z _.-]*[@]", "");
+		tmp = tmp.replaceFirst(".de|.com|.org|.net|.biz|.co.uk", "");
+		System.out.println(tmp);
+//		try {
+//			jndi = getInitialContext("localhost:1099");
+//			System.out.println(jndi);
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

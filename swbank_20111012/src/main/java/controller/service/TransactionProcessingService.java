@@ -9,7 +9,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -60,14 +59,14 @@ public class TransactionProcessingService extends GenericService {
 		int count = 0;
 		for (Account acc : accounts) {
 			User user = acc.getUser();
-			boolean receivedMailBefore = mailService.wasUserMailedWithinTheGivenInterval(user, MailInterval.h24);
+			boolean receivedMailBefore = mailService.wasUserMailedWithinTheGivenInterval(user, MailInterval.d7);
 			if(receivedMailBefore && acc.getAmount().compareTo(BigDecimal.ZERO) == -1) {
 				Message msg = new Message();
 				msg.setRecipient(user);
-				msg.setSender("swbank@customercare.de");
-				msg.setSmtpHost("smtp.live.com");
+				msg.setSender("customercare@swbank.de");
+				msg.setMailHost(MailService.SMTP_SERVER);
 				msg.setSubject("A special offer for you!");
-				msg.setText("Dear customer,\n" +
+				msg.setText("Dear " + user.toString() + ",\n" +
 				"\nthis is your bank.\n" +
 				"We would like to offer you a credit.\n" +
 				"\nyours sincerely,\n" +
@@ -76,6 +75,11 @@ public class TransactionProcessingService extends GenericService {
 				mailService.createMessage(msg);
 				log.info("A creditoffer-message to " + user.getEmail() + " was stored and is ready to be sent!");
 				count++;
+				boolean isSend = mailService.send(msg);
+				if(isSend) {
+					msg.setSend(true);
+					mailService.updateMessage(msg);
+				}
 			}
 		}
 		log.info(count + " message(s) have been stored!");
