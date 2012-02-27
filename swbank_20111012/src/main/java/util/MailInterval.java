@@ -28,6 +28,8 @@ public enum MailInterval {
 			return this.val * 60 * 60 * 7 * 1000;
 		case d30:
 			return this.val * 60 * 60 * 30 * 1000;
+		case y1:
+			return this.val * 60 * 60 * 356 * 1000;
 		default:
 //			Failure
 			return Long.MIN_VALUE;
