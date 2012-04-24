@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>swbankii</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+	<security-constraint>
+		<display-name>CustomerConstraint</display-name>
+		<web-resource-collection>
+			<web-resource-name>CustomerArea</web-resource-name>
+			<url-pattern>/bank/customer/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Customer role required</description>
+			<role-name>swbankiicustomer</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<display-name>EmployeeConstraint</display-name>
+		<web-resource-collection>
+			<web-resource-name>EmployeeArea</web-resource-name>
+			<url-pattern>/bank/employee/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Employee role required</description>
+			<role-name>swbankiiemployee</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<display-name>AdminConstraint</display-name>
+		<web-resource-collection>
+			<web-resource-name>AdminArea</web-resource-name>
+			<url-pattern>/bank/admin/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Admin role required</description>
+			<role-name>swbankiiadmin</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>SWBANKiiRealm</realm-name>
+		<form-login-config>
+			<form-login-page>/login.xhtml</form-login-page>
+			<form-error-page>/unauthorized.xhtml</form-error-page>
+		</form-login-config>
+	</login-config>
+	<security-role>
+		<role-name>swbankiicustomer</role-name>
+	</security-role>
+	<security-role>
+		<role-name>swbankiiemployee</role-name>
+	</security-role>
+	<security-role>
+		<role-name>swbankiiadmin</role-name>
+	</security-role>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/403.xhtml</location>
+	</error-page>
+</web-app>

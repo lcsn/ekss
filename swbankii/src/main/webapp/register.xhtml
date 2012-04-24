@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	
+	<ui:define name="content">
+		<h1>Bitte, registrieren Sie sich..</h1>
+		<h:form id="registerForm">
+			<h2>Benutzerdaten</h2>
+    		<p:panel id="userDataPanel" style="margin-bottom:10px;">
+    			<p:messages id="msgs" showDetail="true" showSummary="false" />
+				<h:panelGrid id="display" columns="3" cellpadding="5">
+	
+					<h:outputLabel for="firstname" value="Vorname " />
+					<p:inputText id="firstname" value="#{registrationModule.newUser.firstname}" required="true"
+						requiredMessage="Bitte, Vornamen eintragen!" />
+					<p:message for="firstname" errorClass="invalid" />
+	
+					<h:outputLabel for="lastname" value="Nachname " />
+					<p:inputText id="lastname" value="#{registrationModule.newUser.lastname}" required="true"
+						requiredMessage="Bitte, Nachnamen eintragen!" />
+					<p:message for="lastname" errorClass="invalid" />
+	
+					<h:outputLabel for="email" value="Email " />
+					<p:inputText id="email" value="#{registrationModule.newUser.email}"
+						required="true" requiredMessage="Bitte, Email eintragen!" />
+					<p:message for="email" errorClass="invalid" />
+	
+					<h:outputLabel for="birthday" value="Geburtstag " />
+					<p:calendar id="birthday" value="#{registrationModule.newUser.birthday}"
+						pattern="dd.MM.yyyy" validator="dateValidator" required="true" navigator="true"
+						requiredMessage="Bitte, Geburtstag eintragen!" effect="slide" />
+					<p:message for="birthday" errorClass="invalid" />
+	
+					<h:outputLabel for="username" value="Benutzername " />
+					<p:inputText id="username" value="#{registrationModule.newUser.username}"
+						required="true" requiredMessage="Bitte, Benutzernamen eintragen!" />
+					<p:message for="username" errorClass="invalid" />
+	
+					<h:outputLabel for="pass" value="Passwort " />
+					<p:password id="pass" value="#{registrationModule.newUser.pass}" required="true"
+						requiredMessage="Bitte, Passwort eintragen!" />
+					<p:message for="pass" errorClass="invalid" />
+	
+					<h:outputLabel for="passR" value="Passwort wiederholen " />
+					<p:password id="passR" 	value="#{registrationModule.newUser.pass2}" required="true"
+						requiredMessage="Bitte, Passwort wiederholen!" />
+					<p:message for="passR" errorClass="invalid" />
+				</h:panelGrid>
+			</p:panel>
+			<p:commandButton id="register" icon="ui-icon-check" update="msgs" action="#{registrationModule.register}" value="Registrieren" />
+		</h:form>
+	</ui:define>
+</ui:composition>

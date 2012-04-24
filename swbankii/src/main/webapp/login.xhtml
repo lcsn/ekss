@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="j_security_check">
+				<p:panel id="loginPanel" header="Anmeldung" style="margin-bottom:10px;">
+					<p:messages id="msgs" showSummary="false" showDetail="true" />
+					<h:panelGrid columns="2" styleClass="centered">
+						<h:outputLabel for="j_username" value="Benutzername:" />
+						<p:inputText id="j_username" value="#{loginModule.username}" required="true" requiredMessage="Bitte, Benutzername eintragen!" />
+						
+						<h:outputLabel for="j_password" value="Passwort:" />
+						<p:password id="j_password" value="#{loginModule.password}" feedback="false" required="true" requiredMessage="Bitte, Passwort eintragen!" />
+
+						<p:spacer height="5px" />
+						<p:commandButton id="loginButton" action="#{loginModule.login}" value="Anmelden" update="msgs" type="submit" />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
