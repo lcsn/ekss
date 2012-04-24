@@ -84,6 +84,8 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<Transaction> transactions;
 	
+	private boolean confirmed = false;
+	
 	public Long getId() {
 		return id;
 	}
@@ -170,5 +172,13 @@ public class User implements Serializable {
 
 	public String toString() {
 		return this.firstname + " " + this.lastname;
+	}
+
+	public boolean isConfirmed() {
+		return confirmed;
+	}
+
+	public void setConfirmed(boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 }

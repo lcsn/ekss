@@ -3,6 +3,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
+	<name>SWBANK</name>
+
 	<groupId>de.fh.ekss</groupId>
 	<artifactId>swbank</artifactId>
 	<packaging>war</packaging>
@@ -10,6 +12,7 @@
 
 	<properties>
 		<jboss.home>${env.JBOSS_HOME}</jboss.home>
+		<activiti-version>5.8</activiti-version>
 	</properties>
 
 	<dependencies>
@@ -84,9 +87,40 @@
 			<artifactId>primefaces</artifactId>
 			<version>2.2.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-cdi</artifactId>
+			<version>5.9-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>${activiti-version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+			<version>${activiti-version}</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
+
+		<repository>
+			<id>camunda-fox</id>
+			<name>camunda fox Maven Repository</name>
+			<url>http://fox.camunda.com/mvn/</url>
+		</repository>
+
+		<repository>
+			<id>Activiti</id>
+			<url>http://maven.alfresco.com/nexus/content/repositories/activiti</url>
+		</repository>
+
 		<!-- The JBoss Community public repository is a composite repository of 
 			several major repositories -->
 		<!-- see http://community.jboss.org/wiki/MavenGettingStarted-Users -->
@@ -136,6 +170,38 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>swbank-activiti-cdi</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<build>
+				<finalName>${project.artifactId}_${project.version}_activiti</finalName>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+				</resources>
+			</build>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.activiti</groupId>
+					<artifactId>activiti-cdi</artifactId>
+					<version>5.9-SNAPSHOT</version>
+				</dependency>
+
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+					<version>3.0.3.RELEASE</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<pluginRepositories>
 		<pluginRepository>

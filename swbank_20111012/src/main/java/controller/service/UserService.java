@@ -28,6 +28,17 @@ public class UserService extends GenericService {
 		return em.find(User.class, user.getId());
 	}
 	
+	public User updateUser(User user) {
+		log.trace("updateUser");
+		if (user.getId() != null) {
+			em.merge(user);
+			em.flush();
+			return em.find(User.class, user.getId());
+		}
+		log.info("User is not persistent.");
+		return user;
+	}
+	
 	public User findUserById(Long userId) throws Exception {
 		log.trace("findUserById");
 		Query q = em.createNamedQuery(User.FIND_BY_ID);
@@ -49,4 +60,17 @@ public class UserService extends GenericService {
 		return (List<User>) q.getResultList();
 	}
 
+	public void confirm(Long userId) {
+		log.trace("Confirm User..");
+		try {
+			User user = findUserById(userId);
+			user.setConfirmed(true);
+			updateUser(user);
+			log.trace(user + " confirmed!");
+		} catch (Exception e) {
+			log.error(e);
+		}
+
+	}
+	
 }
