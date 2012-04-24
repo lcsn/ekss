@@ -1,5 +1,7 @@
 package controller.logic.ejb.user;
 
+import java.util.List;
+
 import javax.ejb.Remote;
 
 import model.entity.user.User;
@@ -18,5 +20,7 @@ public interface UserDAORemote {
 	public User findUserByEmail(String email);
 	
 	public User findUserByUsername(String identity);
+
+	public List<User> findAll();
 	
 }

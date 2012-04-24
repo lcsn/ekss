@@ -10,7 +10,43 @@
 		<h1>Willkommen!</h1>
 		<h:form id="admin_home">
 			<h1>Home of Admin is under Construction!</h1>
-			
+
+				<p:dataTable id="users" var="user" value="#{userListProducer.users}"
+					rowKey="#{user.id}" selection="#{homeModule.selectedUser}"
+					selectionMode="single">
+
+					<f:facet name="header">  
+			            Click "View" button after selecting a row to see details  
+			        </f:facet>
+
+					<p:column headerText="Vorname">  
+			            #{user.firstname}  
+			        </p:column>
+
+					<p:column headerText="Nachname">  
+			            #{user.lastname}  
+			        </p:column>
+
+					<f:facet name="footer">
+						<p:commandButton id="viewButton" value="View"
+							icon="ui-icon-search" update=":admin_home:display"
+							oncomplete="userDialog.show()" />
+					</f:facet>
+
+				</p:dataTable>
+
+				<p:dialog id="dialog" header="User Detail" widgetVar="userDialog"
+					resizable="false" width="200" showEffect="clip" hideEffect="fold">
+	
+					<h:panelGrid id="display" columns="2" cellpadding="4">
+						<h:outputText value="Email" />
+						<h:outputText value="#{homeModule.selectedUser.email}" />
+	
+						<h:outputText value="Benutzername" />
+						<h:outputText value="#{homeModule.selectedUser.username}" />
+					</h:panelGrid>
+				</p:dialog>
+				
 			<p:commandButton id="logoutButton" action="#{loginModule.logout}" value="Abmelden" />
 			
 		</h:form>
