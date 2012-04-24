@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:define name="content">
+		<h1 align="center">
+			Welcome to the famous S and W Bank<br />on JBoss AS 7!
+		</h1>
+
+		<h:form id="index">
+			<p:panel >
+				<p:commandButton id="login" action="/login.xhtml" value="Anmelden" />
+				<p:commandButton id="register" action="/register.xhtml" value="Registrieren" />
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
