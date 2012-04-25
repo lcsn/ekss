@@ -3,23 +3,30 @@ package controller.logic.web.service.app;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import model.entity.user.User;
+import model.entity.User;
 
 import org.jboss.logging.Logger;
 
+import controller.logic.ejb.user.UserDAO;
+
+
+@Named
 @Singleton
 @ApplicationScoped
 @Startup
-public class CDBOAppSingletonService {
+public class AppSingletonService {
 
-	private Logger log = Logger.getLogger(CDBOAppSingletonService.class);
+	private Logger log = Logger.getLogger(AppSingletonService.class);
 
-	@Named
+	@Inject
+	private UserDAO userDAO;
+	
 	private User currentUser;
 	
-	private static CDBOAppSingletonService instance;
+	private static AppSingletonService instance;
 	
 	public void setCurrentUser(User user) {
 		if(user == null) {
@@ -30,7 +37,7 @@ public class CDBOAppSingletonService {
 		}
 		this.currentUser = user;
 	}
-	
+
 	public User getCurrentUser() {
 		if(this.currentUser == null) {
 			log.warn("Currently is no user set!");
@@ -38,10 +45,15 @@ public class CDBOAppSingletonService {
 		return this.currentUser;
 	}
 	
-	public static synchronized CDBOAppSingletonService getInstance() {
+	public static synchronized AppSingletonService getInstance() {
 		if(instance == null) {
-			instance = new CDBOAppSingletonService();
+			instance = new AppSingletonService();
 		}
 		return instance;
 	}
+
+	public void refreshUser() {
+		this.currentUser = userDAO.findUserById(currentUser.getId());
+	}
+
 }

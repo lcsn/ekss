@@ -4,7 +4,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import model.entity.user.Role;
+import model.entity.Role;
 
 import org.jboss.logging.Logger;
 

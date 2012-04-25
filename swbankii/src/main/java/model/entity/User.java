@@ -1,4 +1,4 @@
-package model.entity.user;
+package model.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +22,7 @@ import javax.validation.constraints.Size;
 
 import model.entity.common.AbstractSWBankEntity;
 
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -30,6 +30,7 @@ import util.security.PasswordService;
 
 @SuppressWarnings("serial")
 @NamedQueries({
+		@NamedQuery(name=User.FIND_ALL, query="select u from User u"),
 		@NamedQuery(name=User.FIND_BY_ID, query="select u from User u where u.id=:userId"),
 		@NamedQuery(name=User.FIND_BY_EMAIL, query="select u from User u where u.email=:email"),
 		@NamedQuery(name=User.FIND_BY_USERNAME, query="select u from User u where u.username=:username")
@@ -41,6 +42,7 @@ public class User extends AbstractSWBankEntity {
 	public static final String FIND_BY_ID = "User.FIND_BY_ID";
 	public static final String FIND_BY_EMAIL = "User.FIND_BY_EMAIL";
 	public static final String FIND_BY_USERNAME = "User.FIND_BY_USERNAME";
+	public static final String FIND_ALL = "User.FIND_ALL";
 	
 	@NotNull
 	@Size(min = 1, max = 25, message="max. 25 Buchstaben")
@@ -56,7 +58,8 @@ public class User extends AbstractSWBankEntity {
 	@NotEmpty
 	@Email
 	private String email;
-	
+
+//	@IndexColumn(name="id")
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Role> roles = new ArrayList<Role>();
 	
@@ -78,6 +81,10 @@ public class User extends AbstractSWBankEntity {
 	private String pass2;
 	
 	private boolean confirmed = false;
+	
+//	@IndexColumn(name="id")
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	private List<Address> addresses = new ArrayList<Address>();
 	
 	public String getFirstname() {
 		return firstname;
@@ -124,7 +131,7 @@ public class User extends AbstractSWBankEntity {
 	}
 
 	public void setPass(String pass) {
-		this.pass = pass;
+		this.pass = PasswordService.encrypt(pass);
 	}
 
 	public String getPass2() {
@@ -132,7 +139,7 @@ public class User extends AbstractSWBankEntity {
 	}
 
 	public void setPass2(String pass2) {
-		this.pass2 = pass2;
+		this.pass2 = PasswordService.encrypt(pass2);
 	}
 
 	public String toString() {
@@ -155,21 +162,30 @@ public class User extends AbstractSWBankEntity {
 		this.roles = roles;
 	}
 
-	public void addRole(Role role) {
-		roles.add(role);
-		role.setUser(this);
+	public void addRole(util.Role role) {
+		Role _role = new Role(role.toString());
+		roles.add(_role);
+		_role.setUser(this);
 	}
 
-	@SuppressWarnings("unused")
-	@PrePersist
-	private void encrypt() {
-		this.pass = PasswordService.encrypt(pass);
-	}
+//	@SuppressWarnings("unused")
+//	@PrePersist
+//	private void encrypt() {
+//		this.pass = PasswordService.encrypt(pass);
+//	}
 	
 	public boolean verify() {
 		if (pass.equals(pass2)) {
 			return true;
 		}
 		return false;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 }

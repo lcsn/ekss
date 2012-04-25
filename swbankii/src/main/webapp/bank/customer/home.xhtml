@@ -9,10 +9,28 @@
 		<p:growl id="growl" showDetail="true" showSummary="true" />
 		<h1>Willkommen!</h1>
 		<h:form id="customer_home">
-			<h1>Home of Customer is under Construction!</h1>
-			
+			<p:layout style="min-width:400px;min-height:400px;" id="layout">
+				<p:layoutUnit position="west" resizable="true" size="100" minSize="80" maxSize="200">
+					<h:panelGrid columns="1">
+						<h:outputLink id="home" title="Home" value="/swbankii/bank/customer/home.jsf">
+							<h:outputText value="Home"/>  
+						</h:outputLink>
+						<h:outputLink id="konten" title="Konten" value="/swbankii/bank/customer/accounts.jsf">
+							<h:outputText value="Konten"/>  
+						</h:outputLink>
+						<h:outputLink id="meinKonto" title="Mein Konto" value="/swbankii/bank/customer/myaccount.jsf">
+							<h:outputText value="Mein Konto"/>  
+						</h:outputLink>
+					</h:panelGrid>
+			    </p:layoutUnit>
+
+				<p:layoutUnit position="center">  
+			        NEWSFEED  
+			    </p:layoutUnit>
+			</p:layout>
+
 			<p:commandButton id="logoutButton" action="#{loginModule.logout}" value="Abmelden" />
-			
+
 		</h:form>
 	</ui:define>
 </ui:composition>

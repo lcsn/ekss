@@ -14,14 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import model.entity.user.User;
+import model.entity.User;
 
 import org.jboss.logging.Logger;
 
 import util.ApplicationConstants;
 
 import controller.logic.ejb.user.UserDAO;
-import controller.logic.web.service.app.CDBOAppSingletonService;
+import controller.logic.web.service.app.AppSingletonService;
 
 @Named("loginModule")
 @RequestScoped
@@ -37,7 +37,7 @@ public class Login {
 	private UserDAO userDAO;
 
 	@Inject
-	private CDBOAppSingletonService cdboAppSingletonService;
+	private AppSingletonService appSingletonService;
 
 	@SuppressWarnings("unused")
 	@PostConstruct
@@ -73,7 +73,7 @@ public class Login {
 				request.logout();
 			}
 			User user = userDAO.findUserByUsername(principal.getName());
-			cdboAppSingletonService.setCurrentUser(user);
+			appSingletonService.setCurrentUser(user);
 			 getHttpSession().setAttribute(ApplicationConstants.LOGIN_CREDENTIAL_KEY, principal);
 			 getHttpSession().setAttribute(ApplicationConstants.LOGIN_USER_KEY, user);
 		} catch (ServletException e) {
@@ -91,7 +91,7 @@ public class Login {
 		String url = "/swbankii/login.jsf";
 		try {
 			getHttpRequest().logout();
-			cdboAppSingletonService.setCurrentUser(null);
+			appSingletonService.setCurrentUser(null);
 
 			FacesContext fc = FacesContext.getCurrentInstance();
 			HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);

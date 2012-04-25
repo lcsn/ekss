@@ -8,11 +8,10 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import model.entity.user.User;
+import model.entity.User;
 
 import controller.logic.ejb.user.UserDAO;
 
-@Named
 @RequestScoped
 public class UserListProducer {
 
@@ -26,6 +25,7 @@ public class UserListProducer {
 		this.users = userDAO.findAll();
 	}
 
+	@Named
 	@Produces
 	public List<User> getUsers() {
 		return users;

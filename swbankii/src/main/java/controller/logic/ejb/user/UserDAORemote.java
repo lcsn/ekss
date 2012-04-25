@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import model.entity.user.User;
+import model.entity.User;
 
 @Remote
 public interface UserDAORemote {
@@ -22,5 +22,7 @@ public interface UserDAORemote {
 	public User findUserByUsername(String identity);
 
 	public List<User> findAll();
+
+	public User findUserById(String id);
 	
 }

@@ -7,9 +7,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import model.entity.user.User;
+import model.entity.User;
 
 import org.jboss.logging.Logger;
+
+import util.Role;
 
 import controller.logic.ejb.user.UserDAO;
 
@@ -34,6 +36,7 @@ public class Registration {
 		String url = "/register.xhtml";
 		if(newUser.verify()) {
 			try {
+				newUser.addRole(Role.swbankiicustomer);
 				userDAO.create(newUser);
 				url = "/login.xhtml";
 			} catch (Exception e) {

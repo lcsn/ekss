@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import model.entity.user.User;
+import model.entity.User;
 
 import org.jboss.logging.Logger;
 
@@ -40,13 +40,23 @@ public class UserDAOBean extends GenericCRUDBean<User> implements UserDAO {
 
 	@Override
 	public List<User> findAll() {
-		CriteriaBuilder builder = em.getEntityManagerFactory().getCriteriaBuilder();
+//		log.debug("findAll");
+//		Query query = em.createNamedQuery(User.FIND_ALL);
+//		return query.getResultList();
+		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<User> criteria = builder.createQuery(User.class);
 		Root<User> userRoot = criteria.from(User.class);
 		criteria.select(userRoot);
-		TypedQuery<User> typedQuery = em.createQuery(criteria);
-		typedQuery.getResultList();
-		return null;
+		return em.createQuery(criteria).getResultList();
+	}
+
+	@Override
+	public User findUserById(String userId) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<User> criteria = builder.createQuery(User.class);
+		Root<User> userRoot = criteria.from(User.class);
+		criteria.select(userRoot).where(builder.equal(userRoot.get("id"), userId));
+		return em.createQuery(criteria).getSingleResult();
 	}
 
 }

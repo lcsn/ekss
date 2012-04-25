@@ -2,7 +2,7 @@ package controller.logic.ejb.role;
 
 import javax.ejb.Remote;
 
-import model.entity.user.Role;
+import model.entity.Role;
 
 @Remote
 public interface RoleDAORemote {

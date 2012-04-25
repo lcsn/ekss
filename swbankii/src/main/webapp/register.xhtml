@@ -14,38 +14,40 @@
     			<p:messages id="msgs" showDetail="true" showSummary="false" />
 				<h:panelGrid id="display" columns="3" cellpadding="5">
 	
-					<h:outputLabel for="firstname" value="Vorname " />
+					<h:outputLabel for="firstname" value="Vorname" style="font-weight:bold" />
 					<p:inputText id="firstname" value="#{registrationModule.newUser.firstname}" required="true"
 						requiredMessage="Bitte, Vornamen eintragen!" />
 					<p:message for="firstname" errorClass="invalid" />
 	
-					<h:outputLabel for="lastname" value="Nachname " />
+					<h:outputLabel for="lastname" value="Nachname" style="font-weight:bold" />
 					<p:inputText id="lastname" value="#{registrationModule.newUser.lastname}" required="true"
 						requiredMessage="Bitte, Nachnamen eintragen!" />
 					<p:message for="lastname" errorClass="invalid" />
 	
-					<h:outputLabel for="email" value="Email " />
+					<h:outputLabel for="email" value="Email" style="font-weight:bold" />
 					<p:inputText id="email" value="#{registrationModule.newUser.email}"
 						required="true" requiredMessage="Bitte, Email eintragen!" />
 					<p:message for="email" errorClass="invalid" />
 	
-					<h:outputLabel for="birthday" value="Geburtstag " />
+					<h:outputLabel for="birthday" value="Geburtstag" style="font-weight:bold" />
 					<p:calendar id="birthday" value="#{registrationModule.newUser.birthday}"
 						pattern="dd.MM.yyyy" validator="dateValidator" required="true" navigator="true"
-						requiredMessage="Bitte, Geburtstag eintragen!" effect="slide" />
+						requiredMessage="Bitte, Geburtstag eintragen!" effect="slide">
+						<f:convertDateTime pattern="dd.MM.yyyy" />	
+					</p:calendar>
 					<p:message for="birthday" errorClass="invalid" />
 	
-					<h:outputLabel for="username" value="Benutzername " />
+					<h:outputLabel for="username" value="Benutzername" style="font-weight:bold" />
 					<p:inputText id="username" value="#{registrationModule.newUser.username}"
 						required="true" requiredMessage="Bitte, Benutzernamen eintragen!" />
 					<p:message for="username" errorClass="invalid" />
 	
-					<h:outputLabel for="pass" value="Passwort " />
+					<h:outputLabel for="pass" value="Passwort" style="font-weight:bold" />
 					<p:password id="pass" value="#{registrationModule.newUser.pass}" required="true"
 						requiredMessage="Bitte, Passwort eintragen!" />
 					<p:message for="pass" errorClass="invalid" />
 	
-					<h:outputLabel for="passR" value="Passwort wiederholen " />
+					<h:outputLabel for="passR" value="Passwort wiederholen" style="font-weight:bold" />
 					<p:password id="passR" 	value="#{registrationModule.newUser.pass2}" required="true"
 						requiredMessage="Bitte, Passwort wiederholen!" />
 					<p:message for="passR" errorClass="invalid" />

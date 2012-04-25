@@ -3,7 +3,8 @@ package controller.logic.web.handler;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import model.entity.user.User;
+import model.entity.Address;
+import model.entity.User;
 
 import org.jboss.logging.Logger;
 
@@ -13,7 +14,9 @@ public class Home {
 
 	private Logger log = Logger.getLogger(Home.class);
 	
-	private User selectedUser;
+	private User selectedUser = new User();
+	
+	private Address selectedAddress = new Address();
 
 	public User getSelectedUser() {
 		return selectedUser;
@@ -21,6 +24,14 @@ public class Home {
 
 	public void setSelectedUser(User selectedUser) {
 		this.selectedUser = selectedUser;
+	}
+
+	public Address getSelectedAddress() {
+		return selectedAddress;
+	}
+
+	public void setSelectedAddress(Address selectedAddress) {
+		this.selectedAddress = selectedAddress;
 	}
 
 }

@@ -11,7 +11,7 @@
 		<h:form id="admin_home">
 			<h1>Home of Admin is under Construction!</h1>
 
-				<p:dataTable id="users" var="user" value="#{userListProducer.users}"
+				<p:dataTable id="users" var="user" value="#{users}"
 					rowKey="#{user.id}" selection="#{homeModule.selectedUser}"
 					selectionMode="single">
 
@@ -35,16 +35,47 @@
 
 				</p:dataTable>
 
-				<p:dialog id="dialog" header="User Detail" widgetVar="userDialog"
-					resizable="false" width="200" showEffect="clip" hideEffect="fold">
+				<p:dialog id="dialog" header="User Details" widgetVar="userDialog"
+					resizable="false" width="600" height="300" showEffect="clip" hideEffect="fold">
 	
-					<h:panelGrid id="display" columns="2" cellpadding="4">
-						<h:outputText value="Email" />
-						<h:outputText value="#{homeModule.selectedUser.email}" />
+					<p:panel id="display">
+						<h:panelGrid id="top" columns="2" cellpadding="4">
+							<h:outputText value="Email" />
+							<h:outputText value="#{homeModule.selectedUser.email}" />
+		
+							<h:outputText value="Benutzername" />
+							<h:outputText value="#{homeModule.selectedUser.username}" />
+						</h:panelGrid>
+						
+						<p:dataTable id="addresses" var="address" value="#{homeModule.selectedUser.addresses}"	rowKey="#{address.id}" selection="#{homeModule.selectedAddress}" selectionMode="single">
 	
-						<h:outputText value="Benutzername" />
-						<h:outputText value="#{homeModule.selectedUser.username}" />
-					</h:panelGrid>
+							<f:facet name="header">  
+					            Click "View" button after selecting a row to see details  
+					        </f:facet>
+		
+							<p:column headerText="Straße">  
+					            #{address.street}  
+					        </p:column>
+		
+							<p:column headerText="PLZ">  
+					            #{address.zipcode}  
+					        </p:column>
+					        
+							<p:column headerText="Wohnort">  
+					            #{address.city}  
+					        </p:column>
+		
+							<p:column headerText="default">  
+					            #{address.defaultAddress}  
+					        </p:column>
+		
+							<f:facet name="footer">
+								<p:commandButton id="viewButton" value="View" icon="ui-icon-search" update=":admin_home:display" oncomplete="userDialog.show()" />
+							</f:facet>
+
+						</p:dataTable>
+						
+					</p:panel>
 				</p:dialog>
 				
 			<p:commandButton id="logoutButton" action="#{loginModule.logout}" value="Abmelden" />

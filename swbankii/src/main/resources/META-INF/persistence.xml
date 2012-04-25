@@ -7,8 +7,9 @@
    <persistence-unit name="primaryii">
 		<jta-data-source>java:jboss/datasources/HelloDSii</jta-data-source>
 		<class>model.entity.common.AbstractSWBankEntity</class>
-		<class>model.entity.user.User</class>
-		<class>model.entity.user.Role</class>
+		<class>model.entity.User</class>
+		<class>model.entity.Role</class>
+		<class>model.entity.Address</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
@@ -17,6 +18,7 @@
 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/HelloDBii" />
 			<property name="hibernate.connection.username" value="lars_simon" />
 			<property name="hibernate.connection.password" value="4711" />
+ 			<property name="hibernate.case.use_query_cache" value="true" />
 			
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>

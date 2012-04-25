@@ -1,4 +1,4 @@
-package model.entity.user;
+package model.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
